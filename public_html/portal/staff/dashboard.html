@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="/portal/shared/css/portal.css?v=11.0.0">
-<link rel="stylesheet" href="/portal/shared/css/portal-live-data.css?v=11.0.0">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=12.1.0">
+<link rel="stylesheet" href="/portal/shared/css/portal-crud.css?v=12.1.0">
 </head>
-<body class="gees-portal-page gees-live-dashboard-page" data-live-dashboard="true">
+<body class="gees-portal-page">
 <script>window.GEES_PORTAL_PAGE={"title":"Staff Dashboard","requiredRoles":["staff","super_admin"],"requiredPermission":"staff.dashboard"};</script>
 <div class="gees-portal-shell">
   <aside class="gees-portal-sidebar" data-portal-sidebar></aside>
@@ -19,25 +19,34 @@
     <header class="gees-portal-topbar" data-portal-topbar></header>
     <main class="gees-portal-content">
       <section class="gees-page-hero">
-        <div><span class="gees-kicker">Team Portal</span><h1>Staff Dashboard</h1><p>View assigned applications, document review work, support tickets, and staff notifications from Supabase.</p></div>
-        <div class="gees-hero-tools"><button class="gees-btn gees-btn-outline" data-gees-live-refresh><i class="fa-solid fa-rotate"></i> Refresh Live Data</button></div>
+        <div><span class="gees-kicker">Phase 12B · Staff Actions</span><h1>Staff Dashboard</h1><p>View applications assigned to your staff profile and update application status in Supabase.</p></div>
+        <div class="gees-hero-tools"><button class="gees-btn gees-btn-outline" onclick="location.reload()"><i class="fa-solid fa-rotate"></i> Refresh</button></div>
       </section>
-      <section class="gees-stats-grid"><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-list-check"></i></div><div><strong>Live</strong><span>Assigned Applications</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-folder-open"></i></div><div><strong>Live</strong><span>Documents</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-headset"></i></div><div><strong>Live</strong><span>Support Tickets</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-bell"></i></div><div><strong>Live</strong><span>Notifications</span></div></article></section>
+      <section class="gees-stats-grid">
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-list-check"></i></div><div><strong data-stat="staff-applications">0</strong><span>Assigned applications</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-database"></i></div><div><strong>Supabase</strong><span>Live records</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-shield-halved"></i></div><div><strong>RLS</strong><span>Staff protected</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-pen-to-square"></i></div><div><strong>Status</strong><span>Update action</span></div></article>
+      </section>
       <section class="gees-action-grid"><a class="gees-action-card" href="/portal/staff/ekhlas/dashboard.html"><i class="fa-solid fa-globe-asia"></i><strong>Ekhlas Workspace</strong><span>India outreach and community quality.</span></a><a class="gees-action-card" href="/portal/staff/maanisha/dashboard.html"><i class="fa-solid fa-chart-line"></i><strong>Maanisha Workspace</strong><span>Revenue, vault, and benchmarks.</span></a><a class="gees-action-card" href="/portal/staff/rafshan/dashboard.html"><i class="fa-solid fa-wand-magic-sparkles"></i><strong>Rafshan Workspace</strong><span>Creative calendar and reels library.</span></a></section>
-      <section class="gees-panel"><div class="gees-panel-head"><h2>Live Supabase records</h2><span class="gees-badge">Live-ready</span></div><div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Name</th><th>Status</th><th>Note</th></tr></thead><tbody><tr><td>Waiting for live data</td><td><span class="gees-badge">Connecting</span></td><td>The Phase 11 live adapter will replace this table after Supabase session validation.</td></tr></tbody></table></div></section>
-      <section class="gees-panel gees-demo-panel"><div class="gees-panel-head"><h2>Phase 11 connection</h2><span class="gees-badge">Supabase</span></div><p>This dashboard now loads live Supabase counts and recent records when a real GEES user is logged in. Demo accounts continue to use demo/static mode.</p></section>
+      <div data-crud-page="staff-applications">
+        <section class="gees-panel gees-crud-panel">
+          <div class="gees-panel-head"><div><h2>Assigned live applications</h2><p>Change status for applications assigned to your staff profile.</p></div><span class="gees-crud-status" data-crud-status="staff-applications"></span></div>
+          <div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Application</th><th>Current Status</th><th>Update Status</th></tr></thead><tbody data-crud-table="staff-applications"><tr><td colspan="3">Loading assigned applications...</td></tr></tbody></table></div>
+        </section>
+      </div>
     </main>
   </div>
 </div>
-<div class="gees-portal-overlay" data-portal-overlay></div>
-<div class="gees-toast-root" id="gees-toast-root"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/portal/shared/js/supabase-client.js?v=11.0.0"></script>
-<script src="/portal/shared/js/demo-backend.js?v=11.0.0"></script>
-<script src="/portal/shared/js/auth-service.js?v=11.0.0"></script>
-<script src="/portal/shared/js/role-guard.js?v=11.0.0"></script>
-<script src="/portal/shared/js/portal-shell.js?v=11.0.0"></script>
-<script src="/portal/shared/js/portal-ui.js?v=11.0.0"></script>
-<script src="/portal/shared/js/portal-live-data.js?v=11.0.0"></script>
+<div class="gees-portal-overlay" data-portal-overlay></div><div class="gees-toast-root" id="gees-toast-root"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2';"></script>
+<script src="/portal/shared/js/supabase-client.js?v=12.1.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=12.1.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=12.1.0"></script>
+<script src="/portal/shared/js/supabase-ready-bridge.js?v=12.1.0"></script>
+<script src="/portal/shared/js/role-guard.js?v=12.1.0"></script>
+<script src="/portal/shared/js/portal-shell.js?v=12.1.0"></script>
+<script src="/portal/shared/js/portal-ui.js?v=12.1.0"></script>
+<script src="/portal/shared/js/portal-crud-12b.js?v=12.1.0"></script>
 </body>
 </html>
