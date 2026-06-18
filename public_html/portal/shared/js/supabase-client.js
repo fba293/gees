@@ -57,14 +57,14 @@
     publishableKey: 'sb_publishable_frMPUvpzQw7aM415cDlIRg_jvuUwsCa',
     projectRef: 'spljrvlebfeljqrqkiee',
     mode: 'supabase-with-demo-fallback',
-    version: '11.3.0',
+    version: '11.4.0',
     storageMode: SAFE_STORAGE.mode
   };
 
   var loaderPromise = null;
   var SOURCES = [
-    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
-    'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js'
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',
+    'https://unpkg.com/@supabase/supabase-js@2'
   ];
 
   function hasSupabaseFactory(){
@@ -73,7 +73,9 @@
 
   function loadScript(src){
     return new Promise(function(resolve, reject){
-      var existing = document.querySelector('script[src="' + src + '"]');
+      var existing = Array.prototype.slice.call(document.scripts).find(function(script){
+        return script.src && script.src.indexOf(src) === 0;
+      });
       if(existing){
         if(hasSupabaseFactory()) resolve();
         else existing.addEventListener('load', resolve, { once:true });
@@ -104,7 +106,7 @@
           storage: SAFE_STORAGE
         },
         global: {
-          headers: { 'x-gees-client': 'portal-phase-11i' }
+          headers: { 'x-gees-client': 'portal-phase-11j' }
         }
       });
     }catch(error){
