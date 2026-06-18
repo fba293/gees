@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Admin Signup Closed | GEES</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=10.5.0">
+<link rel="stylesheet" href="/portal/shared/css/phase10f-diagnostics.css?v=10.5.0">
+</head>
+<body class="gees-auth-page">
+<main class="gees-auth-card">
+  <span class="gees-kicker">Protected GEES Role</span>
+  <h1>Admin signup is closed</h1>
+  <p>Admin and super-admin accounts are intentionally not available through public signup. This protects your GEES portal from unauthorized admin creation.</p>
+  <div class="gees-auth-error show" data-status-type="info" role="status">Create one normal user first, then run the first-admin bootstrap SQL in Supabase to promote that email to super_admin.</div>
+  <a class="gees-btn gees-btn-primary" href="/portal/auth/admin-login.html"><i class="fa-solid fa-right-to-bracket"></i> Go to Admin Login</a>
+  <p class="gees-auth-mini">Bootstrap SQL: <code>public_html/supabase/sql/phase10e_first_admin_promote_by_email.sql</code></p>
+</main>
+</body>
+</html>

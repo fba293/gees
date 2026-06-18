@@ -37,6 +37,43 @@
     return metadata;
   }
 
+  function friendlyAuthMessage(error, context){
+    if(window.GEESAuthService && typeof window.GEESAuthService.explainAuthError === 'function'){
+      return window.GEESAuthService.explainAuthError(error, context).message;
+    }
+    var raw = String((error && error.message) || error || '');
+    var text = raw.toLowerCase();
+    if(text.indexOf('email rate limit') !== -1 || text.indexOf('rate limit exceeded') !== -1 || text.indexOf('too many requests') !== -1){
+      return 'Supabase email rate limit reached. For GEES testing, go to Supabase Authentication → Providers → Email, keep Email provider ON, keep Allow new users ON, and turn Confirm email OFF temporarily. Then wait a few minutes and try again.';
+    }
+    if(text.indexOf('signups not allowed') !== -1 || text.indexOf('signup is disabled') !== -1 || text.indexOf('new signups are disabled') !== -1){
+      return 'Supabase signup is currently disabled. Go to Supabase Authentication → Providers → Email and turn ON “Allow new users to sign up”. Keep Confirm email OFF only for development testing.';
+    }
+    if(text.indexOf('email not confirmed') !== -1){
+      return 'This email is not confirmed yet. For GEES testing, confirm the email from inbox or turn OFF Confirm email in Supabase Authentication → Providers → Email.';
+    }
+    if(text.indexOf('already registered') !== -1 || text.indexOf('already exists') !== -1){
+      return 'This email already has a GEES account. Try logging in, use a different email, or remove/reset the user from Supabase Authentication → Users during testing.';
+    }
+    if(context === 'signup' && text.indexOf('admin') !== -1){
+      return 'Admin signup is intentionally closed. Create a normal user first, then promote it using the first-admin bootstrap SQL.';
+    }
+    return raw || 'Request failed. Please try again.';
+  }
+
+  function addDevHint(form){
+    if(form.dataset.hintAdded) return;
+    form.dataset.hintAdded = 'true';
+    var role = form.dataset.signupRole;
+    if(!role) return;
+    var hint = document.createElement('p');
+    hint.className = 'gees-auth-mini gees-auth-dev-hint';
+    hint.textContent = role === 'agent' || role === 'staff'
+      ? 'Testing note: Email provider ON, Allow new users ON, Confirm email OFF temporarily. Agent/staff accounts stay pending until real admin approval.'
+      : 'Testing note: if Supabase email limit appears, turn Confirm email OFF temporarily in Supabase Auth settings.';
+    form.appendChild(hint);
+  }
+
   ready(function(){
     document.querySelectorAll('[data-login-role]').forEach(function(form){
       form.addEventListener('submit', async function(event){
@@ -53,7 +90,7 @@
           setStatus(form, result.mode === 'demo' ? 'Demo login successful. Redirecting...' : 'Supabase login successful. Redirecting...', 'success');
           location.href = result.next;
         }catch(error){
-          setStatus(form, error.message || 'Login failed. Please try again.', 'error');
+          setStatus(form, friendlyAuthMessage(error, 'login'), 'error');
         }finally{
           setBusy(form, false);
         }
@@ -61,6 +98,7 @@
     });
 
     document.querySelectorAll('[data-signup-role]').forEach(function(form){
+      addDevHint(form);
       form.addEventListener('submit', async function(event){
         event.preventDefault();
         setStatus(form, '', 'info');
@@ -81,7 +119,7 @@
           setStatus(form, result.message || 'Signup submitted successfully.', 'success');
           form.reset();
         }catch(error){
-          setStatus(form, error.message || 'Signup failed. Please try again.', 'error');
+          setStatus(form, friendlyAuthMessage(error, 'signup'), 'error');
         }finally{
           setBusy(form, false);
         }

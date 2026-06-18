@@ -1,0 +1,10 @@
+Test Area,Expected Result,Status
+Supabase Email Provider,ON,Manual check required
+Allow new users to sign up,ON,Manual check required
+Confirm email,OFF for development testing only,Manual check required
+Student signup,Shows clear success or clear Supabase settings message,Ready
+Agent signup,Creates pending approval and shows pending admin approval message,Ready
+Staff signup,No raw "Signups not allowed" message; shows setup instruction if disabled,Ready
+Admin signup,Shows admin signup closed page,Ready
+Demo admin approvals,Shows diagnostic that demo admin cannot read live approvals,Ready
+Real admin approvals,Shows pending agent/staff approvals after bootstrap,Manual browser test required
