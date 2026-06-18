@@ -7,20 +7,20 @@
 <meta name="robots" content="noindex, nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="/portal/shared/css/portal.css?v=10.3.0">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=11.3.0">
 </head>
 <body class="gees-auth-page">
 <main class="gees-auth-card">
   <span class="gees-kicker">GEES Supabase Signup</span>
   <h1>Staff Signup</h1>
-  <p>This form creates a real Supabase Auth user. Student accounts can start immediately after confirmation; agent and staff accounts stay pending until admin approval.</p>
+  <p>This form creates a real Supabase Auth user. Staff accounts stay pending until GEES admin approval.</p>
   <form class="gees-auth-form" data-signup-role="staff">
     <label>Full Name<input type="text" name="full_name" autocomplete="name" required></label>
     <label>Email<input type="email" name="email" autocomplete="email" required></label>
     <label>Phone<input type="tel" name="phone" autocomplete="tel"></label>
     <label>Team<select name="team_id"><option value="staff">General Staff</option><option value="ekhlas">Ekhlas Workspace</option><option value="maanisha">Maanisha Workspace</option><option value="rafshan">Rafshan Workspace</option><option value="seo">SEO Workspace</option></select></label>
-<label>Title<input type="text" name="title" placeholder="Counselor, SEO Executive..."></label>
-<label>Department<input type="text" name="department" placeholder="Admissions, Marketing..."></label>
+    <label>Title<input type="text" name="title" placeholder="Counselor, SEO Executive..."></label>
+    <label>Department<input type="text" name="department" placeholder="Admissions, Marketing..."></label>
     <label>Password<input type="password" name="password" autocomplete="new-password" minlength="8" required></label>
     <label>Confirm Password<input type="password" name="confirm_password" autocomplete="new-password" minlength="8" required></label>
     <button class="gees-btn gees-btn-primary" type="submit"><i class="fa-solid fa-user-plus"></i> Create Account</button>
@@ -28,10 +28,11 @@
   </form>
   <p class="gees-auth-mini">Already registered? <a href="/portal/auth/staff-login.html">Go to login</a></p>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/portal/shared/js/supabase-client.js?v=10.3.0"></script>
-<script src="/portal/shared/js/demo-backend.js?v=10.3.0"></script>
-<script src="/portal/shared/js/auth-service.js?v=10.3.0"></script>
-<script src="/portal/shared/js/auth-page.js?v=10.3.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js';"></script>
+<script src="/portal/shared/js/supabase-client.js?v=11.3.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=11.3.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=11.3.0"></script>
+<script src="/portal/shared/js/supabase-ready-bridge.js?v=11.3.0"></script>
+<script src="/portal/shared/js/auth-page.js?v=11.3.0"></script>
 </body>
 </html>
