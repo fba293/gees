@@ -11,21 +11,17 @@
       storage.setItem(key, '1');
       storage.removeItem(key);
       return true;
-    }catch(error){
-      return false;
-    }
+    }catch(error){ return false; }
   }
 
   function createSafeStorage(){
     var localOK = canUseStorage(window.localStorage);
     var sessionOK = canUseStorage(window.sessionStorage);
-
     function getStore(){
       if(localOK) return window.localStorage;
       if(sessionOK) return window.sessionStorage;
       return null;
     }
-
     return {
       mode: localOK ? 'localStorage' : (sessionOK ? 'sessionStorage' : 'memory'),
       persisted: localOK || sessionOK,
@@ -34,9 +30,7 @@
           var store = getStore();
           if(store) return store.getItem(key);
           return Object.prototype.hasOwnProperty.call(MEMORY_STORE, key) ? MEMORY_STORE[key] : null;
-        }catch(error){
-          return Object.prototype.hasOwnProperty.call(MEMORY_STORE, key) ? MEMORY_STORE[key] : null;
-        }
+        }catch(error){ return Object.prototype.hasOwnProperty.call(MEMORY_STORE, key) ? MEMORY_STORE[key] : null; }
       },
       setItem: function(key, value){
         try{
@@ -63,19 +57,39 @@
     publishableKey: 'sb_publishable_frMPUvpzQw7aM415cDlIRg_jvuUwsCa',
     projectRef: 'spljrvlebfeljqrqkiee',
     mode: 'supabase-with-demo-fallback',
-    version: '11.2.0',
+    version: '11.3.0',
     storageMode: SAFE_STORAGE.mode
   };
+
+  var loaderPromise = null;
+  var SOURCES = [
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
+    'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js'
+  ];
 
   function hasSupabaseFactory(){
     return !!(window.supabase && typeof window.supabase.createClient === 'function');
   }
 
+  function loadScript(src){
+    return new Promise(function(resolve, reject){
+      var existing = document.querySelector('script[src="' + src + '"]');
+      if(existing){
+        if(hasSupabaseFactory()) resolve();
+        else existing.addEventListener('load', resolve, { once:true });
+        return;
+      }
+      var script = document.createElement('script');
+      script.src = src;
+      script.async = false;
+      script.onload = resolve;
+      script.onerror = function(){ reject(new Error('Unable to load ' + src)); };
+      document.head.appendChild(script);
+    });
+  }
+
   function createClient(){
-    if(!hasSupabaseFactory()){
-      console.warn('[GEES Supabase] Supabase JS library is unavailable. Demo fallback will stay active.');
-      return null;
-    }
+    if(!hasSupabaseFactory()) return null;
     if(!CONFIG.url || !CONFIG.publishableKey){
       console.warn('[GEES Supabase] Missing project URL or publishable key. Demo fallback will stay active.');
       return null;
@@ -90,15 +104,40 @@
           storage: SAFE_STORAGE
         },
         global: {
-          headers: { 'x-gees-client': 'portal-phase-11c' }
+          headers: { 'x-gees-client': 'portal-phase-11i' }
         }
       });
     }catch(error){
-      console.error('[GEES Supabase] Failed to create client. Demo fallback will stay active.', error);
+      console.error('[GEES Supabase] Failed to create client.', error);
       return null;
     }
   }
 
+  async function ensureClient(){
+    if(window.GEESSupabase) return window.GEESSupabase;
+    if(hasSupabaseFactory()){
+      window.GEESSupabase = createClient();
+      return window.GEESSupabase;
+    }
+    if(!loaderPromise){
+      loaderPromise = (async function(){
+        for(var i = 0; i < SOURCES.length; i += 1){
+          try{
+            await loadScript(SOURCES[i]);
+            if(hasSupabaseFactory()) break;
+          }catch(error){
+            console.warn('[GEES Supabase] CDN fallback failed:', SOURCES[i], error);
+          }
+        }
+        window.GEESSupabase = createClient();
+        return window.GEESSupabase;
+      })();
+    }
+    return loaderPromise;
+  }
+
   window.GEESSupabaseConfig = CONFIG;
   window.GEESSupabase = createClient();
+  window.GEESWaitForSupabaseClient = ensureClient;
+  if(!window.GEESSupabase) ensureClient();
 })();
