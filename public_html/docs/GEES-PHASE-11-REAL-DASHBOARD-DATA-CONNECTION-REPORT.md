@@ -2,7 +2,7 @@
 
 ## Status
 
-Phase 11 connects the main GEES portal dashboards to live Supabase tables while keeping demo accounts safe in demo/static mode.
+Phase 11 connects the main GEES portal dashboards and staff team dashboards to live Supabase tables while keeping demo accounts safe in demo/static mode.
 
 ## What changed
 
@@ -18,6 +18,10 @@ The live adapter waits for the portal session, verifies that the user is a real 
 - `public_html/portal/student/dashboard.html`
 - `public_html/portal/agent/dashboard.html`
 - `public_html/portal/staff/dashboard.html`
+- `public_html/portal/staff/ekhlas/dashboard.html`
+- `public_html/portal/staff/maanisha/dashboard.html`
+- `public_html/portal/staff/rafshan/dashboard.html`
+- `public_html/portal/staff/seo/dashboard.html`
 - `public_html/portal/admin/dashboard.html`
 - `public_html/portal/super-admin/dashboard.html`
 
@@ -43,7 +47,7 @@ The live adapter waits for the portal session, verifies that the user is a real 
 
 1. Login as real student and check dashboard counts.
 2. Login as real agent and check referred student/application counts.
-3. Login as real staff and check assigned work counts.
+3. Login as real staff and check assigned work counts on the correct team dashboard.
 4. Login as real admin and check approvals/user/application counts.
 5. Login as real super admin and check system-wide stats.
 6. Login with demo accounts and confirm they stay in demo mode.
