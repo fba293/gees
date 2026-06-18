@@ -1,0 +1,7 @@
+Step,Expected,Status
+Student test,Dashboard loads live data,Manual
+Agent test,Dashboard loads live data,Manual
+Staff test,Dashboard loads live data,Manual
+Admin test,Dashboard loads live data,Manual
+Super admin test,Dashboard loads live data,Manual
+Demo mode,Demo sessions stay static,Ready
