@@ -1,0 +1,11 @@
+Test Area,Expected Result,Status
+Student real login,Dashboard shows live Supabase connection panel,Manual test required
+Student stats,Applications/documents/notifications counts load from RLS-filtered data,Manual test required
+Agent real login,Dashboard shows live Supabase connection panel,Manual test required
+Agent stats,Students/applications/commissions/support tickets load from RLS-filtered data,Manual test required
+Staff real login,Dashboard shows assigned applications/documents/support/notifications,Manual test required
+Admin real login,Dashboard shows applications/users/pending approvals/audit logs,Manual test required
+Super admin real login,Dashboard shows system-wide metrics,Manual test required
+Demo logins,Dashboard stays in demo/static mode and does not call live data as real session,Ready
+Empty tables,Dashboard shows clean empty state,Ready
+RLS errors,Dashboard shows connection warning instead of broken UI,Ready
