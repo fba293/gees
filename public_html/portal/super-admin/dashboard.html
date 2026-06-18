@@ -8,27 +8,36 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="/portal/shared/css/portal.css?v=10.3.0">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=11.0.0">
+<link rel="stylesheet" href="/portal/shared/css/portal-live-data.css?v=11.0.0">
 </head>
-<body class="gees-portal-page">
-<script>window.GEES_PORTAL_PAGE={"title": "Super Admin Dashboard", "requiredRoles": ["admin", "super_admin"], "requiredPermission": "super.dashboard"};</script>
+<body class="gees-portal-page gees-live-dashboard-page" data-live-dashboard="true">
+<script>window.GEES_PORTAL_PAGE={"title":"Super Admin Dashboard","requiredRoles":["super_admin"],"requiredPermission":"super.dashboard"};</script>
 <div class="gees-portal-shell">
   <aside class="gees-portal-sidebar" data-portal-sidebar></aside>
   <div class="gees-portal-main">
     <header class="gees-portal-topbar" data-portal-topbar></header>
     <main class="gees-portal-content">
-      <section class="gees-page-hero"><div><span class="gees-kicker">Executive Control</span><h1>Super Admin Dashboard</h1><p>System-wide control center for approvals, audit logs, AI SEO, user roles, and university wiki.</p></div><div class="gees-hero-tools"><button class="gees-btn gees-btn-outline" data-demo-action="Demo Notification"><i class="fa-solid fa-bell"></i> Demo Notify</button><button class="gees-btn gees-btn-primary" data-demo-action="Quick Save"><i class="fa-solid fa-check"></i> Quick Save</button></div></section><section class="gees-stats-grid"><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-heart-pulse"></i></div><div><strong>98%</strong><span>Platform Health</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-check-double"></i></div><div><strong>12</strong><span>Pending Approvals</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-clipboard-list"></i></div><div><strong>248</strong><span>Audit Events</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-robot"></i></div><div><strong>91</strong><span>AI SEO Score</span></div></article></section><section class="gees-action-grid"><a class="gees-action-card" href="/portal/super-admin/approvals.html"><i class="fa-solid fa-check-double"></i><strong>Approvals</strong><span>Review sensitive actions.</span></a><a class="gees-action-card" href="/portal/super-admin/audit-logs.html"><i class="fa-solid fa-clipboard-list"></i><strong>Audit Logs</strong><span>Monitor role and system events.</span></a><a class="gees-action-card" href="/portal/super-admin/ai-seo-dashboard.html"><i class="fa-solid fa-robot"></i><strong>AI SEO</strong><span>Open AI SEO control center.</span></a></section><section class="gees-panel"><div class="gees-panel-head"><h2>Demo records</h2><button class="gees-btn gees-btn-outline" data-demo-action="Refresh Records"><i class="fa-solid fa-rotate"></i> Refresh</button></div><div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Name</th><th>Status</th><th>Note</th></tr></thead><tbody><tr><td>Role change request</td><td><span class="gees-badge">Pending approval</span></td><td>Requested by Admin</td></tr><tr><td>University data update</td><td><span class="gees-badge">Approved</span></td><td>Logged today</td></tr><tr><td>SEO content batch</td><td><span class="gees-badge">Generated</span></td><td>Needs review</td></tr></tbody></table></div></section><section class="gees-panel gees-demo-panel"><div class="gees-panel-head"><h2>Demo backend status</h2><span class="gees-badge">Backend-ready</span></div><p>This page uses the shared demo backend, role guard, shell, sidebar, toast actions, and session system. Later you can replace the demo adapter with a real backend without rebuilding the page structure.</p></section>
+      <section class="gees-page-hero">
+        <div><span class="gees-kicker">Executive Control</span><h1>Super Admin Dashboard</h1><p>System-wide control center for live approvals, audit logs, users, applications, universities, and courses.</p></div>
+        <div class="gees-hero-tools"><button class="gees-btn gees-btn-outline" data-gees-live-refresh><i class="fa-solid fa-rotate"></i> Refresh Live Data</button></div>
+      </section>
+      <section class="gees-stats-grid"><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-users-gear"></i></div><div><strong>Live</strong><span>Portal Users</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-file-signature"></i></div><div><strong>Live</strong><span>Applications</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-user-clock"></i></div><div><strong>Live</strong><span>Pending Approvals</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-shield-halved"></i></div><div><strong>Live</strong><span>Audit Events</span></div></article></section>
+      <section class="gees-action-grid"><a class="gees-action-card" href="/portal/super-admin/approvals.html"><i class="fa-solid fa-check-double"></i><strong>Approvals</strong><span>Review sensitive actions.</span></a><a class="gees-action-card" href="/portal/super-admin/audit-logs.html"><i class="fa-solid fa-clipboard-list"></i><strong>Audit Logs</strong><span>Monitor role and system events.</span></a><a class="gees-action-card" href="/portal/super-admin/ai-seo-dashboard.html"><i class="fa-solid fa-robot"></i><strong>AI SEO</strong><span>Open AI SEO control center.</span></a></section>
+      <section class="gees-panel"><div class="gees-panel-head"><h2>Live Supabase records</h2><span class="gees-badge">Live-ready</span></div><div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Name</th><th>Status</th><th>Note</th></tr></thead><tbody><tr><td>Waiting for live data</td><td><span class="gees-badge">Connecting</span></td><td>The Phase 11 live adapter will replace this table after Supabase session validation.</td></tr></tbody></table></div></section>
+      <section class="gees-panel gees-demo-panel"><div class="gees-panel-head"><h2>Phase 11 connection</h2><span class="gees-badge">Supabase</span></div><p>This dashboard now loads live Supabase counts and recent records when a real GEES user is logged in. Demo accounts continue to use demo/static mode.</p></section>
     </main>
   </div>
 </div>
 <div class="gees-portal-overlay" data-portal-overlay></div>
 <div class="gees-toast-root" id="gees-toast-root"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/portal/shared/js/supabase-client.js?v=10.3.0"></script>
-<script src="/portal/shared/js/demo-backend.js?v=10.3.0"></script>
-<script src="/portal/shared/js/auth-service.js?v=10.3.0"></script>
-<script src="/portal/shared/js/role-guard.js?v=10.3.0"></script>
-<script src="/portal/shared/js/portal-shell.js?v=10.3.0"></script>
-<script src="/portal/shared/js/portal-ui.js?v=10.3.0"></script>
+<script src="/portal/shared/js/supabase-client.js?v=11.0.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=11.0.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=11.0.0"></script>
+<script src="/portal/shared/js/role-guard.js?v=11.0.0"></script>
+<script src="/portal/shared/js/portal-shell.js?v=11.0.0"></script>
+<script src="/portal/shared/js/portal-ui.js?v=11.0.0"></script>
+<script src="/portal/shared/js/portal-live-data.js?v=11.0.0"></script>
 </body>
 </html>
