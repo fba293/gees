@@ -1,0 +1,11 @@
+demo_source,supabase_target,migration_phase,notes
+portal/shared/data/demo-users.json,auth.users + public.profiles,10A/10B,Supabase Auth controls password; profiles stores role and status
+demo-students.json,public.students,10C,Student profile and preferences
+demo-agents.json,public.agents,10C,Agent company details and approval status
+demo-applications.json,public.applications + public.application_status_history,10C,Student application workflow
+demo-documents.json,public.documents + storage.student-documents,10C,"Metadata in table, file in storage"
+demo-commissions.json,public.commissions,10E,Agent commission system
+demo-approvals.json,public.approvals,10D,Admin queue
+demo-audit-logs.json,public.audit_logs,10D,Admin/system actions
+Phase 8 notifications,public.notifications,10D,User-level notifications
+Portal chat demo,public.chat_threads + public.chat_messages,10E,Future realtime chat

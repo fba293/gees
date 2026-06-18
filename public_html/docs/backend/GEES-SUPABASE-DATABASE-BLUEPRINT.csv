@@ -1,0 +1,20 @@
+table,purpose,primary_key,owner,phase,rls
+profiles,"One row per auth user; stores role, status, name, contact and avatar",id uuid references auth.users(id),user,10B,Owner can read own row; admins can manage all
+role_permissions,Permission catalogue by role,id uuid,admin,10B,Authenticated users can read; super admin can manage
+students,Student-specific profile and study preferences,id uuid,student,10C,Student owns own row; assigned agent/staff/admin can read
+agents,Agent company/profile data and approval status,id uuid,agent,10C,Agent owns own row; admin approves/manages
+staff_profiles,"Staff team, department, title and permissions",id uuid,staff/admin,10C,Staff reads own; admin manages
+universities,University catalogue used by portal and public site,id uuid,admin,10D,Public read optional; admin manage
+courses,Course catalogue linked to universities,id uuid,admin,10D,Public read optional; admin manage
+applications,Student applications and workflow status,id uuid,student/agent/staff,10C,Student owns; assigned agent/staff/admin can access
+application_status_history,Timeline of application status changes,id uuid,staff/admin,10C,Visible to related student/agent/staff/admin
+documents,Document metadata for uploaded files,id uuid,student/staff,10C,Student owns; assigned reviewers can access
+commissions,Agent commission tracking,id uuid,agent/admin,10E,Agent sees own; admin manages
+payments,"Student payments, receipts, due dates",id uuid,student/admin,10E,Student sees own; admin manages
+agreements,Agreement signing and PDF metadata,id uuid,student/agent/admin,10E,Related user sees own; admin manages
+approvals,Admin/super admin approval queue,id uuid,admin,10D,Admin and super admin only
+notifications,User notifications,id uuid,recipient,10D,Recipient sees own; admins can create
+audit_logs,Security and admin action logs,id uuid,system/admin,10D,Admin/super admin read; system writes
+support_tickets,Support requests from students/agents/staff,id uuid,user/support,10E,Owner and support/admin can access
+chat_threads,Portal chat thread metadata,id uuid,participants,10E,Participants only
+chat_messages,Portal chat messages,id uuid,participants,10E,Participants only

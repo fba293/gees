@@ -1,0 +1,9 @@
+Current Demo File,Future Firestore Collection,Migration Action,Notes
+demo-users.json,users,Seed auth-linked user profiles after creating Firebase Auth users,uid must match Firebase Auth UID
+demo-students.json,students,Seed student CRM profiles,Map assignedAgentId and assignedStaffId
+demo-applications.json,applications,Seed application pipeline data,Use generated applicationId
+demo-documents.json,documents,Seed metadata only,Actual files uploaded to Storage separately
+demo-commissions.json,commissions,Seed agent payout examples,Use actual currency fields
+demo-approvals.json,approvals,Seed pending approval queue,Sensitive status changes via Functions
+demo-audit-logs.json,audit_logs,Seed non-sensitive sample logs only,Production logs should be append-only
+demo-notifications.json,notifications,Seed user notifications,recipientUid should match users
