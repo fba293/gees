@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Applications | GEES Portal</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=12.2.0">
+<link rel="stylesheet" href="/portal/shared/css/portal-crud.css?v=12.2.0">
+</head>
+<body class="gees-portal-page">
+<script>window.GEES_PORTAL_PAGE={"title":"Applications","requiredRoles":["admin","super_admin"],"requiredPermission":"admin.crm"};</script>
+<div class="gees-portal-shell">
+  <aside class="gees-portal-sidebar" data-portal-sidebar></aside>
+  <div class="gees-portal-main">
+    <header class="gees-portal-topbar" data-portal-topbar></header>
+    <main class="gees-portal-content">
+      <section class="gees-page-hero">
+        <div><span class="gees-kicker">Phase 12C · Application Management</span><h1>Applications</h1><p>Review and update live student applications from Supabase.</p></div>
+        <div class="gees-hero-tools"><a class="gees-btn gees-btn-outline" href="/portal/admin/catalogue.html"><i class="fa-solid fa-building-columns"></i> Catalogue</a></div>
+      </section>
+      <section class="gees-stats-grid">
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-file-signature"></i></div><div><strong data-stat="applications">0</strong><span>Total applications</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-paper-plane"></i></div><div><strong data-stat="submitted">0</strong><span>Submitted</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div><div><strong data-stat="review">0</strong><span>Review queue</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-shield-halved"></i></div><div><strong>Admin</strong><span>RLS protected</span></div></article>
+      </section>
+      <div data-crud-page="admin-applications">
+        <section class="gees-panel gees-crud-panel">
+          <div class="gees-panel-head"><div><h2>Live applications</h2><p>Change status for any student application. Use admin student assignment page for agent/staff assignment.</p></div><span class="gees-crud-status" data-crud-status="applications"></span></div>
+          <div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Application</th><th>University / Course</th><th>Status</th><th>Update</th></tr></thead><tbody data-crud-table="applications"><tr><td colspan="4">Loading applications...</td></tr></tbody></table></div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="gees-portal-overlay" data-portal-overlay></div><div class="gees-toast-root" id="gees-toast-root"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2';"></script>
+<script src="/portal/shared/js/supabase-client.js?v=12.2.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=12.2.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=12.2.0"></script>
+<script src="/portal/shared/js/supabase-ready-bridge.js?v=12.2.0"></script>
+<script src="/portal/shared/js/role-guard.js?v=12.2.0"></script>
+<script src="/portal/shared/js/portal-shell.js?v=12.2.0"></script>
+<script src="/portal/shared/js/portal-ui.js?v=12.2.0"></script>
+<script src="/portal/shared/js/gees-applications.js?v=12.2.0"></script>
+</body>
+</html>
