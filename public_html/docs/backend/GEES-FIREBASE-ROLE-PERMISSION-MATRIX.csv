@@ -1,0 +1,10 @@
+Role/Segment,Allowed Portal Area,Permissions,Restrictions
+student,/portal/student/*,"student:read_self, student:update_self, applications:read_own, documents:upload_own, notifications:read_own",Cannot access agent/staff/admin data
+agent,/portal/agent/*,"agent:read_self, students:read_assigned, applications:read_assigned, commissions:read_own, support:create",Cannot access unassigned students or admin-only pages
+staff,/portal/staff/*,"staff:read_self, students:read_assigned, applications:update_assigned, documents:review_assigned, tasks:read_team",Staff team pages require teamId
+admin,/portal/admin/*,"users:read, students:manage, applications:manage, documents:manage, reports:read, approvals:manage, notifications:manage",Cannot change super_admin role or security settings
+super_admin,/portal/super-admin/* + all portal routes,*,Full portal access; must be limited to trusted owners only
+staff_ekhlas,/portal/staff/ekhlas/*,"team:ekhlas, outreach:manage, training:read, community:audit",Requires role=staff and teamId=ekhlas
+staff_maanisha,/portal/staff/maanisha/*,"team:maanisha, benchmarks:read, revenue:read, university_vault:manage",Requires role=staff and teamId=maanisha
+staff_rafshan,/portal/staff/rafshan/*,"team:rafshan, content:manage, reels:manage, calendar:manage",Requires role=staff and teamId=rafshan
+staff_seo,/portal/staff/seo/*,"seo:read, seo:update",Requires role=staff and permission seo:read

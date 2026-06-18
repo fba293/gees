@@ -1,0 +1,597 @@
+{
+  "project": "GEES Firebase Backend Blueprint",
+  "generated": "2026-06-18 01:15 UTC",
+  "recommendedBackend": "Firebase Authentication + Cloud Firestore + Cloud Storage + Cloud Functions",
+  "collections": {
+    "users": {
+      "documentId": "uid",
+      "purpose": "Auth profile + GEES role",
+      "coreFields": [
+        "uid",
+        "email",
+        "displayName",
+        "role",
+        "status",
+        "teamId",
+        "permissions",
+        "photoURL",
+        "lastLoginAt",
+        "createdAt",
+        "updatedAt"
+      ],
+      "relations": "Firebase Auth UID",
+      "rolesInvolved": "student/agent/staff/admin/super_admin",
+      "accessSummary": "All authenticated users read own; admins read/manage"
+    },
+    "students": {
+      "documentId": "studentId",
+      "purpose": "Student CRM profile",
+      "coreFields": [
+        "uid",
+        "fullName",
+        "email",
+        "phone",
+        "country",
+        "targetCountry",
+        "level",
+        "intake",
+        "assignedAgentId",
+        "assignedStaffId",
+        "status",
+        "createdAt"
+      ],
+      "relations": "users.uid",
+      "rolesInvolved": "student/admin/assigned agent/staff",
+      "accessSummary": "Student owns self; agent/staff assigned; admin full"
+    },
+    "agents": {
+      "documentId": "agentId",
+      "purpose": "Agent/company profile",
+      "coreFields": [
+        "uid",
+        "type",
+        "companyName",
+        "contactName",
+        "email",
+        "phone",
+        "country",
+        "status",
+        "approvedAt",
+        "approvedBy",
+        "createdAt"
+      ],
+      "relations": "users.uid",
+      "rolesInvolved": "agent/admin/super_admin",
+      "accessSummary": "Agent owns self; admin approves"
+    },
+    "staff_profiles": {
+      "documentId": "staffId",
+      "purpose": "Staff employee profile",
+      "coreFields": [
+        "uid",
+        "teamId",
+        "position",
+        "permissions",
+        "status",
+        "managerId",
+        "createdAt"
+      ],
+      "relations": "users.uid",
+      "rolesInvolved": "staff/admin/super_admin",
+      "accessSummary": "Staff owns limited; admin manages"
+    },
+    "applications": {
+      "documentId": "applicationId",
+      "purpose": "Student application pipeline",
+      "coreFields": [
+        "studentId",
+        "agentId",
+        "staffId",
+        "country",
+        "universityId",
+        "courseId",
+        "intake",
+        "status",
+        "progress",
+        "timeline",
+        "createdAt",
+        "updatedAt"
+      ],
+      "relations": "students.studentId",
+      "rolesInvolved": "student/assigned agent/staff/admin",
+      "accessSummary": "Owner/assigned/admin access"
+    },
+    "documents": {
+      "documentId": "documentId",
+      "purpose": "Document metadata",
+      "coreFields": [
+        "studentId",
+        "applicationId",
+        "type",
+        "fileName",
+        "storagePath",
+        "mimeType",
+        "size",
+        "status",
+        "uploadedBy",
+        "reviewedBy",
+        "createdAt"
+      ],
+      "relations": "applications.applicationId",
+      "rolesInvolved": "student/assigned/admin",
+      "accessSummary": "Metadata only; file in Storage"
+    },
+    "commissions": {
+      "documentId": "commissionId",
+      "purpose": "Agent commission records",
+      "coreFields": [
+        "agentId",
+        "studentId",
+        "applicationId",
+        "amount",
+        "currency",
+        "status",
+        "dueDate",
+        "paidAt",
+        "createdAt"
+      ],
+      "relations": "agents.agentId",
+      "rolesInvolved": "agent/admin",
+      "accessSummary": "Agent sees own; admin manages"
+    },
+    "approvals": {
+      "documentId": "approvalId",
+      "purpose": "Pending approvals workflow",
+      "coreFields": [
+        "type",
+        "entityId",
+        "requestedBy",
+        "status",
+        "reviewedBy",
+        "decisionNote",
+        "createdAt",
+        "updatedAt"
+      ],
+      "relations": "agents/users/documents/etc",
+      "rolesInvolved": "admin/super_admin",
+      "accessSummary": "Admin manages; related user can see status"
+    },
+    "audit_logs": {
+      "documentId": "logId",
+      "purpose": "Immutable security/action log",
+      "coreFields": [
+        "actorUid",
+        "actorRole",
+        "action",
+        "entityType",
+        "entityId",
+        "ip",
+        "userAgent",
+        "createdAt",
+        "metadata"
+      ],
+      "relations": "users.uid",
+      "rolesInvolved": "admin/super_admin",
+      "accessSummary": "Append by Cloud Functions only"
+    },
+    "notifications": {
+      "documentId": "notificationId",
+      "purpose": "In-app notifications",
+      "coreFields": [
+        "recipientUid",
+        "roleScope",
+        "title",
+        "message",
+        "type",
+        "readAt",
+        "actionUrl",
+        "createdAt"
+      ],
+      "relations": "users.uid",
+      "rolesInvolved": "all roles",
+      "accessSummary": "Users read own; Functions/admin create"
+    },
+    "support_tickets": {
+      "documentId": "ticketId",
+      "purpose": "Support requests",
+      "coreFields": [
+        "createdByUid",
+        "role",
+        "subject",
+        "status",
+        "priority",
+        "assignedTo",
+        "messages",
+        "lastReplyAt",
+        "createdAt"
+      ],
+      "relations": "users.uid",
+      "rolesInvolved": "student/agent/staff/admin",
+      "accessSummary": "Creator + assigned staff/admin"
+    },
+    "chat_threads": {
+      "documentId": "threadId",
+      "purpose": "Portal chat thread",
+      "coreFields": [
+        "participants",
+        "type",
+        "status",
+        "lastMessageAt",
+        "createdAt"
+      ],
+      "relations": "users.uid",
+      "rolesInvolved": "participants/admin",
+      "accessSummary": "Participants only"
+    },
+    "chat_messages": {
+      "documentId": "messageId",
+      "purpose": "Portal chat messages",
+      "coreFields": [
+        "threadId",
+        "senderUid",
+        "message",
+        "attachments",
+        "createdAt",
+        "readBy"
+      ],
+      "relations": "chat_threads.threadId",
+      "rolesInvolved": "participants/admin",
+      "accessSummary": "Participants only"
+    },
+    "universities": {
+      "documentId": "universityId",
+      "purpose": "University master data",
+      "coreFields": [
+        "name",
+        "country",
+        "city",
+        "logo",
+        "ranking",
+        "partnerStatus",
+        "status",
+        "createdAt"
+      ],
+      "relations": "none",
+      "rolesInvolved": "public/admin/staff",
+      "accessSummary": "Public read approved; admin/staff manage"
+    },
+    "courses": {
+      "documentId": "courseId",
+      "purpose": "Course/program master data",
+      "coreFields": [
+        "universityId",
+        "title",
+        "level",
+        "field",
+        "country",
+        "duration",
+        "fees",
+        "intakes",
+        "status",
+        "createdAt"
+      ],
+      "relations": "universities.universityId",
+      "rolesInvolved": "public/admin/staff",
+      "accessSummary": "Public read approved; admin/staff manage"
+    },
+    "payments": {
+      "documentId": "paymentId",
+      "purpose": "Payment/receipt tracking",
+      "coreFields": [
+        "studentId",
+        "applicationId",
+        "amount",
+        "currency",
+        "method",
+        "status",
+        "receiptPath",
+        "createdAt"
+      ],
+      "relations": "students.studentId",
+      "rolesInvolved": "student/admin",
+      "accessSummary": "Student own; admin manages"
+    },
+    "agreements": {
+      "documentId": "agreementId",
+      "purpose": "Agreement signing records",
+      "coreFields": [
+        "studentId",
+        "agentId",
+        "type",
+        "status",
+        "filePath",
+        "signedAt",
+        "createdAt"
+      ],
+      "relations": "students/agents",
+      "rolesInvolved": "student/agent/admin",
+      "accessSummary": "Related user + admin"
+    }
+  },
+  "roles": {
+    "student": {
+      "allowedPortalArea": "/portal/student/*",
+      "permissions": [
+        "student:read_self",
+        "student:update_self",
+        "applications:read_own",
+        "documents:upload_own",
+        "notifications:read_own"
+      ],
+      "restrictions": "Cannot access agent/staff/admin data"
+    },
+    "agent": {
+      "allowedPortalArea": "/portal/agent/*",
+      "permissions": [
+        "agent:read_self",
+        "students:read_assigned",
+        "applications:read_assigned",
+        "commissions:read_own",
+        "support:create"
+      ],
+      "restrictions": "Cannot access unassigned students or admin-only pages"
+    },
+    "staff": {
+      "allowedPortalArea": "/portal/staff/*",
+      "permissions": [
+        "staff:read_self",
+        "students:read_assigned",
+        "applications:update_assigned",
+        "documents:review_assigned",
+        "tasks:read_team"
+      ],
+      "restrictions": "Staff team pages require teamId"
+    },
+    "admin": {
+      "allowedPortalArea": "/portal/admin/*",
+      "permissions": [
+        "users:read",
+        "students:manage",
+        "applications:manage",
+        "documents:manage",
+        "reports:read",
+        "approvals:manage",
+        "notifications:manage"
+      ],
+      "restrictions": "Cannot change super_admin role or security settings"
+    },
+    "super_admin": {
+      "allowedPortalArea": "/portal/super-admin/* + all portal routes",
+      "permissions": [
+        "*"
+      ],
+      "restrictions": "Full portal access; must be limited to trusted owners only"
+    },
+    "staff_ekhlas": {
+      "allowedPortalArea": "/portal/staff/ekhlas/*",
+      "permissions": [
+        "team:ekhlas",
+        "outreach:manage",
+        "training:read",
+        "community:audit"
+      ],
+      "restrictions": "Requires role=staff and teamId=ekhlas"
+    },
+    "staff_maanisha": {
+      "allowedPortalArea": "/portal/staff/maanisha/*",
+      "permissions": [
+        "team:maanisha",
+        "benchmarks:read",
+        "revenue:read",
+        "university_vault:manage"
+      ],
+      "restrictions": "Requires role=staff and teamId=maanisha"
+    },
+    "staff_rafshan": {
+      "allowedPortalArea": "/portal/staff/rafshan/*",
+      "permissions": [
+        "team:rafshan",
+        "content:manage",
+        "reels:manage",
+        "calendar:manage"
+      ],
+      "restrictions": "Requires role=staff and teamId=rafshan"
+    },
+    "staff_seo": {
+      "allowedPortalArea": "/portal/staff/seo/*",
+      "permissions": [
+        "seo:read",
+        "seo:update"
+      ],
+      "restrictions": "Requires role=staff and permission seo:read"
+    }
+  },
+  "storagePaths": [
+    {
+      "pathPattern": "student-documents/{studentId}/{documentId}/{fileName}",
+      "purpose": "Student uploads documents",
+      "allowedTypes": [
+        "PDF",
+        "JPG",
+        "JPEG",
+        "PNG"
+      ],
+      "sizeLimit": "5 MB",
+      "accessSummary": "Student owner, assigned staff/admin"
+    },
+    {
+      "pathPattern": "agent-documents/{agentId}/{documentId}/{fileName}",
+      "purpose": "Agent company docs/trade license",
+      "allowedTypes": [
+        "PDF",
+        "JPG",
+        "JPEG",
+        "PNG"
+      ],
+      "sizeLimit": "5 MB",
+      "accessSummary": "Agent owner, admin/super_admin"
+    },
+    {
+      "pathPattern": "agreements/{agreementId}/{fileName}",
+      "purpose": "Signed agreements",
+      "allowedTypes": [
+        "PDF",
+        "JPG",
+        "JPEG",
+        "PNG"
+      ],
+      "sizeLimit": "10 MB",
+      "accessSummary": "Related parties + admin"
+    },
+    {
+      "pathPattern": "receipts/{paymentId}/{fileName}",
+      "purpose": "Payment receipts",
+      "allowedTypes": [
+        "PDF",
+        "JPG",
+        "JPEG",
+        "PNG"
+      ],
+      "sizeLimit": "5 MB",
+      "accessSummary": "Student owner + admin"
+    },
+    {
+      "pathPattern": "profile-photos/{uid}/{fileName}",
+      "purpose": "Optional user profile photos",
+      "allowedTypes": [
+        "JPG",
+        "JPEG",
+        "PNG",
+        "WEBP"
+      ],
+      "sizeLimit": "2 MB",
+      "accessSummary": "Owner + admin"
+    },
+    {
+      "pathPattern": "university-assets/{universityId}/{fileName}",
+      "purpose": "University logos/materials",
+      "allowedTypes": [
+        "JPG",
+        "JPEG",
+        "PNG",
+        "WEBP",
+        "PDF"
+      ],
+      "sizeLimit": "10 MB",
+      "accessSummary": "Admin/staff manage, public read only if approved"
+    }
+  ],
+  "cloudFunctions": [
+    {
+      "name": "authCreateUserProfile",
+      "trigger": "Authentication onCreate",
+      "purpose": "Create users/{uid} profile when account is created",
+      "touches": [
+        "users"
+      ]
+    },
+    {
+      "name": "setUserRole",
+      "trigger": "Callable HTTPS",
+      "purpose": "Super admin changes role/permissions safely",
+      "touches": [
+        "users",
+        "audit_logs"
+      ]
+    },
+    {
+      "name": "submitAgentSignup",
+      "trigger": "Callable HTTPS",
+      "purpose": "Create agent approval request",
+      "touches": [
+        "agents",
+        "approvals",
+        "notifications",
+        "audit_logs"
+      ]
+    },
+    {
+      "name": "approveAgent",
+      "trigger": "Callable HTTPS",
+      "purpose": "Approve/reject agent and activate account",
+      "touches": [
+        "agents",
+        "users",
+        "approvals",
+        "notifications",
+        "audit_logs"
+      ]
+    },
+    {
+      "name": "uploadDocumentFinalize",
+      "trigger": "Storage onFinalize",
+      "purpose": "Validate uploaded file and create/update metadata",
+      "touches": [
+        "documents",
+        "audit_logs",
+        "notifications"
+      ]
+    },
+    {
+      "name": "reviewDocument",
+      "trigger": "Callable HTTPS",
+      "purpose": "Approve/reject student document",
+      "touches": [
+        "documents",
+        "applications",
+        "notifications",
+        "audit_logs"
+      ]
+    },
+    {
+      "name": "updateApplicationStatus",
+      "trigger": "Callable HTTPS",
+      "purpose": "Move application pipeline status",
+      "touches": [
+        "applications",
+        "notifications",
+        "audit_logs"
+      ]
+    },
+    {
+      "name": "calculateCommission",
+      "trigger": "Firestore onWrite / Callable",
+      "purpose": "Calculate agent commission from paid/approved application",
+      "touches": [
+        "commissions",
+        "applications",
+        "audit_logs"
+      ]
+    },
+    {
+      "name": "sendNotification",
+      "trigger": "Callable/Firestore trigger",
+      "purpose": "Create notification for one or many users",
+      "touches": [
+        "notifications"
+      ]
+    },
+    {
+      "name": "createAuditLog",
+      "trigger": "Internal function",
+      "purpose": "Append trusted audit record",
+      "touches": [
+        "audit_logs"
+      ]
+    },
+    {
+      "name": "supportTicketReply",
+      "trigger": "Callable HTTPS",
+      "purpose": "Add ticket replies safely",
+      "touches": [
+        "support_tickets",
+        "notifications",
+        "audit_logs"
+      ]
+    },
+    {
+      "name": "adminReportSnapshot",
+      "trigger": "Scheduled Function",
+      "purpose": "Generate daily/weekly admin stats snapshots",
+      "touches": [
+        "reports",
+        "audit_logs"
+      ]
+    }
+  ]
+}
