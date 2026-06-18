@@ -1,0 +1,21 @@
+:root{
+  --gees-crud-soft: rgba(255,255,255,.78);
+}
+.gees-crud-panel{position:relative;overflow:hidden}
+.gees-crud-panel::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,#ffcc69,rgba(255,204,105,.1));pointer-events:none}
+.gees-crud-form{display:grid;gap:18px}
+.gees-crud-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.gees-crud-form label{display:grid;gap:8px;font-weight:800;color:var(--gees-text,#141927);font-size:.9rem}
+.gees-crud-form input,.gees-crud-form select,.gees-crud-form textarea{width:100%;border:1px solid rgba(20,25,39,.12);border-radius:16px;padding:13px 14px;background:rgba(255,255,255,.94);color:#141927;font:inherit;outline:none;transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+.gees-crud-form input:focus,.gees-crud-form select:focus,.gees-crud-form textarea:focus{border-color:#ffcc69;box-shadow:0 0 0 4px rgba(255,204,105,.22);transform:translateY(-1px)}
+.gees-crud-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.gees-crud-status{min-height:22px;font-weight:800;font-size:.92rem;color:#657085}
+.gees-crud-status[data-type="success"]{color:#138a54}.gees-crud-status[data-type="error"]{color:#c0392b}.gees-crud-status[data-type="loading"]{color:#916b00}
+.gees-live-only-note{padding:14px 16px;border-radius:18px;background:rgba(255,204,105,.16);border:1px solid rgba(255,204,105,.36);color:#4c3a00;font-weight:750}
+.gees-record-empty{padding:18px;border:1px dashed rgba(20,25,39,.18);border-radius:18px;background:rgba(255,255,255,.6);color:#657085;font-weight:750;text-align:center}
+.gees-table-subtext{display:block;color:#657085;font-size:.82rem;margin-top:4px}.gees-badge-muted{background:rgba(20,25,39,.08);color:#4d5568}
+html[data-theme="dark"] .gees-crud-form label{color:#f7f7fb}
+html[data-theme="dark"] .gees-crud-form input,html[data-theme="dark"] .gees-crud-form select,html[data-theme="dark"] .gees-crud-form textarea{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);color:#fff}
+html[data-theme="dark"] .gees-live-only-note{background:rgba(255,204,105,.12);border-color:rgba(255,204,105,.28);color:#ffe19b}
+html[data-theme="dark"] .gees-record-empty{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12);color:#b8c0d3}
+@media(max-width:720px){.gees-crud-form-grid{grid-template-columns:1fr}.gees-crud-actions{flex-direction:column;align-items:stretch}.gees-crud-actions .gees-btn{width:100%;justify-content:center}}
