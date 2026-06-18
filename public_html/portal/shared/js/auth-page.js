@@ -43,6 +43,9 @@
     }
     var raw = String((error && error.message) || error || '');
     var text = raw.toLowerCase();
+    if(text.indexOf('operation is insecure') !== -1 || text.indexOf('securityerror') !== -1){
+      return 'Browser storage is blocked for this page. Open GEES through http://localhost or the live domain, not a direct file path, and allow site storage/cookies.';
+    }
     if(text.indexOf('email rate limit') !== -1 || text.indexOf('rate limit exceeded') !== -1 || text.indexOf('too many requests') !== -1){
       return 'Supabase email rate limit reached. For GEES testing, go to Supabase Authentication → Providers → Email, keep Email provider ON, keep Allow new users ON, and turn Confirm email OFF temporarily. Then wait a few minutes and try again.';
     }
@@ -90,6 +93,7 @@
           setStatus(form, result.mode === 'demo' ? 'Demo login successful. Redirecting...' : 'Supabase login successful. Redirecting...', 'success');
           location.href = result.next;
         }catch(error){
+          console.error('[GEES Auth Page] Login failed.', error);
           setStatus(form, friendlyAuthMessage(error, 'login'), 'error');
         }finally{
           setBusy(form, false);
@@ -119,6 +123,7 @@
           setStatus(form, result.message || 'Signup submitted successfully.', 'success');
           form.reset();
         }catch(error){
+          console.error('[GEES Auth Page] Signup failed.', error);
           setStatus(form, friendlyAuthMessage(error, 'signup'), 'error');
         }finally{
           setBusy(form, false);
