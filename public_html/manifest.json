@@ -1,0 +1,44 @@
+{
+  "name": "Global Education Expert Services",
+  "short_name": "GEES",
+  "description": "GEES study abroad platform and secure role-based portal.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fff8ea",
+  "theme_color": "#ffcc69",
+  "icons": [
+    {
+      "src": "/assets/logos/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logos/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Student Login",
+      "short_name": "Student",
+      "url": "/portal/auth/student-login.html",
+      "description": "Open the GEES student portal."
+    },
+    {
+      "name": "Agent Login",
+      "short_name": "Agent",
+      "url": "/portal/auth/agent-login.html",
+      "description": "Open the GEES agent portal."
+    },
+    {
+      "name": "Admin Login",
+      "short_name": "Admin",
+      "url": "/portal/auth/admin-login.html",
+      "description": "Open the GEES admin portal."
+    }
+  ]
+}
