@@ -8,27 +8,58 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="/portal/shared/css/portal.css?v=10.3.0">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=12.0.0">
+<link rel="stylesheet" href="/portal/shared/css/portal-crud.css?v=12.0.0">
 </head>
 <body class="gees-portal-page">
-<script>window.GEES_PORTAL_PAGE={"title": "Document Vault", "requiredRoles": ["student"], "requiredPermission": "student.document-vault"};</script>
+<script>window.GEES_PORTAL_PAGE={"title":"Document Vault","requiredRoles":["student"],"requiredPermission":"student.document-vault"};</script>
 <div class="gees-portal-shell">
   <aside class="gees-portal-sidebar" data-portal-sidebar></aside>
   <div class="gees-portal-main">
     <header class="gees-portal-topbar" data-portal-topbar></header>
     <main class="gees-portal-content">
-      <section class="gees-page-hero"><div><span class="gees-kicker">Secure Uploads</span><h1>Document Vault</h1><p>Demo vault for passport, academic transcript, English test, financial proof, and signed forms.</p></div><div class="gees-hero-tools"><button class="gees-btn gees-btn-outline" data-demo-action="Demo Notification"><i class="fa-solid fa-bell"></i> Demo Notify</button><button class="gees-btn gees-btn-primary" data-demo-action="Quick Save"><i class="fa-solid fa-check"></i> Quick Save</button></div></section><section class="gees-stats-grid"><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-file-circle-check"></i></div><div><strong>7 files</strong><span>Uploaded</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-clock"></i></div><div><strong>3 files</strong><span>Pending</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-shield-check"></i></div><div><strong>5 files</strong><span>Verified</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-database"></i></div><div><strong>Demo</strong><span>Storage Mode</span></div></article></section><section class="gees-action-grid"><a class="gees-action-card" href="javascript:void(0)" data-demo-action="Upload Passport"><i class="fa-solid fa-passport"></i><strong>Upload Passport</strong><span>Accepted formats: PDF, JPG, PNG.</span></a><a class="gees-action-card" href="javascript:void(0)" data-demo-action="Upload Transcript"><i class="fa-solid fa-file-lines"></i><strong>Upload Transcript</strong><span>Mark academic documents as received.</span></a><a class="gees-action-card" href="javascript:void(0)" data-demo-action="Request Review"><i class="fa-solid fa-bell"></i><strong>Request Review</strong><span>Notify counselor in demo mode.</span></a></section><section class="gees-panel"><div class="gees-panel-head"><h2>Demo records</h2><button class="gees-btn gees-btn-outline" data-demo-action="Refresh Records"><i class="fa-solid fa-rotate"></i> Refresh</button></div><div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Name</th><th>Status</th><th>Note</th></tr></thead><tbody><tr><td>Passport copy</td><td><span class="gees-badge">Verified</span></td><td>Uploaded 2 days ago</td></tr><tr><td>Academic transcript</td><td><span class="gees-badge">In review</span></td><td>Counselor checking</td></tr><tr><td>Bank statement</td><td><span class="gees-badge">Pending</span></td><td>Upload required</td></tr></tbody></table></div></section><section class="gees-panel gees-demo-panel"><div class="gees-panel-head"><h2>Demo backend status</h2><span class="gees-badge">Backend-ready</span></div><p>This page uses the shared demo backend, role guard, shell, sidebar, toast actions, and session system. Later you can replace the demo adapter with a real backend without rebuilding the page structure.</p></section>
+      <section class="gees-page-hero">
+        <div><span class="gees-kicker">Phase 12A · Real CRUD</span><h1>Document Vault</h1><p>Create real document records in Supabase. Storage upload will be added after record CRUD is stable.</p></div>
+        <div class="gees-hero-tools"><a class="gees-btn gees-btn-outline" href="/portal/student/application.html"><i class="fa-solid fa-file-signature"></i> Applications</a></div>
+      </section>
+      <section class="gees-stats-grid">
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-folder-open"></i></div><div><strong data-stat="documents">0</strong><span>Document records</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-file-circle-check"></i></div><div><strong>Uploaded</strong><span>Record status</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-database"></i></div><div><strong>Supabase</strong><span>Live table</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-shield-halved"></i></div><div><strong>RLS</strong><span>Student protected</span></div></article>
+      </section>
+
+      <div data-crud-page="student-documents">
+        <section class="gees-panel gees-crud-panel">
+          <div class="gees-panel-head"><div><h2>Add document record</h2><p>This saves document metadata now. Real file storage can be connected next.</p></div></div>
+          <form class="gees-crud-form" data-crud-form="document">
+            <div class="gees-crud-form-grid">
+              <label>Document Type<select name="document_type"><option>Passport</option><option>Academic Transcript</option><option>English Test</option><option>Bank Statement</option><option>Offer Letter</option><option>Other</option></select></label>
+              <label>File Name<input name="file_name" placeholder="passport-copy.pdf"></label>
+              <label>Link to Application<select name="application_id"></select></label>
+              <label>Storage Status<input value="Record only · storage next phase" readonly></label>
+            </div>
+            <div class="gees-crud-actions">
+              <button class="gees-btn gees-btn-primary" type="submit"><i class="fa-solid fa-plus"></i> Save Document Record</button>
+              <span class="gees-crud-status" data-crud-status="document"></span>
+            </div>
+          </form>
+        </section>
+        <section class="gees-panel"><div class="gees-panel-head"><div><h2>Your document records</h2><p>Loaded from Supabase documents table.</p></div></div><div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Document</th><th>Status</th><th>Created</th></tr></thead><tbody data-crud-table="documents"><tr><td colspan="3">Loading live documents...</td></tr></tbody></table></div></section>
+      </div>
     </main>
   </div>
 </div>
 <div class="gees-portal-overlay" data-portal-overlay></div>
 <div class="gees-toast-root" id="gees-toast-root"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/portal/shared/js/supabase-client.js?v=10.3.0"></script>
-<script src="/portal/shared/js/demo-backend.js?v=10.3.0"></script>
-<script src="/portal/shared/js/auth-service.js?v=10.3.0"></script>
-<script src="/portal/shared/js/role-guard.js?v=10.3.0"></script>
-<script src="/portal/shared/js/portal-shell.js?v=10.3.0"></script>
-<script src="/portal/shared/js/portal-ui.js?v=10.3.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2';"></script>
+<script src="/portal/shared/js/supabase-client.js?v=12.0.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=12.0.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=12.0.0"></script>
+<script src="/portal/shared/js/supabase-ready-bridge.js?v=12.0.0"></script>
+<script src="/portal/shared/js/role-guard.js?v=12.0.0"></script>
+<script src="/portal/shared/js/portal-shell.js?v=12.0.0"></script>
+<script src="/portal/shared/js/portal-ui.js?v=12.0.0"></script>
+<script src="/portal/shared/js/portal-crud.js?v=12.0.0"></script>
 </body>
 </html>
