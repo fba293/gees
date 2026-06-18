@@ -1,9 +1,0 @@
-Stage,Task,Estimated Time,Success Output
-Phase 9A,Create Firebase project and Auth provider,1 day,Firebase console ready
-Phase 9B,Create Firestore collections and seed users,1-2 days,Super admin and test accounts working
-Phase 9C,Write Firestore security rules,1-2 days,Role checks enforced
-Phase 9D,Connect auth pages to Firebase Auth,1-2 days,"Login/logout real, role redirect real"
-Phase 9E,Connect dashboard read data to Firestore,2-4 days,Stats/tables load real data
-Phase 9F,Enable Storage for uploads with budget alert,1 day,Documents upload privately
-Phase 9G,Add Cloud Functions for approvals/audit logs,3-5 days,Sensitive workflows secure
-Phase 9H,QA and live pilot,2-3 days,Pilot-ready with limited users

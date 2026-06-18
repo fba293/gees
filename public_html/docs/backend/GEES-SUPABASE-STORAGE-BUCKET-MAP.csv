@@ -1,6 +1,0 @@
-bucket,path_pattern,allowed_roles,allowed_types,max_size_launch,phase,notes
-student-documents,student-documents/{student_id}/{document_id}/{filename},"student, assigned_staff, admin, super_admin","pdf,jpg,jpeg,png",5MB,10C,Private bucket; student owns uploads
-agreements,agreements/{agreement_id}/{filename},"student, agent, admin, super_admin",pdf,10MB,10E,Signed agreement PDFs
-receipts,receipts/{payment_id}/{filename},"student, admin, super_admin","pdf,jpg,jpeg,png",5MB,10E,Payment proofs and receipts
-profile-media,profile-media/{user_id}/{filename},"owner, admin, super_admin","jpg,jpeg,png,webp",2MB,10B,Avatars and company logos
-support-attachments,support-attachments/{ticket_id}/{filename},"ticket_owner, support_staff, admin, super_admin","pdf,jpg,jpeg,png",5MB,10E,Support ticket attachments

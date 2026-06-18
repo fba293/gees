@@ -1,7 +1,0 @@
-Storage Path Pattern,Purpose,Allowed File Types,Launch Size Limit,Access Rule Summary
-student-documents/{studentId}/{documentId}/{fileName},Student uploads documents,"PDF,JPG,JPEG,PNG",5 MB,"Student owner, assigned staff/admin"
-agent-documents/{agentId}/{documentId}/{fileName},Agent company docs/trade license,"PDF,JPG,JPEG,PNG",5 MB,"Agent owner, admin/super_admin"
-agreements/{agreementId}/{fileName},Signed agreements,"PDF,JPG,JPEG,PNG",10 MB,Related parties + admin
-receipts/{paymentId}/{fileName},Payment receipts,"PDF,JPG,JPEG,PNG",5 MB,Student owner + admin
-profile-photos/{uid}/{fileName},Optional user profile photos,"JPG,JPEG,PNG,WEBP",2 MB,Owner + admin
-university-assets/{universityId}/{fileName},University logos/materials,"JPG,JPEG,PNG,WEBP,PDF",10 MB,"Admin/staff manage, public read only if approved"

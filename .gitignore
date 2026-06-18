@@ -1,0 +1,22 @@
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+service-role*.json
+supabase-service-role*.txt
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Dependencies / build
+node_modules/
+dist/
+build/
+.cache/
+
+# Logs
+*.log
