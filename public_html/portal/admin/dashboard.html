@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Admin Dashboard | GEES Portal</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=10.3.0">
+</head>
+<body class="gees-portal-page">
+<script>window.GEES_PORTAL_PAGE={"title": "Admin Dashboard", "requiredRoles": ["admin", "super_admin"], "requiredPermission": "admin.dashboard"};</script>
+<div class="gees-portal-shell">
+  <aside class="gees-portal-sidebar" data-portal-sidebar></aside>
+  <div class="gees-portal-main">
+    <header class="gees-portal-topbar" data-portal-topbar></header>
+    <main class="gees-portal-content">
+      <section class="gees-page-hero"><div><span class="gees-kicker">Operations</span><h1>Admin Dashboard</h1><p>Manage applications, agent activity, CRM records, reporting, and agreement workflow.</p></div><div class="gees-hero-tools"><button class="gees-btn gees-btn-outline" data-demo-action="Demo Notification"><i class="fa-solid fa-bell"></i> Demo Notify</button><button class="gees-btn gees-btn-primary" data-demo-action="Quick Save"><i class="fa-solid fa-check"></i> Quick Save</button></div></section><section class="gees-stats-grid"><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-file-signature"></i></div><div><strong>318</strong><span>Applications</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-handshake"></i></div><div><strong>64</strong><span>Agents</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-hourglass-half"></i></div><div><strong>29</strong><span>Pending Reviews</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-chart-line"></i></div><div><strong>38%</strong><span>Conversion</span></div></article></section><section class="gees-action-grid"><a class="gees-action-card" href="/portal/admin/reports.html"><i class="fa-solid fa-file-lines"></i><strong>Reports</strong><span>Open analytics reports.</span></a><a class="gees-action-card" href="/portal/admin/crm-dashboard.html"><i class="fa-solid fa-diagram-project"></i><strong>CRM</strong><span>Manage student pipeline.</span></a><a class="gees-action-card" href="/portal/admin/agreement-management.html"><i class="fa-solid fa-file-signature"></i><strong>Agreements</strong><span>Generate and track agreements.</span></a></section><section class="gees-panel"><div class="gees-panel-head"><h2>Demo records</h2><button class="gees-btn gees-btn-outline" data-demo-action="Refresh Records"><i class="fa-solid fa-rotate"></i> Refresh</button></div><div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Name</th><th>Status</th><th>Note</th></tr></thead><tbody><tr><td>Admission team</td><td><span class="gees-badge">24 files pending</span></td><td>High priority</td></tr><tr><td>Visa team</td><td><span class="gees-badge">11 tasks due</span></td><td>Today</td></tr><tr><td>Finance team</td><td><span class="gees-badge">7 agreements waiting</span></td><td>This week</td></tr></tbody></table></div></section><section class="gees-panel gees-demo-panel"><div class="gees-panel-head"><h2>Demo backend status</h2><span class="gees-badge">Backend-ready</span></div><p>This page uses the shared demo backend, role guard, shell, sidebar, toast actions, and session system. Later you can replace the demo adapter with a real backend without rebuilding the page structure.</p></section>
+    </main>
+  </div>
+</div>
+<div class="gees-portal-overlay" data-portal-overlay></div>
+<div class="gees-toast-root" id="gees-toast-root"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/portal/shared/js/supabase-client.js?v=10.3.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=10.3.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=10.3.0"></script>
+<script src="/portal/shared/js/role-guard.js?v=10.3.0"></script>
+<script src="/portal/shared/js/portal-shell.js?v=10.3.0"></script>
+<script src="/portal/shared/js/portal-ui.js?v=10.3.0"></script>
+</body>
+</html>

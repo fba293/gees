@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Agent Signup | GEES</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=10.3.0">
+</head>
+<body class="gees-auth-page">
+<main class="gees-auth-card">
+  <span class="gees-kicker">GEES Supabase Signup</span>
+  <h1>Agent Signup</h1>
+  <p>This form creates a real Supabase Auth user. Student accounts can start immediately after confirmation; agent and staff accounts stay pending until admin approval.</p>
+  <form class="gees-auth-form" data-signup-role="agent">
+    <label>Full Name<input type="text" name="full_name" autocomplete="name" required></label>
+    <label>Email<input type="email" name="email" autocomplete="email" required></label>
+    <label>Phone<input type="tel" name="phone" autocomplete="tel"></label>
+    <label>Agency / Company Name<input type="text" name="agency_name" required></label>
+<label>Company Type<select name="company_type"><option>Individual Agent</option><option>Registered Company</option></select></label>
+<label>Country<input type="text" name="country" placeholder="Bangladesh, Malaysia..."></label>
+<label>City<input type="text" name="city"></label>
+    <label>Password<input type="password" name="password" autocomplete="new-password" minlength="8" required></label>
+    <label>Confirm Password<input type="password" name="confirm_password" autocomplete="new-password" minlength="8" required></label>
+    <button class="gees-btn gees-btn-primary" type="submit"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+    <div class="gees-auth-error" data-auth-status role="status"></div>
+  </form>
+  <p class="gees-auth-mini">Already registered? <a href="/portal/auth/agent-login.html">Go to login</a></p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/portal/shared/js/supabase-client.js?v=10.3.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=10.3.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=10.3.0"></script>
+<script src="/portal/shared/js/auth-page.js?v=10.3.0"></script>
+</body>
+</html>

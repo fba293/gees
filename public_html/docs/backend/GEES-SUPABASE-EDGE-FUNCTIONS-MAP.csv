@@ -1,0 +1,7 @@
+function,trigger,purpose,priority,phase,starter
+create-profile-after-signup,Auth signup webhook/manual call,Create profile row after signup if not created by client,medium,10B,Use client insert first; function later if needed
+approve-agent,Admin action,Approve/reject agent and write audit log/notification,high,10D,Can be Postgres function first
+update-application-status,Staff/admin action,"Update status, write timeline, notify student/agent",high,10C,Can be Postgres function first
+send-email-notification,Approval/status/support events,Send email through provider later,medium,10E,Keep in-app notification first
+generate-signed-url,Document download request,Return short-lived document access URL,high,10C,Use Supabase Storage signed URLs with policy
+create-audit-log,Security/admin events,Central audit log write,medium,10D,Postgres function

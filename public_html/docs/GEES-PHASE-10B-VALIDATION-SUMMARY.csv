@@ -1,0 +1,12 @@
+check,result,status
+Supabase project found,GEES / spljrvlebfeljqrqkiee,passed
+Public GEES tables,21,passed
+Roles seeded,5,passed
+Permissions seeded,18,passed
+Role-permission mappings,51,passed
+GEES RLS policies,47,passed
+GEES helper functions,8,passed
+Starter universities,3,passed
+Starter courses,3,passed
+Storage buckets,Skipped intentionally for no-payment launch,skipped
+Frontend files changed,None,not_applicable

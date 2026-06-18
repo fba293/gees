@@ -1,0 +1,13 @@
+Function Name,Trigger Type,Purpose,Collections/Storage Touched
+authCreateUserProfile,Authentication onCreate,Create users/{uid} profile when account is created,users
+setUserRole,Callable HTTPS,Super admin changes role/permissions safely,"users,audit_logs"
+submitAgentSignup,Callable HTTPS,Create agent approval request,"agents,approvals,notifications,audit_logs"
+approveAgent,Callable HTTPS,Approve/reject agent and activate account,"agents,users,approvals,notifications,audit_logs"
+uploadDocumentFinalize,Storage onFinalize,Validate uploaded file and create/update metadata,"documents,audit_logs,notifications"
+reviewDocument,Callable HTTPS,Approve/reject student document,"documents,applications,notifications,audit_logs"
+updateApplicationStatus,Callable HTTPS,Move application pipeline status,"applications,notifications,audit_logs"
+calculateCommission,Firestore onWrite / Callable,Calculate agent commission from paid/approved application,"commissions,applications,audit_logs"
+sendNotification,Callable/Firestore trigger,Create notification for one or many users,notifications
+createAuditLog,Internal function,Append trusted audit record,audit_logs
+supportTicketReply,Callable HTTPS,Add ticket replies safely,"support_tickets,notifications,audit_logs"
+adminReportSnapshot,Scheduled Function,Generate daily/weekly admin stats snapshots,"reports,audit_logs"

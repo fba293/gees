@@ -1,0 +1,106 @@
+path,type,note
+README-GEES-UPDATED-PROJECT-TREE.md,package readme,created placeholder
+app_private/agreements/.gitkeep,folder placeholder,created placeholder
+app_private/config/.gitkeep,folder placeholder,created placeholder
+app_private/crm/.gitkeep,folder placeholder,created placeholder
+app_private/database/migrations/.gitkeep,folder placeholder,created placeholder
+app_private/database/seeds/.gitkeep,folder placeholder,created placeholder
+app_private/leads/.gitkeep,folder placeholder,created placeholder
+app_private/logs/.gitkeep,folder placeholder,created placeholder
+app_private/receipts/.gitkeep,folder placeholder,created placeholder
+app_private/student-documents/.gitkeep,folder placeholder,created placeholder
+archive/backup-before-cleanup/.gitkeep,folder placeholder,created placeholder
+archive/duplicate-files/.gitkeep,folder placeholder,created placeholder
+archive/old-header-footer/.gitkeep,folder placeholder,created placeholder
+archive/old-homepage/.gitkeep,folder placeholder,created placeholder
+archive/old-root-files/.gitkeep,folder placeholder,created placeholder
+archive/previous-designs/.gitkeep,folder placeholder,created placeholder
+public_html/404.html,html placeholder page,created placeholder
+public_html/agreement-signing.html,html placeholder page,created placeholder
+public_html/application-checklist.html,html placeholder page,created placeholder
+public_html/assets/images/blog/.gitkeep,folder placeholder,created placeholder
+public_html/assets/images/campus/.gitkeep,folder placeholder,created placeholder
+public_html/assets/images/counselors/.gitkeep,folder placeholder,created placeholder
+public_html/assets/images/destinations/.gitkeep,folder placeholder,created placeholder
+public_html/assets/images/flags/.gitkeep,folder placeholder,created placeholder
+public_html/assets/images/journey/.gitkeep,folder placeholder,created placeholder
+public_html/assets/images/lottie/.gitkeep,folder placeholder,created placeholder
+public_html/assets/images/og/.gitkeep,folder placeholder,created placeholder
+public_html/assets/images/payment/.gitkeep,folder placeholder,created placeholder
+public_html/assets/images/qr/.gitkeep,folder placeholder,created placeholder
+public_html/assets/images/reviews/.gitkeep,folder placeholder,created placeholder
+public_html/assets/images/slider-logos/.gitkeep,folder placeholder,created placeholder
+public_html/assets/images/students/.gitkeep,folder placeholder,created placeholder
+public_html/assets/logos/.gitkeep,folder placeholder,created placeholder
+public_html/assets/logos/favicon.png,png placeholder,1x1 transparent image placeholder
+public_html/assets/logos/gees-logo-white.png,png placeholder,1x1 transparent image placeholder
+public_html/assets/logos/gees-logo.png,png placeholder,1x1 transparent image placeholder
+public_html/assets/school-fees/.gitkeep,folder placeholder,created placeholder
+public_html/assets/school-fees/fairview-fees.pdf,binary placeholder,created placeholder
+public_html/assets/school-fees/mahsa-fees.pdf,binary placeholder,created placeholder
+public_html/assets/school-fees/st-johns-fees.pdf,binary placeholder,created placeholder
+public_html/assets/university-logos/australia/.gitkeep,folder placeholder,created placeholder
+public_html/assets/university-logos/bangladesh/.gitkeep,folder placeholder,created placeholder
+public_html/assets/university-logos/canada/.gitkeep,folder placeholder,created placeholder
+public_html/assets/university-logos/china/.gitkeep,folder placeholder,created placeholder
+public_html/assets/university-logos/germany/.gitkeep,folder placeholder,created placeholder
+public_html/assets/university-logos/ireland/.gitkeep,folder placeholder,created placeholder
+public_html/assets/university-logos/malaysia/.gitkeep,folder placeholder,created placeholder
+public_html/assets/university-logos/newzealand/.gitkeep,folder placeholder,created placeholder
+public_html/assets/university-logos/sweden/.gitkeep,folder placeholder,created placeholder
+public_html/assets/university-logos/uk/.gitkeep,folder placeholder,created placeholder
+public_html/assets/university-logos/usa/.gitkeep,folder placeholder,created placeholder
+public_html/assets/videos/.gitkeep,folder placeholder,created placeholder
+public_html/assets/videos/contact-form-animation.mp4,binary placeholder,created placeholder
+public_html/components/README.md,readme placeholder,created placeholder
+public_html/country-pages/index.html,html placeholder page,created placeholder
+public_html/data/public/countries.json,json placeholder,created placeholder
+public_html/data/public/courses.json,json placeholder,created placeholder
+public_html/data/public/language-centers.json,json placeholder,created placeholder
+public_html/data/public/search-data.json,json placeholder,created placeholder
+public_html/data/public/services.json,json placeholder,created placeholder
+public_html/data/public/universities/australia.json,json placeholder,created placeholder
+public_html/data/public/universities/canada.json,json placeholder,created placeholder
+public_html/data/public/universities/malaysia.json,json placeholder,created placeholder
+public_html/data/public/universities/newzealand.json,json placeholder,created placeholder
+public_html/data/public/universities/uk.json,json placeholder,created placeholder
+public_html/data/public/universities/usa.json,json placeholder,created placeholder
+public_html/data/schema/blog.schema.json,json placeholder,created placeholder
+public_html/data/schema/course.schema.json,json placeholder,created placeholder
+public_html/data/schema/organization.schema.json,json placeholder,created placeholder
+public_html/data/schema/university.schema.json,json placeholder,created placeholder
+public_html/language-center-list.html,html placeholder page,created placeholder
+public_html/offline.html,html placeholder page,created placeholder
+public_html/partners.html,html placeholder page,created placeholder
+public_html/payment.html,html placeholder page,created placeholder
+public_html/portal/chat/portal-chat.html,html placeholder page,created placeholder
+public_html/privacy-policy.html,html placeholder page,created placeholder
+public_html/programs/business/index.html,html placeholder page,created placeholder
+public_html/programs/computer-science/index.html,html placeholder page,created placeholder
+public_html/programs/design/index.html,html placeholder page,created placeholder
+public_html/programs/engineering/index.html,html placeholder page,created placeholder
+public_html/programs/hospitality/index.html,html placeholder page,created placeholder
+public_html/programs/index.html,html placeholder page,created placeholder
+public_html/programs/law/index.html,html placeholder page,created placeholder
+public_html/programs/medicine/index.html,html placeholder page,created placeholder
+public_html/refer-and-earn.html,html placeholder page,created placeholder
+public_html/robots.txt,robots placeholder,created placeholder
+public_html/scholarship.html,html placeholder page,created placeholder
+public_html/scripts/README.md,readme placeholder,created placeholder
+public_html/services/index.html,html placeholder page,created placeholder
+public_html/sitemap.xml,sitemap placeholder,created placeholder
+public_html/templates/README.md,readme placeholder,created placeholder
+public_html/terms-and-conditions.html,html placeholder page,created placeholder
+public_html/terms.html,html placeholder page,created placeholder
+public_html/tests/README.md,readme placeholder,created placeholder
+public_html/universities.html,html placeholder page,created placeholder
+public_html/universities/australia/index.html,html placeholder page,created placeholder
+public_html/universities/canada/index.html,html placeholder page,created placeholder
+public_html/universities/europe/index.html,html placeholder page,created placeholder
+public_html/universities/index.html,html placeholder page,created placeholder
+public_html/universities/malaysia/index.html,html placeholder page,created placeholder
+public_html/universities/newzealand/index.html,html placeholder page,created placeholder
+public_html/universities/uk/index.html,html placeholder page,created placeholder
+public_html/universities/usa/index.html,html placeholder page,created placeholder
+public_html/visa-tracker.html,html placeholder page,created placeholder
+public_html/welcome-kit.html,html placeholder page,created placeholder
