@@ -8,27 +8,69 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="/portal/shared/css/portal.css?v=10.3.0">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=12.0.0">
+<link rel="stylesheet" href="/portal/shared/css/portal-crud.css?v=12.0.0">
 </head>
 <body class="gees-portal-page">
-<script>window.GEES_PORTAL_PAGE={"title": "Student Details", "requiredRoles": ["student"], "requiredPermission": "student.details"};</script>
+<script>window.GEES_PORTAL_PAGE={"title":"Student Details","requiredRoles":["student"],"requiredPermission":"student.details"};</script>
 <div class="gees-portal-shell">
   <aside class="gees-portal-sidebar" data-portal-sidebar></aside>
   <div class="gees-portal-main">
     <header class="gees-portal-topbar" data-portal-topbar></header>
     <main class="gees-portal-content">
-      <section class="gees-page-hero"><div><span class="gees-kicker">Profile</span><h1>Student Details</h1><p>Personal, academic, and application summary for the logged-in student demo account.</p></div><div class="gees-hero-tools"><button class="gees-btn gees-btn-outline" data-demo-action="Demo Notification"><i class="fa-solid fa-bell"></i> Demo Notify</button><button class="gees-btn gees-btn-primary" data-demo-action="Quick Save"><i class="fa-solid fa-check"></i> Quick Save</button></div></section><section class="gees-stats-grid"><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-id-card"></i></div><div><strong>GEES-ST-1024</strong><span>Student ID</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-earth-asia"></i></div><div><strong>Malaysia</strong><span>Country Goal</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-user-graduate"></i></div><div><strong>Bachelor</strong><span>Study Level</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-headset"></i></div><div><strong>Assigned</strong><span>Counselor</span></div></article></section><section class="gees-action-grid"><a class="gees-action-card" href="/portal/student/application.html"><i class="fa-solid fa-pen-to-square"></i><strong>Update Application</strong><span>Change study preferences.</span></a><a class="gees-action-card" href="/portal/student/document-vault.html"><i class="fa-solid fa-folder-open"></i><strong>Documents</strong><span>View uploaded document status.</span></a><a class="gees-action-card" href="/portal/student/pipeline.html"><i class="fa-solid fa-route"></i><strong>Pipeline</strong><span>Track journey progress.</span></a></section><section class="gees-panel"><div class="gees-panel-head"><h2>Demo records</h2><button class="gees-btn gees-btn-outline" data-demo-action="Refresh Records"><i class="fa-solid fa-rotate"></i> Refresh</button></div><div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Name</th><th>Status</th><th>Note</th></tr></thead><tbody><tr><td>Full name</td><td><span class="gees-badge">Demo Student</span></td><td>student@gees.demo</td></tr><tr><td>Preferred country</td><td><span class="gees-badge">Malaysia</span></td><td>Business / IT</td></tr><tr><td>Next action</td><td><span class="gees-badge">Upload final bank statement</span></td><td>Due in 12 days</td></tr></tbody></table></div></section><section class="gees-panel gees-demo-panel"><div class="gees-panel-head"><h2>Demo backend status</h2><span class="gees-badge">Backend-ready</span></div><p>This page uses the shared demo backend, role guard, shell, sidebar, toast actions, and session system. Later you can replace the demo adapter with a real backend without rebuilding the page structure.</p></section>
+      <section class="gees-page-hero">
+        <div><span class="gees-kicker">Phase 12A · Real CRUD</span><h1>Student Details</h1><p>Edit your live profile, study preferences, and create support tickets.</p></div>
+        <div class="gees-hero-tools"><a class="gees-btn gees-btn-outline" href="/portal/student/application.html"><i class="fa-solid fa-file-signature"></i> Applications</a></div>
+      </section>
+
+      <section class="gees-stats-grid">
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-id-card"></i></div><div><strong>Live</strong><span>Profile</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-earth-asia"></i></div><div><strong>Editable</strong><span>Preferences</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-headset"></i></div><div><strong>Support</strong><span>Ticket record</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-shield-halved"></i></div><div><strong>RLS</strong><span>Own record only</span></div></article>
+      </section>
+
+      <div data-crud-page="student-details">
+        <section class="gees-panel gees-crud-panel">
+          <div class="gees-panel-head"><div><h2>Profile & preferences</h2><p>Updates public.profiles and public.students for the logged-in student.</p></div></div>
+          <form class="gees-crud-form" data-crud-form="profile">
+            <div class="gees-crud-form-grid">
+              <label>Full Name<input name="full_name" autocomplete="name"></label>
+              <label>Email<input name="email" autocomplete="email" readonly></label>
+              <label>Phone<input name="phone" autocomplete="tel"></label>
+              <label>Preferred Country<input name="preferred_country" placeholder="Malaysia, UK, Canada..."></label>
+              <label>Preferred Level<select name="preferred_level"><option value="">Select level</option><option>Bachelor</option><option>Master</option><option>Diploma</option><option>Foundation</option></select></label>
+              <label>Preferred Intake<input name="preferred_intake" placeholder="September 2026"></label>
+            </div>
+            <label>Notes<textarea name="notes" rows="4" placeholder="Tell GEES about your goals, budget, preferred program, or concerns."></textarea></label>
+            <div class="gees-crud-actions"><button class="gees-btn gees-btn-primary" type="submit"><i class="fa-solid fa-check"></i> Update Profile</button><span class="gees-crud-status" data-crud-status="profile"></span></div>
+          </form>
+        </section>
+
+        <section class="gees-panel gees-crud-panel">
+          <div class="gees-panel-head"><div><h2>Create support ticket</h2><p>Creates a real support_tickets row assigned to your logged-in account.</p></div></div>
+          <form class="gees-crud-form" data-crud-form="support">
+            <div class="gees-crud-form-grid">
+              <label>Subject<input name="subject" placeholder="Need help with documents"></label>
+              <label>Priority<select name="priority"><option value="normal">Normal</option><option value="high">High</option><option value="urgent">Urgent</option></select></label>
+            </div>
+            <div class="gees-crud-actions"><button class="gees-btn gees-btn-outline" type="submit"><i class="fa-solid fa-headset"></i> Create Ticket</button><span class="gees-crud-status" data-crud-status="support"></span></div>
+          </form>
+        </section>
+      </div>
     </main>
   </div>
 </div>
 <div class="gees-portal-overlay" data-portal-overlay></div>
 <div class="gees-toast-root" id="gees-toast-root"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/portal/shared/js/supabase-client.js?v=10.3.0"></script>
-<script src="/portal/shared/js/demo-backend.js?v=10.3.0"></script>
-<script src="/portal/shared/js/auth-service.js?v=10.3.0"></script>
-<script src="/portal/shared/js/role-guard.js?v=10.3.0"></script>
-<script src="/portal/shared/js/portal-shell.js?v=10.3.0"></script>
-<script src="/portal/shared/js/portal-ui.js?v=10.3.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2';"></script>
+<script src="/portal/shared/js/supabase-client.js?v=12.0.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=12.0.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=12.0.0"></script>
+<script src="/portal/shared/js/supabase-ready-bridge.js?v=12.0.0"></script>
+<script src="/portal/shared/js/role-guard.js?v=12.0.0"></script>
+<script src="/portal/shared/js/portal-shell.js?v=12.0.0"></script>
+<script src="/portal/shared/js/portal-ui.js?v=12.0.0"></script>
+<script src="/portal/shared/js/portal-crud.js?v=12.0.0"></script>
 </body>
 </html>
