@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  var VERSION = '11.0.0';
+  var VERSION = '11.1.0';
   var mounted = false;
 
   function ready(fn){
@@ -29,27 +29,11 @@
     try{ return JSON.parse(localStorage.getItem('gees_portal_session') || 'null'); }catch(error){ return null; }
   }
 
-  function isReal(session){
-    return !!(session && session.id && session.source === 'supabase');
-  }
-
-  function displayCount(value, fallback){
-    if(value === null || value === undefined || isNaN(value)) return fallback || '0';
-    return Number(value).toLocaleString();
-  }
-
-  function shortId(id){
-    return id ? String(id).slice(0, 8).toUpperCase() : 'LIVE';
-  }
-
-  function niceDate(value){
-    if(!value) return 'Recently';
-    try{ return new Date(value).toLocaleString(); }catch(error){ return 'Recently'; }
-  }
-
-  function normalRole(role){
-    return String(role || '').toLowerCase().replace(/-/g, '_').replace(/\s+/g, '_');
-  }
+  function isReal(session){ return !!(session && session.id && session.source === 'supabase'); }
+  function normalRole(role){ return String(role || '').toLowerCase().replace(/-/g, '_').replace(/\s+/g, '_'); }
+  function displayCount(value, fallback){ return value === null || value === undefined || isNaN(value) ? (fallback || '0') : Number(value).toLocaleString(); }
+  function shortId(id){ return id ? String(id).slice(0, 8).toUpperCase() : 'LIVE'; }
+  function niceDate(value){ if(!value) return 'Recently'; try{ return new Date(value).toLocaleString(); }catch(error){ return 'Recently'; } }
 
   function applyFilters(query, filters){
     (filters || []).forEach(function(filter){
@@ -71,9 +55,9 @@
       var query = c.from(table).select('id', { count:'exact', head:true });
       query = applyFilters(query, filters);
       var response = await query;
-      if(response.error) return null;
+      if(response.error){ console.warn('[GEES Live] Count failed for ' + table, response.error); return null; }
       return response.count || 0;
-    }catch(error){ return null; }
+    }catch(error){ console.warn('[GEES Live] Count exception for ' + table, error); return null; }
   }
 
   async function listRows(table, columns, filters, orderKey, limit){
@@ -85,9 +69,9 @@
       if(orderKey) query = query.order(orderKey, { ascending:false, nullsFirst:false });
       if(limit) query = query.limit(limit);
       var response = await query;
-      if(response.error) return [];
+      if(response.error){ console.warn('[GEES Live] List failed for ' + table, response.error); return []; }
       return response.data || [];
-    }catch(error){ return []; }
+    }catch(error){ console.warn('[GEES Live] List exception for ' + table, error); return []; }
   }
 
   async function pendingApprovals(){
@@ -106,8 +90,7 @@
 
   function setStats(items){
     var grid = document.querySelector('.gees-stats-grid');
-    if(!grid) return;
-    grid.innerHTML = items.join('');
+    if(grid) grid.innerHTML = items.join('');
   }
 
   function findRecordsPanel(){
@@ -121,13 +104,9 @@
     var h2 = panel.querySelector('h2');
     if(h2) h2.textContent = title || 'Live Supabase records';
     var wrap = panel.querySelector('.gees-table-wrap');
-    if(!wrap){
-      wrap = document.createElement('div');
-      wrap.className = 'gees-table-wrap';
-      panel.appendChild(wrap);
-    }
+    if(!wrap){ wrap = document.createElement('div'); wrap.className = 'gees-table-wrap'; panel.appendChild(wrap); }
     if(!rows || !rows.length){
-      wrap.innerHTML = '<div class="gees-empty-state gees-live-empty"><i class="fa-solid fa-database"></i><strong>No live records yet</strong><span>Your Supabase connection is active. New applications, documents, commissions, tickets, and approvals will appear here after data is created.</span></div>';
+      wrap.innerHTML = '<div class="gees-empty-state gees-live-empty"><i class="fa-solid fa-database"></i><strong>No live records yet</strong><span>Your Supabase connection is active. Run the Phase 11B seed SQL after creating real test accounts, then refresh this dashboard.</span></div>';
       return;
     }
     wrap.innerHTML = '<table class="gees-table"><thead><tr><th>Name</th><th>Status</th><th>Note</th></tr></thead><tbody>' + rows.map(function(row){
@@ -159,7 +138,8 @@
 
   function rowsFromApplications(items){
     return (items || []).map(function(row){
-      return { name:'Application #' + shortId(row.id), sub:niceDate(row.updated_at || row.created_at), status:row.status || 'draft', note:row.notes || row.intake || 'Live application record' };
+      var note = row.application_no || row.intake || 'Live application record';
+      return { name:'Application #' + shortId(row.id), sub:niceDate(row.updated_at || row.created_at), status:row.status || 'draft', note:note };
     });
   }
 
@@ -178,8 +158,8 @@
   async function renderStudent(session){
     var apps = await countRows('applications');
     var docs = await countRows('documents');
-    var unread = await countRows('notifications', [{op:'eq', key:'recipient_id', value:session.id},{op:'is', key:'read_at', value:null}]);
-    var latest = await listRows('applications', 'id,status,created_at,updated_at,notes,intake', [], 'updated_at', 6);
+    var unread = await countRows('notifications', [{op:'eq', key:'recipient_id', value:session.id},{op:'eq', key:'is_read', value:false}]);
+    var latest = await listRows('applications', 'id,status,created_at,updated_at,intake,application_no', [], 'updated_at', 6);
     setStats([card('fa-file-signature', displayCount(apps), 'My Applications'), card('fa-folder-open', displayCount(docs), 'My Documents'), card('fa-bell', displayCount(unread), 'Unread Notifications'), card('fa-user-check', session.status || 'active', 'Account Status')]);
     setRecords('Recent live applications', rowsFromApplications(latest));
   }
@@ -190,7 +170,7 @@
     var commissions = await listRows('commissions', 'id,amount,currency,status,created_at', [], 'created_at', 12);
     var pendingCommissionCount = commissions.filter(function(row){ return /pending|processing|unpaid/i.test(row.status || ''); }).length;
     var tickets = await countRows('support_tickets');
-    var latest = await listRows('applications', 'id,status,created_at,updated_at,notes,intake', [], 'updated_at', 6);
+    var latest = await listRows('applications', 'id,status,created_at,updated_at,intake,application_no', [], 'updated_at', 6);
     setStats([card('fa-users', displayCount(students), 'My Students'), card('fa-file-circle-check', displayCount(apps), 'Student Applications'), card('fa-wallet', displayCount(pendingCommissionCount), 'Pending Commissions'), card('fa-headset', displayCount(tickets), 'Support Tickets')]);
     setRecords('Recent referred applications', rowsFromApplications(latest));
   }
@@ -199,8 +179,8 @@
     var apps = await countRows('applications');
     var docs = await countRows('documents');
     var tickets = await countRows('support_tickets');
-    var unread = await countRows('notifications', [{op:'eq', key:'recipient_id', value:session.id},{op:'is', key:'read_at', value:null}]);
-    var latest = await listRows('applications', 'id,status,created_at,updated_at,notes,intake', [], 'updated_at', 6);
+    var unread = await countRows('notifications', [{op:'eq', key:'recipient_id', value:session.id},{op:'eq', key:'is_read', value:false}]);
+    var latest = await listRows('applications', 'id,status,created_at,updated_at,intake,application_no', [], 'updated_at', 6);
     setStats([card('fa-list-check', displayCount(apps), 'Assigned Applications'), card('fa-folder-open', displayCount(docs), 'Documents To Review'), card('fa-headset', displayCount(tickets), 'Support Tickets'), card('fa-bell', displayCount(unread), 'Unread Notifications')]);
     setRecords('Recent assigned work', rowsFromApplications(latest));
   }
@@ -227,18 +207,9 @@
     mounted = true;
     var c = client();
     var session = await getSession();
-    if(!c){
-      setLiveStatus('Supabase client is not loaded. Dashboard is staying in demo/static mode.', 'warning', ['Phase 11', 'No client']);
-      return;
-    }
-    if(!session){
-      setLiveStatus('No portal session found yet. Login first to load live dashboard data.', 'warning', ['Phase 11', 'Waiting for session']);
-      return;
-    }
-    if(!isReal(session)){
-      setLiveStatus('Demo dashboard mode is active. Live Supabase data loads only after login with a real GEES account.', 'demo', ['Session: demo', 'Role: ' + (session.role || 'unknown')]);
-      return;
-    }
+    if(!c){ setLiveStatus('Supabase client is not loaded. Dashboard is staying in demo/static mode.', 'warning', ['Phase 11B', 'No client']); return; }
+    if(!session){ setLiveStatus('No portal session found yet. Login first to load live dashboard data.', 'warning', ['Phase 11B', 'Waiting for session']); return; }
+    if(!isReal(session)){ setLiveStatus('Demo dashboard mode is active. Live Supabase data loads only after login with a real GEES account.', 'demo', ['Session: demo', 'Role: ' + (session.role || 'unknown')]); return; }
     try{
       var path = location.pathname;
       var role = normalRole(session.role);
@@ -249,11 +220,11 @@
       else if(role === 'admin' || role === 'super_admin') await renderAdmin(session, isSuperPage);
       else await renderStudent(session);
       var catalogue = await renderCatalogue();
-      setLiveStatus('Connected to live Supabase data for ' + (session.email || session.name || 'GEES user') + '.', 'success', ['Phase 11', 'Role: ' + role, 'Source: Supabase'].concat(catalogue));
+      setLiveStatus('Connected to live Supabase data for ' + (session.email || session.name || 'GEES user') + '.', 'success', ['Phase 11B', 'Role: ' + role, 'Source: Supabase'].concat(catalogue));
       toast('Live dashboard data refreshed.', 'success');
     }catch(error){
-      console.error('[GEES Phase 11] Live dashboard failed', error);
-      setLiveStatus('Live data connection failed: ' + (error.message || error), 'error', ['Phase 11', 'Check RLS/session']);
+      console.error('[GEES Phase 11B] Live dashboard failed', error);
+      setLiveStatus('Live data connection failed: ' + (error.message || error), 'error', ['Phase 11B', 'Check RLS/session']);
     }
   }
 
