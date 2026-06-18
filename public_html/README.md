@@ -2,4 +2,4 @@
 
 Upload this folder's contents to your hosting `public_html` directory.
 
-Current baseline: before Phase 11.
+Current baseline: Phase 10F before Phase 11.

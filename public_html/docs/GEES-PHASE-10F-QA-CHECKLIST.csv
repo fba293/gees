@@ -1,0 +1,12 @@
+Area,Test,Expected Result,Status
+Supabase Auth,Email provider ON,Signup endpoint available,Pending
+Supabase Auth,Allow new users ON,Student/agent/staff signup allowed,Pending
+Supabase Auth,Confirm email OFF for testing,No email rate limit during testing,Pending
+Student Signup,Create student account,Shows success and user can login,Pending
+Agent Signup,Create agent account,Shows pending admin approval,Pending
+Staff Signup,Create staff account,Shows pending admin approval,Pending
+Admin Bootstrap,Promote first real admin,Admin role active in profiles,Pending
+Approvals,Open approvals as demo admin,Shows demo warning,Pending
+Approvals,Open approvals as real admin,Shows pending users,Pending
+Approvals,Approve agent,Agent status becomes active,Pending
+Approvals,Reject staff,Staff status becomes rejected,Pending

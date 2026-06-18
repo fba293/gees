@@ -1,15 +1,24 @@
 # GEES Website + Portal
 
-This repository contains the structured GEES public website, role-based portal, Supabase backend setup files, and project documentation.
+Structured GEES public website, role-based portal, Supabase setup files, and project documentation.
 
-Current baseline: before Phase 11, with Supabase Auth/portal foundation, admin approval flow, and live QA bootstrap prepared.
+Current baseline: Phase 10F before Phase 11.
 
-## Upload target
+## Phase 10F status
 
-Deploy the contents of `public_html/` to your hosting `public_html` directory.
+Auth UX and approval diagnostics have been added:
 
-## Notes
+- clearer Supabase signup-disabled message
+- clearer email-rate-limit message
+- clear warning when demo admin tries to view real approvals
+- admin/super-admin approval diagnostics
+- public admin signup remains blocked
+- first-admin bootstrap docs included
 
-- Some files/folders are placeholders and should be replaced with the real uploaded production files/assets where needed.
-- Do not commit Supabase service-role keys, passwords, or private `.env` secrets.
-- Supabase testing settings before Phase 11: Email provider ON, Allow new users ON, Confirm email OFF for development testing only.
+## Deploy
+
+Upload `public_html/` to your hosting `public_html` directory.
+
+## Security
+
+Never commit Supabase service-role keys, passwords, private `.env` files, or hosting credentials.

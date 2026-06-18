@@ -1,1 +1,1 @@
-// GEES placeholder: replace with final universal header.js.
+// GEES placeholder: replace with final universal header.js from public website package.
