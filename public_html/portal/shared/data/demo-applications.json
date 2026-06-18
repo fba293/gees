@@ -1,0 +1,14 @@
+[
+  {
+    "id": "APP-1001",
+    "student": "Ayesha Siddiqua",
+    "status": "Offer Processing",
+    "progress": 68
+  },
+  {
+    "id": "APP-1002",
+    "student": "Rakib Hasan",
+    "status": "Document Review",
+    "progress": 42
+  }
+]
