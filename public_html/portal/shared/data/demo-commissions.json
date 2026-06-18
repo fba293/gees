@@ -1,0 +1,12 @@
+[
+  {
+    "student": "Ayesha Siddiqua",
+    "amount": "RM 2,800",
+    "status": "Pending"
+  },
+  {
+    "student": "Rakib Hasan",
+    "amount": "RM 3,200",
+    "status": "Paid"
+  }
+]

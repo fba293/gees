@@ -1,1 +1,77 @@
-<!-- Placeholder: super admin approvals page. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Approvals | GEES Portal</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=10.4.0">
+</head>
+<body class="gees-portal-page gees-approvals-page">
+<script>window.GEES_PORTAL_PAGE={"title":"Approvals","requiredRoles":["admin","super_admin"],"requiredPermission":"manage_approvals"};</script>
+<div class="gees-portal-shell">
+  <aside class="gees-portal-sidebar" data-portal-sidebar></aside>
+  <div class="gees-portal-main">
+    <header class="gees-portal-topbar" data-portal-topbar></header>
+    <main class="gees-portal-content">
+      <section class="gees-page-hero">
+        <div>
+          <span class="gees-kicker">Supabase Approval Flow</span>
+          <h1>Agent & Staff Approvals</h1>
+          <p>Review pending agent and staff signups from Supabase, then approve or reject access to the GEES portal.</p>
+        </div>
+        <div class="gees-hero-tools">
+          <button class="gees-btn gees-btn-outline" data-refresh-approvals><i class="fa-solid fa-rotate"></i> Refresh</button>
+          <a class="gees-btn gees-btn-primary" href="/portal/super-admin/audit-logs.html"><i class="fa-solid fa-clipboard-list"></i> Audit Logs</a>
+        </div>
+      </section>
+
+      <section class="gees-stats-grid">
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-user-clock"></i></div><div><strong>Live</strong><span>Supabase approvals</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-shield-halved"></i></div><div><strong>RLS</strong><span>Admin protected</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-bell"></i></div><div><strong>Auto</strong><span>User notification</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-clock-rotate-left"></i></div><div><strong>Audit</strong><span>Action recorded</span></div></article>
+      </section>
+
+      <section class="gees-panel">
+        <div class="gees-panel-head">
+          <div>
+            <h2>Pending user approvals</h2>
+            <p data-approval-status>Waiting for Supabase session...</p>
+          </div>
+          <button class="gees-btn gees-btn-outline" data-refresh-approvals><i class="fa-solid fa-rotate"></i> Reload</button>
+        </div>
+        <div class="gees-table-wrap">
+          <table class="gees-table">
+            <thead>
+              <tr><th>User</th><th>Role details</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody data-approval-table-body>
+              <tr><td colspan="4">Loading approvals...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="gees-panel gees-demo-panel">
+        <div class="gees-panel-head"><h2>How this flow works</h2><span class="gees-badge">Phase 10D</span></div>
+        <p>Agent and staff signup creates a pending Supabase profile. This page calls secure Supabase RPC functions to approve or reject the user, update status, send a notification, and write an audit log.</p>
+      </section>
+    </main>
+  </div>
+</div>
+<div class="gees-portal-overlay" data-portal-overlay></div>
+<div class="gees-toast-root" id="gees-toast-root"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/portal/shared/js/supabase-client.js?v=10.4.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=10.4.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=10.4.0"></script>
+<script src="/portal/shared/js/role-guard.js?v=10.4.0"></script>
+<script src="/portal/shared/js/portal-shell.js?v=10.4.0"></script>
+<script src="/portal/shared/js/portal-ui.js?v=10.4.0"></script>
+<script src="/portal/shared/js/admin-approval-flow.js?v=10.4.0"></script>
+</body>
+</html>

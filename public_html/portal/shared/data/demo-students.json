@@ -1,0 +1,20 @@
+[
+  {
+    "id": 101,
+    "name": "Ayesha Siddiqua",
+    "country": "Malaysia",
+    "stage": "Offer Received"
+  },
+  {
+    "id": 102,
+    "name": "Rakib Hasan",
+    "country": "Canada",
+    "stage": "Document Review"
+  },
+  {
+    "id": 103,
+    "name": "Farhan Ahmed",
+    "country": "Malaysia",
+    "stage": "Visa Prep"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Passport",
+    "status": "Verified"
+  },
+  {
+    "name": "Transcript",
+    "status": "In Review"
+  },
+  {
+    "name": "Bank Statement",
+    "status": "Pending"
+  }
+]

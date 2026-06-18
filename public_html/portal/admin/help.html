@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Help &amp; Documentation | GEES Portal</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=10.3.0">
+</head>
+<body class="gees-portal-page">
+<script>window.GEES_PORTAL_PAGE={"title": "Help & Documentation", "requiredRoles": ["admin", "super_admin"], "requiredPermission": "admin.help"};</script>
+<div class="gees-portal-shell">
+  <aside class="gees-portal-sidebar" data-portal-sidebar></aside>
+  <div class="gees-portal-main">
+    <header class="gees-portal-topbar" data-portal-topbar></header>
+    <main class="gees-portal-content">
+      <section class="gees-page-hero"><div><span class="gees-kicker">Admin Knowledge Base</span><h1>Help &amp; Documentation</h1><p>Internal documentation, SOPs, and support resources for admin users.</p></div><div class="gees-hero-tools"><button class="gees-btn gees-btn-outline" data-demo-action="Demo Notification"><i class="fa-solid fa-bell"></i> Demo Notify</button><button class="gees-btn gees-btn-primary" data-demo-action="Quick Save"><i class="fa-solid fa-check"></i> Quick Save</button></div></section><section class="gees-stats-grid"><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-book-open"></i></div><div><strong>24</strong><span>Articles</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-list-check"></i></div><div><strong>9</strong><span>SOPs</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-circle-question"></i></div><div><strong>3</strong><span>Open Questions</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-clock"></i></div><div><strong>Today</strong><span>Last Updated</span></div></article></section><section class="gees-action-grid"><a class="gees-action-card" href="/portal/admin/wiki.html"><i class="fa-solid fa-users"></i><strong>Student Wiki</strong><span>Open student records.</span></a><a class="gees-action-card" href="/portal/admin/reports.html"><i class="fa-solid fa-file-lines"></i><strong>Reports</strong><span>Review admin reports.</span></a><a class="gees-action-card" href="javascript:void(0)" data-demo-action="Create Help Note"><i class="fa-solid fa-plus"></i><strong>Create Help Note</strong><span>Add demo help article.</span></a></section><section class="gees-panel"><div class="gees-panel-head"><h2>Demo records</h2><button class="gees-btn gees-btn-outline" data-demo-action="Refresh Records"><i class="fa-solid fa-rotate"></i> Refresh</button></div><div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Name</th><th>Status</th><th>Note</th></tr></thead><tbody><tr><td>Visa SOP</td><td><span class="gees-badge">Core</span></td><td>Updated</td></tr><tr><td>Agreement SOP</td><td><span class="gees-badge">Finance</span></td><td>Updated</td></tr><tr><td>Agent onboarding</td><td><span class="gees-badge">Partner team</span></td><td>Review needed</td></tr></tbody></table></div></section><section class="gees-panel gees-demo-panel"><div class="gees-panel-head"><h2>Demo backend status</h2><span class="gees-badge">Backend-ready</span></div><p>This page uses the shared demo backend, role guard, shell, sidebar, toast actions, and session system. Later you can replace the demo adapter with a real backend without rebuilding the page structure.</p></section>
+    </main>
+  </div>
+</div>
+<div class="gees-portal-overlay" data-portal-overlay></div>
+<div class="gees-toast-root" id="gees-toast-root"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/portal/shared/js/supabase-client.js?v=10.3.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=10.3.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=10.3.0"></script>
+<script src="/portal/shared/js/role-guard.js?v=10.3.0"></script>
+<script src="/portal/shared/js/portal-shell.js?v=10.3.0"></script>
+<script src="/portal/shared/js/portal-ui.js?v=10.3.0"></script>
+</body>
+</html>
