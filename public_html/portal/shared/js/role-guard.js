@@ -1,6 +1,11 @@
 (function(){
   'use strict';
 
+  var DEMO_PERMISSION_ALIAS = {
+    admin: ['manage_approvals','view_reports','view_audit_logs','manage_users','admin.dashboard','admin.reports','admin.help','admin.wiki','admin.analytics','admin.crm','admin.agreements','admin.students'],
+    super_admin: ['*']
+  };
+
   function loginFor(cfg){
     var roles = (cfg.requiredRoles || []).join(',');
     if(roles.indexOf('agent') !== -1) return '/portal/auth/agent-login.html';
@@ -17,18 +22,25 @@
 
   function hasPermission(session, permission){
     if(!permission || !session) return true;
-    if(session.role === 'super_admin') return true;
+    var role = normaliseRole(session.role);
+    if(role === 'super_admin') return true;
     var permissions = session.permissions || [];
-    return permissions.indexOf('*') !== -1 || permissions.indexOf(permission) !== -1;
+    if(permissions.indexOf('*') !== -1 || permissions.indexOf(permission) !== -1) return true;
+    if(session.source === 'demo'){
+      var aliases = DEMO_PERMISSION_ALIAS[role] || [];
+      if(aliases.indexOf('*') !== -1 || aliases.indexOf(permission) !== -1) return true;
+    }
+    return false;
   }
 
   function canAccess(cfg, session){
     if(cfg && cfg.allowGuest) return true;
     if(!session) return false;
     var roles = (cfg.requiredRoles || []).map(normaliseRole);
-    if(session.role === 'super_admin') return true;
-    if(roles.length && roles.indexOf(normaliseRole(session.role)) === -1) return false;
-    if(cfg.requiredTeam && session.role === 'staff' && session.teamId !== cfg.requiredTeam) return false;
+    var role = normaliseRole(session.role);
+    if(role === 'super_admin') return true;
+    if(roles.length && roles.indexOf(role) === -1) return false;
+    if(cfg.requiredTeam && role === 'staff' && session.teamId !== cfg.requiredTeam) return false;
     if(cfg.requiredPermission && !hasPermission(session, cfg.requiredPermission)) return false;
     if(session.source === 'supabase' && session.status && session.status !== 'active') return false;
     return true;
