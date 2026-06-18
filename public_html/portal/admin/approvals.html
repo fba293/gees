@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="/portal/shared/css/portal.css?v=10.5.0">
-<link rel="stylesheet" href="/portal/shared/css/phase10f-diagnostics.css?v=10.5.0">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=11.2.0">
+<link rel="stylesheet" href="/portal/shared/css/phase10f-diagnostics.css?v=11.2.0">
 </head>
 <body class="gees-portal-page gees-approvals-page">
 <script>window.GEES_PORTAL_PAGE={"title":"Approvals","requiredRoles":["admin","super_admin"],"requiredPermission":"manage_approvals"};</script>
@@ -20,9 +20,9 @@
     <main class="gees-portal-content">
       <section class="gees-page-hero">
         <div>
-          <span class="gees-kicker">Phase 10F Diagnostics</span>
+          <span class="gees-kicker">Approval Diagnostics</span>
           <h1>Agent & Staff Approvals</h1>
-          <p>Review pending live Supabase agent and staff signups. Demo admin cannot read live approvals; use a real Supabase admin or super_admin account.</p>
+          <p>Demo admin can open this page for UI testing. Live approval rows and approve/reject actions require real Supabase admin or super_admin login.</p>
         </div>
         <div class="gees-hero-tools">
           <button class="gees-btn gees-btn-outline" data-refresh-approval-diagnostics><i class="fa-solid fa-stethoscope"></i> Diagnostics</button>
@@ -33,7 +33,7 @@
       <section class="gees-stats-grid">
         <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-user-clock"></i></div><div><strong>Live</strong><span>Supabase approvals</span></div></article>
         <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-shield-halved"></i></div><div><strong>Real Admin</strong><span>Required</span></div></article>
-        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-bell"></i></div><div><strong>Auto</strong><span>User notification</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-code"></i></div><div><strong>SQL</strong><span>Bootstrap ready</span></div></article>
         <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-clock-rotate-left"></i></div><div><strong>Audit</strong><span>Action recorded</span></div></article>
       </section>
 
@@ -48,8 +48,8 @@
       </section>
 
       <section class="gees-panel gees-demo-panel">
-        <div class="gees-panel-head"><h2>Correct test order</h2><span class="gees-badge">Phase 10F</span></div>
-        <ol class="gees-mini-steps"><li>Supabase Authentication → Providers → Email: Email provider ON.</li><li>Allow new users to sign up ON.</li><li>Confirm email OFF only for development testing.</li><li>Create/promote one real Supabase admin or super_admin using bootstrap SQL.</li><li>Login with that real admin and refresh this page.</li></ol>
+        <div class="gees-panel-head"><h2>Correct test order</h2><span class="gees-badge">Phase 11E</span></div>
+        <ol class="gees-mini-steps"><li>Do not open SQL files through /public_html/ URL. Use /supabase/sql/... after deployment, GitHub, or the ZIP file.</li><li>Create one normal real user, then run first-admin bootstrap SQL in Supabase SQL Editor.</li><li>Login through /portal/auth/admin-login.html using the real admin/super_admin account.</li><li>Agent/staff signups will appear here after Supabase Auth signup is enabled and they submit requests.</li></ol>
       </section>
     </main>
   </div>
@@ -57,12 +57,13 @@
 <div class="gees-portal-overlay" data-portal-overlay></div>
 <div class="gees-toast-root" id="gees-toast-root"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/portal/shared/js/supabase-client.js?v=10.5.0"></script>
-<script src="/portal/shared/js/demo-backend.js?v=10.5.0"></script>
-<script src="/portal/shared/js/auth-service.js?v=10.5.0"></script>
-<script src="/portal/shared/js/role-guard.js?v=10.5.0"></script>
-<script src="/portal/shared/js/portal-shell.js?v=10.5.0"></script>
-<script src="/portal/shared/js/portal-ui.js?v=10.5.0"></script>
-<script src="/portal/shared/js/admin-approval-flow.js?v=10.5.0"></script>
+<script src="/portal/shared/js/supabase-client.js?v=11.2.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=11.2.0"></script>
+<script src="/portal/shared/js/demo-storage-bridge.js?v=11.2.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=11.2.0"></script>
+<script src="/portal/shared/js/role-guard.js?v=11.2.0"></script>
+<script src="/portal/shared/js/portal-shell.js?v=11.2.0"></script>
+<script src="/portal/shared/js/portal-ui.js?v=11.2.0"></script>
+<script src="/portal/shared/js/admin-approval-flow.js?v=11.2.0"></script>
 </body>
 </html>
