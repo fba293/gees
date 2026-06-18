@@ -1,0 +1,13 @@
+Step,Check,Expected Result
+1,Upload ZIP contents to public_html,"portal folder, .htaccess, sw.js, manifest.json, header.js are at public_html root"
+2,Unregister old service worker,Old cached dashboard files no longer load
+3,Hard refresh with cache disabled,New header portal links and dashboard pages appear
+4,Open /portal/auth/student-login.html,Student login page opens
+5,Login as student,Redirects to /portal/student/dashboard.html
+6,Open /portal/admin/dashboard.html as student,Redirects to forbidden page
+7,Login as admin,Admin dashboard opens
+8,Login as super@gees.demo,Super admin dashboard opens
+9,Open /student-dashboard.html,Redirects to /portal/student/dashboard.html
+10,Open /portal/student/dashboard,Clean URL loads dashboard.html
+11,Mobile test sidebar,Sidebar opens/closes and page does not overflow
+12,Logout test,Logout clears demo session and routes to correct login page

@@ -1,0 +1,8 @@
+Check,Result,Notes
+Supabase project,ACTIVE_HEALTHY,GEES project checked
+Real profiles,0,No real user profiles found during preparation
+Security hardening migration,Applied,Phase 10E database hardening applied
+Storage buckets,Skipped,No-payment launch requirement
+Live browser QA,Pending,Requires deployed site/browser session
+First admin bootstrap,Prepared,Manual SQL templates included
+Service role key included,No,No service-role key exposed

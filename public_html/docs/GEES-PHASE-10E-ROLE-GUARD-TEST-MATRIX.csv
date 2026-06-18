@@ -1,0 +1,17 @@
+Test User Role,Target URL,Expected Access,Expected Result
+student,/portal/student/dashboard.html,Allow,Student dashboard opens
+student,/portal/student/application.html,Allow,Student application opens
+student,/portal/admin/dashboard.html,Deny,Forbidden page
+student,/portal/super-admin/dashboard.html,Deny,Forbidden page
+agent,/portal/agent/dashboard.html,Allow if active,Agent dashboard opens
+agent,/portal/student/dashboard.html,Deny,Forbidden page
+agent,/portal/admin/approvals.html,Deny,Forbidden page
+staff,/portal/staff/dashboard.html,Allow if active,Staff dashboard opens
+staff,/portal/agent/commissions.html,Deny,Forbidden page
+admin,/portal/admin/dashboard.html,Allow,Admin dashboard opens
+admin,/portal/admin/approvals.html,Allow,Admin approvals opens
+admin,/portal/super-admin/dashboard.html,Deny unless super_admin,Forbidden page
+super_admin,/portal/super-admin/dashboard.html,Allow,Super admin dashboard opens
+super_admin,/portal/admin/approvals.html,Allow,Admin approvals opens
+pending_agent,/portal/agent/dashboard.html,Deny,Pending/forbidden response
+rejected_staff,/portal/staff/dashboard.html,Deny,Forbidden response

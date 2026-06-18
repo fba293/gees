@@ -1,0 +1,12 @@
+Check,Result
+Supabase project,GEES / spljrvlebfeljqrqkiee
+Public tables,21
+Roles,5
+Permissions,18
+Role-permission mappings,51
+RLS policies,47
+GEES helper/RPC functions,12
+Profiles before live signup,0
+Approval records before live signup,0
+Storage buckets,Skipped for no-payment launch
+Service role key in frontend,No
