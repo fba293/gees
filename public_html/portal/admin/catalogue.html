@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Catalogue | GEES Portal</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=12.2.0">
+<link rel="stylesheet" href="/portal/shared/css/portal-crud.css?v=12.2.0">
+</head>
+<body class="gees-portal-page">
+<script>window.GEES_PORTAL_PAGE={"title":"Catalogue","requiredRoles":["admin","super_admin"],"requiredPermission":"manage_catalogue"};</script>
+<div class="gees-portal-shell">
+  <aside class="gees-portal-sidebar" data-portal-sidebar></aside>
+  <div class="gees-portal-main">
+    <header class="gees-portal-topbar" data-portal-topbar></header>
+    <main class="gees-portal-content">
+      <section class="gees-page-hero">
+        <div><span class="gees-kicker">Phase 12C · Catalogue CRUD</span><h1>Universities & Courses</h1><p>Create and view live Supabase universities and courses for GEES applications.</p></div>
+        <div class="gees-hero-tools"><a class="gees-btn gees-btn-outline" href="/portal/admin/applications.html"><i class="fa-solid fa-file-signature"></i> Applications</a></div>
+      </section>
+      <section class="gees-stats-grid">
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-building-columns"></i></div><div><strong data-stat="universities">0</strong><span>Universities</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-book-open"></i></div><div><strong data-stat="courses">0</strong><span>Courses</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-database"></i></div><div><strong>Supabase</strong><span>Live catalogue</span></div></article>
+        <article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-shield-halved"></i></div><div><strong>Admin</strong><span>RLS protected</span></div></article>
+      </section>
+      <div data-crud-page="admin-catalogue">
+        <section class="gees-panel gees-crud-panel">
+          <div class="gees-panel-head"><div><h2>Create university</h2><p>Add a live university row used by applications and course selection.</p></div></div>
+          <form class="gees-crud-form" data-crud-form="university">
+            <div class="gees-crud-form-grid">
+              <label>University Name<input name="name" required placeholder="INTI International University"></label>
+              <label>Country<input name="country" placeholder="Malaysia"></label>
+              <label>City<input name="city" placeholder="Nilai"></label>
+              <label>Website URL<input name="website_url" placeholder="https://example.edu.my"></label>
+              <label>Status<select name="status"><option value="active">Active</option><option value="inactive">Inactive</option></select></label>
+            </div>
+            <div class="gees-crud-actions"><button class="gees-btn gees-btn-primary" type="submit"><i class="fa-solid fa-plus"></i> Create University</button><span class="gees-crud-status" data-crud-status="university"></span></div>
+          </form>
+        </section>
+        <section class="gees-panel gees-crud-panel">
+          <div class="gees-panel-head"><div><h2>Create course</h2><p>Add a live course and attach it to a university.</p></div></div>
+          <form class="gees-crud-form" data-crud-form="course">
+            <div class="gees-crud-form-grid">
+              <label>University<select name="course_university_id"></select></label>
+              <label>Course Title<input name="title" required placeholder="Bachelor of Computer Science"></label>
+              <label>Field of Study<input name="field_of_study" placeholder="Computer Science"></label>
+              <label>Level<input name="level" placeholder="Bachelor"></label>
+              <label>Duration<input name="duration" placeholder="3 Years"></label>
+              <label>Tuition Fee<input name="tuition_fee" type="number" min="0" step="0.01" placeholder="45000"></label>
+              <label>Currency<input name="currency" value="MYR"></label>
+              <label>Status<select name="status"><option value="active">Active</option><option value="inactive">Inactive</option></select></label>
+            </div>
+            <div class="gees-crud-actions"><button class="gees-btn gees-btn-primary" type="submit"><i class="fa-solid fa-plus"></i> Create Course</button><span class="gees-crud-status" data-crud-status="course"></span></div>
+          </form>
+        </section>
+        <section class="gees-panel"><div class="gees-panel-head"><div><h2>Live universities</h2><p>Rows loaded from public.universities.</p></div></div><div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>University</th><th>Location</th><th>Status</th></tr></thead><tbody data-crud-table="universities"><tr><td colspan="3">Loading universities...</td></tr></tbody></table></div></section>
+        <section class="gees-panel"><div class="gees-panel-head"><div><h2>Live courses</h2><p>Rows loaded from public.courses.</p></div></div><div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Course</th><th>Level</th><th>Status</th></tr></thead><tbody data-crud-table="courses"><tr><td colspan="3">Loading courses...</td></tr></tbody></table></div></section>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="gees-portal-overlay" data-portal-overlay></div><div class="gees-toast-root" id="gees-toast-root"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2';"></script>
+<script src="/portal/shared/js/supabase-client.js?v=12.2.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=12.2.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=12.2.0"></script>
+<script src="/portal/shared/js/supabase-ready-bridge.js?v=12.2.0"></script>
+<script src="/portal/shared/js/role-guard.js?v=12.2.0"></script>
+<script src="/portal/shared/js/portal-shell.js?v=12.2.0"></script>
+<script src="/portal/shared/js/portal-ui.js?v=12.2.0"></script>
+<script src="/portal/shared/js/gees-catalogue.js?v=12.2.0"></script>
+</body>
+</html>
