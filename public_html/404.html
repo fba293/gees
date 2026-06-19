@@ -1,32 +1,366 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+
+<html data-theme="light" lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>404 Not Found | GEES</title>
-  <meta name="robots" content="noindex, follow">
-  <link rel="stylesheet" href="/global.css">
-  <style>
-    .gees-placeholder-page { min-height: 70vh; display:grid; place-items:center; padding:120px 20px 60px; background:#fff8ea; }
-    .gees-placeholder-card { max-width:760px; border:2px solid #141927; border-radius:18px; background:#fff; padding:32px; box-shadow:8px 8px 0 #141927; font-family:Inter,system-ui,sans-serif; }
-    .gees-placeholder-card h1 { margin:0 0 10px; font-size:clamp(28px,4vw,48px); color:#141927; }
-    .gees-placeholder-card p { color:#4b5563; line-height:1.65; }
-    .gees-placeholder-card a { display:inline-flex; margin-top:16px; padding:12px 18px; border:2px solid #141927; border-radius:12px; background:#ffcc69; color:#141927; text-decoration:none; font-weight:800; }
+<script>
+    (() => {
+      try {
+        const saved = localStorage.getItem('gees_theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = saved || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.classList.toggle('light', theme !== 'dark');
+      } catch (error) {}
+    })();
+  </script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<title>404 Page Not Found | GEES — Global Education Expert Services</title>
+<meta content="The page you are looking for could not be found. Return to the GEES homepage or use the universal navigation to continue exploring study abroad options." name="description"/>
+<meta content="noindex, follow" name="robots"/>
+<meta content="#f4f1eb" name="theme-color"/>
+<meta content="light dark" name="color-scheme"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://cdnjs.cloudflare.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Cormorant+Garamond:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+<link href="/global.css?v=11.1.0" rel="stylesheet"/>
+<style>
+    :root {
+      --nf-page-bg: #f3f0ea;
+      --nf-page-bg-2: #ece8df;
+      --nf-ink: #0c1020;
+      --nf-muted: rgba(12, 16, 32, .66);
+      --nf-gold: #d8a75f;
+      --nf-blue: #003366;
+      --nf-header-safe: var(--gees-header-safe, 104px);
+      --nf-ease: cubic-bezier(.2,.8,.2,1);
+    }
+
+    html[data-theme="dark"],
+    html.dark {
+      --nf-page-bg: #0d111a;
+      --nf-page-bg-2: #121826;
+      --nf-ink: #f8fafc;
+      --nf-muted: rgba(248, 250, 252, .68);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--nf-ink);
+      background:
+        radial-gradient(circle at 18% 16%, rgba(255,255,255,.42), transparent 22rem),
+        radial-gradient(circle at 84% 10%, rgba(216,167,95,.18), transparent 24rem),
+        linear-gradient(135deg, var(--nf-page-bg), var(--nf-page-bg-2));
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; }
+
+    .not-found-page {
+      min-height: 100svh;
+      position: relative;
+      display: grid;
+      isolation: isolate;
+      background: var(--nf-page-bg);
+      overflow: hidden;
+    }
+
+    .not-found-video-stage {
+      position: relative;
+      min-height: 100svh;
+      width: 100%;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 44%, rgba(255,255,255,.38), transparent 28rem),
+        linear-gradient(135deg, #f3f0ea, #ebe7dd);
+    }
+
+    html.dark .not-found-video-stage,
+    html[data-theme="dark"] .not-found-video-stage {
+      background:
+        radial-gradient(circle at 50% 44%, rgba(255,255,255,.08), transparent 28rem),
+        linear-gradient(135deg, #0d111a, #151b2a);
+    }
+
+    .not-found-video-frame {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .not-found-video-frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.14), transparent 18%, transparent 76%, rgba(255,255,255,.18)),
+        radial-gradient(circle at 50% 48%, transparent 0 22rem, rgba(255,255,255,.13) 40rem),
+        linear-gradient(90deg, rgba(255,255,255,.06), transparent 16%, transparent 84%, rgba(255,255,255,.06));
+    }
+
+    html.dark .not-found-video-frame::before,
+    html[data-theme="dark"] .not-found-video-frame::before {
+      background:
+        linear-gradient(180deg, rgba(13,17,26,.28), transparent 18%, transparent 76%, rgba(13,17,26,.30)),
+        radial-gradient(circle at 50% 48%, transparent 0 22rem, rgba(13,17,26,.20) 42rem);
+    }
+
+    .not-found-video {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 112vw;
+      height: 112svh;
+      min-width: 112%;
+      min-height: 112%;
+      object-fit: cover;
+      object-position: center;
+      transform: translate(-50%, -50%) scale(1.03);
+      transform-origin: center;
+      background: #f3f0ea;
+      filter: saturate(1.04) contrast(1.015);
+    }
+
+    /* Extra crop + soft cover for exported video marks near the bottom-right edge. */
+    .video-edge-shield {
+      position: absolute;
+      right: -1px;
+      bottom: -1px;
+      z-index: 4;
+      width: clamp(150px, 18vw, 300px);
+      height: clamp(72px, 10vw, 148px);
+      pointer-events: none;
+      border-top-left-radius: 42px;
+      background:
+        radial-gradient(circle at 100% 100%, rgba(243,240,234,.98), rgba(243,240,234,.88) 46%, rgba(243,240,234,.08) 72%, transparent 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      opacity: .92;
+    }
+
+    html.dark .video-edge-shield,
+    html[data-theme="dark"] .video-edge-shield {
+      background:
+        radial-gradient(circle at 100% 100%, rgba(13,17,26,.96), rgba(13,17,26,.82) 46%, rgba(13,17,26,.08) 72%, transparent 100%);
+      opacity: .86;
+    }
+
+    .not-found-overlay {
+      position: relative;
+      z-index: 5;
+      min-height: 100svh;
+      display: grid;
+      align-content: end;
+      justify-items: center;
+      padding: calc(var(--nf-header-safe) + 18px) max(16px, env(safe-area-inset-left)) calc(28px + env(safe-area-inset-bottom));
+      pointer-events: none;
+    }
+
+    .not-found-actions {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid rgba(12,16,32,.10);
+      border-radius: 999px;
+      background: rgba(255,255,255,.68);
+      box-shadow: 0 18px 50px rgba(12,16,32,.10), inset 0 1px 0 rgba(255,255,255,.72);
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+    }
+
+    html.dark .not-found-actions,
+    html[data-theme="dark"] .not-found-actions {
+      border-color: rgba(255,255,255,.12);
+      background: rgba(13,17,26,.68);
+      box-shadow: 0 18px 50px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    .not-found-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(12,16,32,.12);
+      background: rgba(255,255,255,.68);
+      color: #0c1020;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 900;
+      transition: transform .18s var(--nf-ease), background .18s ease, border-color .18s ease;
+    }
+
+    .not-found-action.primary {
+      color: #ffffff;
+      border-color: transparent;
+      background: linear-gradient(135deg, #003366, #2563eb);
+      box-shadow: 0 12px 26px rgba(37,99,235,.20);
+    }
+
+    .not-found-action:hover,
+    .not-found-action:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(216,167,95,.42);
+      outline: none;
+    }
+
+    html.dark .not-found-action,
+    html[data-theme="dark"] .not-found-action {
+      border-color: rgba(255,255,255,.12);
+      background: rgba(255,255,255,.08);
+      color: #f8fafc;
+    }
+
+    html.dark .not-found-action.primary,
+    html[data-theme="dark"] .not-found-action.primary {
+      color: #0d111a;
+      background: linear-gradient(135deg, #f5c967, #ffd700);
+      box-shadow: 0 12px 26px rgba(255,215,0,.18);
+    }
+
+    .video-fallback {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      text-align: center;
+      color: var(--nf-ink);
+      background:
+        radial-gradient(circle at 50% 42%, rgba(216,167,95,.16), transparent 22rem),
+        linear-gradient(135deg, var(--nf-page-bg), var(--nf-page-bg-2));
+    }
+
+    .video-fallback h1 {
+      margin: 0;
+      font-size: clamp(7rem, 22vw, 18rem);
+      line-height: .8;
+      letter-spacing: -.12em;
+      color: transparent;
+      background: linear-gradient(180deg, rgba(202,125,66,.78), rgba(223,210,168,.42));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .video-fallback p {
+      margin: 18px 0 0;
+      color: var(--nf-muted);
+      font-weight: 800;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 760px) {
+      .not-found-video {
+        width: 124vw;
+        height: 114svh;
+        min-width: 124%;
+        min-height: 114%;
+        transform: translate(-50%, -50%) scale(1.04);
+      }
+
+      .not-found-overlay {
+        padding-bottom: calc(18px + env(safe-area-inset-bottom));
+      }
+
+      .not-found-actions {
+        width: min(420px, 100%);
+        border-radius: 28px;
+      }
+
+      .not-found-action {
+        flex: 1 1 140px;
+      }
+
+      .video-edge-shield {
+        width: 170px;
+        height: 84px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
   </style>
 </head>
-<body>
-  <div id="gees-header-placeholder"></div>
-  <main id="gees-pjax-root" data-page="404">
-    <section class="gees-placeholder-page">
-      <article class="gees-placeholder-card">
-        <h1>404 Not Found</h1>
-        <p>This is a structured placeholder page in the updated GEES project tree. Replace this page with final content/design when ready.</p>
-        <a href="/index.html">Back to Home</a>
-      </article>
-    </section>
-  </main>
-  <div id="gees-footer-placeholder"></div>
-  <script src="/header.js" defer></script>
-  <script src="/footer.js" defer></script>
+<body class="gees-universal-page gees-404-page" data-page="404"><div id="gees-header-placeholder"></div>
+<main class="not-found-page" data-gees-pjax-view="true" data-page="404" id="gees-pjax-root">
+<section aria-labelledby="errorTitle" class="not-found-video-stage">
+<h1 class="sr-only" id="errorTitle">404 page not found</h1>
+<div aria-hidden="true" class="not-found-video-frame">
+<div class="video-fallback">
+<div>
+<h1>404</h1>
+<p>This page went off the map.</p>
+</div>
+</div>
+<video autoplay="" class="not-found-video" loop="" muted="" playsinline="" preload="auto">
+<!-- Put elephant.webm inside your public/public_html root. The live URL should be /elephant.webm. -->
+<source src="/elephant.webm" type="video/webm"/>
+<source src="./elephant.webm" type="video/webm"/>
+<source src="./public/elephant.webm" type="video/webm"/>
+</video>
+<span aria-hidden="true" class="video-edge-shield"></span>
+</div>
+<div aria-label="404 page quick actions" class="not-found-overlay">
+<div class="not-found-actions">
+<a class="not-found-action primary" href="/"><i aria-hidden="true" class="fa-solid fa-house"></i> Back To Homepage</a>
+<a class="not-found-action" href="/courses.html"><i aria-hidden="true" class="fa-solid fa-book-open"></i> Courses</a>
+<a class="not-found-action" href="/contact-us.html"><i aria-hidden="true" class="fa-solid fa-headset"></i> Contact GEES</a>
+</div>
+</div>
+</section>
+</main><div id="gees-footer-placeholder"></div>
+<script>
+    (() => {
+      const video = document.querySelector('.not-found-video');
+      if (!video) return;
+
+      const tryPlay = () => video.play?.().catch(() => {});
+      video.addEventListener('loadeddata', tryPlay, { once: true });
+      video.addEventListener('canplay', tryPlay, { once: true });
+      tryPlay();
+    })();
+  </script>
+
+<script defer src="/header.js?v=12.8.0"></script>
+<script defer src="/footer.js?v=12.8.0"></script>
+<script defer src="/gees-router.js?v=12.8.0"></script>
+<script defer src="/global.js?v=12.8.0"></script>
 </body>
 </html>
