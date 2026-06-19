@@ -8,6 +8,7 @@
   function sb(){ return window.GEESSupabase || window.GEES_REAL_SUPABASE || null; }
   function role(s){ return String((s && s.role) || '').toLowerCase().replace(/-/g,'_'); }
   function n(v){ return Number(v || 0).toLocaleString(); }
+  var latestCounts = null;
 
   async function current(){
     if(window.GEESAuthService && window.GEESAuthService.getPortalSession){
@@ -16,33 +17,34 @@
     return null;
   }
 
+  async function dashboardCounts(){
+    var c = sb();
+    if(!c) return {};
+    try{
+      var r = await c.rpc('get_gees_dashboard_counts');
+      if(r && !r.error && r.data){ latestCounts = r.data; return r.data; }
+    }catch(e){}
+    return latestCounts || {};
+  }
+
   async function count(table){
+    var map = {profiles:'profiles',students:'students',agents:'agents',applications:'applications',documents:'documents',leads:'leads',gees_tasks:'tasks',tasks:'tasks'};
+    var counts = latestCounts || await dashboardCounts();
+    var key = map[table] || table;
+    if(Object.prototype.hasOwnProperty.call(counts,key)) return counts[key] || 0;
     var c = sb();
     if(!c) return 0;
-    try{
-      var r = await c.from(table).select('id',{count:'exact',head:true});
-      return r && !r.error ? (r.count || 0) : 0;
-    }catch(e){ return 0; }
+    try{ var r = await c.from(table).select('id',{count:'exact',head:true}); return r && !r.error ? (r.count || 0) : 0; }catch(e){ return 0; }
   }
 
   async function list(table, cols){
     var c = sb();
     if(!c) return [];
-    try{
-      var q = c.from(table).select(cols || '*').limit(6);
-      var r = await q;
-      return r && !r.error ? (r.data || []) : [];
-    }catch(e){ return []; }
+    try{ var r = await c.from(table).select(cols || '*').limit(6); return r && !r.error ? (r.data || []) : []; }catch(e){ return []; }
   }
 
-  function card(icon, value, label){
-    return '<article class="gees-stat-card gees-live-card"><div class="gees-stat-icon"><i class="fa-solid '+esc(icon)+'"></i></div><div><strong>'+esc(value)+'</strong><span>'+esc(label)+'</span></div></article>';
-  }
-
-  function setStats(items){
-    var grid = document.querySelector('.gees-stats-grid');
-    if(grid) grid.innerHTML = items.join('');
-  }
+  function card(icon, value, label){ return '<article class="gees-stat-card gees-live-card"><div class="gees-stat-icon"><i class="fa-solid '+esc(icon)+'"></i></div><div><strong>'+esc(value)+'</strong><span>'+esc(label)+'</span></div></article>'; }
+  function setStats(items){ var grid = document.querySelector('.gees-stats-grid'); if(grid) grid.innerHTML = items.join(''); }
 
   function statusBox(){
     var box = document.querySelector('[data-gees-live-panel]');
@@ -88,6 +90,7 @@
     var s = await current();
     if(!c){ setStatus('Supabase client is not loaded yet. Refresh again after the page loads.','warning',['No client']); return; }
     if(!s){ setStatus('No real GEES login found. Please sign in first.','warning',['Waiting for login']); return; }
+    latestCounts = await dashboardCounts();
     var r = role(s);
     if(r === 'student'){
       setStats([card('fa-file-signature',n(await count('applications')),'My Applications'),card('fa-folder-open',n(await count('documents')),'My Documents'),card('fa-bell','0','Unread Notifications'),card('fa-user-check',s.status || 'active','Account Status')]);
@@ -102,7 +105,7 @@
       setStats([card('fa-file-signature',n(await count('applications')),'Applications'),card('fa-users-gear',n(await count('profiles')),'Portal Users'),card('fa-user-clock','0','Pending Approvals'),card('fa-clipboard-list',n(await count('audit_logs')),'Audit Logs')]);
       setRecords('Recent portal users', rowsFrom(await list('profiles','id,email,full_name,role,status,team_id'),'profile'));
     }
-    setStatus('Connected to live Supabase data.','success',['Role: '+r,'Source: Supabase']);
+    setStatus('Connected to live Supabase data.','success',['Role: '+r,'Source: Supabase','Profiles: '+n(latestCounts.profiles),'Students: '+n(latestCounts.students),'Agents: '+n(latestCounts.agents)]);
   }
 
   ready(function(){
