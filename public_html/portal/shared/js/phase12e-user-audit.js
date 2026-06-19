@@ -1,0 +1,10 @@
+(function(){
+'use strict';
+function q(s,r){return(r||document).querySelector(s)}
+function e(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]})}
+async function boot(){var c=window.GEESSupabase;if(window.GEESWaitForSupabaseClient)c=await window.GEESWaitForSupabaseClient();var s=window.GEESCurrentPortalSession;if(window.GEESAuthService&&window.GEESAuthService.getPortalSession)s=await window.GEESAuthService.getPortalSession();if(!c)throw new Error('Supabase client unavailable');if(!s||s.source!=='supabase')throw new Error('Real admin login required');return{c:c,s:s}}
+async function rows(r){var x=await r;if(x.error)throw new Error(x.error.message);return x.data||[]}
+async function one(r){var x=await r.maybeSingle();if(x.error)throw new Error(x.error.message);return x.data}
+async function start(){var root=q('[data-phase-page="user-details"]');if(!root)return;try{var ctx=await boot();var id=new URLSearchParams(location.search).get('id')||ctx.s.id;var p=await one(ctx.c.from('profiles').select('id,email,full_name,phone,role,status,team_id,created_at').eq('id',id));q('[data-user-title]').textContent=p.full_name||p.email||p.id;q('[data-user-meta]').textContent=(p.role||'user')+' · '+(p.status||'');q('[data-user-profile]').innerHTML='<tr><td>Email</td><td>'+e(p.email)+'</td></tr><tr><td>Phone</td><td>'+e(p.phone||'—')+'</td></tr><tr><td>Team</td><td>'+e(p.team_id||'—')+'</td></tr>';var a=await rows(ctx.c.from('audit_logs').select('id,action,entity_type,created_at').eq('entity_id',id).order('created_at',{ascending:false}).limit(25));q('[data-user-audits]').innerHTML=a.length?a.map(function(x){return'<tr><td>'+e(x.action)+'</td><td>'+e(x.created_at||'—')+'</td></tr>'}).join(''):'<tr><td colspan="2">No audit history yet.</td></tr>'}catch(err){root.innerHTML='<div class="gees-live-only-note">'+e(err.message)+'</div>'}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
