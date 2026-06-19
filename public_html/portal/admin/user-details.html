@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>User Details | GEES Portal</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=13.0.0">
+<link rel="stylesheet" href="/portal/shared/css/portal-crud.css?v=13.0.0">
+<link rel="stylesheet" href="/portal/shared/css/gees-phase-core.css?v=13.0.0">
+</head>
+<body class="gees-portal-page">
+<script>window.GEES_PORTAL_PAGE={"title":"User Details","requiredRoles":["admin","super_admin"],"requiredPermission":"admin.dashboard"};</script>
+<div class="gees-portal-shell">
+  <aside class="gees-portal-sidebar" data-portal-sidebar></aside>
+  <div class="gees-portal-main">
+    <header class="gees-portal-topbar" data-portal-topbar></header>
+    <main class="gees-portal-content">
+
+<section class="gees-page-hero"><div><span class="gees-kicker">Phase 12E</span><h1 data-user-title>User Details</h1><p data-user-meta>Loading profile...</p></div><div class="gees-hero-tools"><a class="gees-btn gees-btn-outline" href="/portal/admin/users.html"><i class="fa-solid fa-arrow-left"></i> Users</a></div></section>
+<div data-phase-page="user-details">
+<section class="gees-panel"><div class="gees-panel-head"><h2>Profile Summary</h2></div><div class="gees-table-wrap"><table class="gees-table"><tbody data-user-profile><tr><td>Loading...</td></tr></tbody></table></div></section>
+<section class="gees-panel"><div class="gees-panel-head"><h2>Audit History</h2></div><div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Action</th><th>Date</th></tr></thead><tbody data-user-audits><tr><td colspan="2">Loading...</td></tr></tbody></table></div></section>
+</div>
+
+    </main>
+  </div>
+</div>
+<div class="gees-portal-overlay" data-portal-overlay></div>
+<div class="gees-toast-root" id="gees-toast-root"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2';"></script>
+<script src="/portal/shared/js/supabase-client.js?v=13.0.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=13.0.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=13.0.0"></script>
+<script src="/portal/shared/js/supabase-ready-bridge.js?v=13.0.0"></script>
+<script src="/portal/shared/js/role-guard.js?v=13.0.0"></script>
+<script src="/portal/shared/js/portal-shell.js?v=13.0.0"></script>
+<script src="/portal/shared/js/portal-ui.js?v=13.0.0"></script>
+<script src="/portal/shared/js/gees-phase-core.js?v=13.0.0"></script>
+<script src="/portal/shared/js/phase12e-user-audit.js?v=13.0.0"></script>
+</body>
+</html>
