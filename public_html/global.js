@@ -199,9 +199,82 @@
     document.addEventListener('mouseleave', reset, { passive: true });
   }
 
+  window.GEESRefreshSpotlight = function GEESRefreshSpotlight(root) {
+    enhanceTargets(root || document);
+  };
+
+  document.addEventListener('gees:page:ready', function (event) {
+    enhanceTargets((event.detail && event.detail.main) || document);
+  });
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init, { once: true });
   } else {
     init();
   }
+})();
+
+/* =========================================================
+   GEES True PJAX Page Runtime v11.0.0
+   Named page initializers + cleanup hooks for router swaps.
+   ========================================================= */
+(function(){
+  'use strict';
+  if(window.GEES_PAGE_RUNTIME_READY) return;
+  window.GEES_PAGE_RUNTIME_READY = true;
+  const runtime = { cleanups: [], currentPage: null };
+  runtime.addCleanup = function(fn){ if(typeof fn==='function') runtime.cleanups.push(fn); };
+  runtime.destroy = function(){
+    while(runtime.cleanups.length){ try{ runtime.cleanups.pop()(); }catch(e){} }
+    document.documentElement.classList.remove('gees-page-busy');
+  };
+  function refreshShared(root){
+    try{ window.GEESRefreshSpotlight && window.GEESRefreshSpotlight(root||document); }catch(e){}
+    try{ window.GEESFooterRefresh && window.GEESFooterRefresh(); }catch(e){}
+    document.querySelectorAll('img:not([loading])').forEach(function(img){ img.loading='lazy'; });
+    document.querySelectorAll('img:not([decoding])').forEach(function(img){ img.decoding='async'; });
+  }
+  window.initHome = function(root){ refreshShared(root); document.body.classList.add('gees-home-page'); };
+  window.initServices = function(root){ refreshShared(root); };
+  window.initCourses = function(root){ refreshShared(root); };
+  window.initContact = function(root){ refreshShared(root); };
+  window.initUniversity = function(root){ refreshShared(root); };
+  window.initBlog = function(root){ refreshShared(root); };
+  window.initDestinations = function(root){ refreshShared(root); };
+  window.initThankYou = function(root){ refreshShared(root); };
+  window.initError404 = function(root){ refreshShared(root); };
+  function toFnName(page){
+    if(page==='thank-you') return 'initThankYou';
+    if(page==='404') return 'initError404';
+    return 'init' + String(page||'page').split(/[^a-z0-9]+/i).filter(Boolean).map(function(part){return part.charAt(0).toUpperCase()+part.slice(1)}).join('');
+  }
+  window.GEESPageRuntime = runtime;
+  window.GEESRunPageInit = function(page, root){
+    runtime.currentPage = page || (root && root.dataset && root.dataset.page) || document.body.dataset.page || 'page';
+    const fn = window[toFnName(runtime.currentPage)];
+    if(typeof fn === 'function'){ try{ fn(root || document.getElementById('gees-pjax-root') || document); }catch(e){ console.warn('[GEES init]', runtime.currentPage, e); } }
+    refreshShared(root || document);
+  };
+  document.addEventListener('gees:page:before-leave', function(){ runtime.destroy(); });
+  document.addEventListener('gees:page:ready', function(e){ window.GEESRunPageInit((e.detail&&e.detail.page)||document.body.dataset.page, (e.detail&&e.detail.root)||(e.detail&&e.detail.main)); });
+})();
+
+
+/* GEES TRUE PJAX V12.8 INIT BRIDGE
+   Keeps page-specific behavior alive after #gees-pjax-root swaps. */
+(function(){
+  'use strict';
+  if(window.GEES_PJAX_INIT_BRIDGE_V128) return;
+  window.GEES_PJAX_INIT_BRIDGE_V128 = true;
+  function root(){ return document.getElementById('gees-pjax-root') || document; }
+  const oldInitHome = window.initHome;
+  window.initHome = function(r){
+    try{ if(typeof oldInitHome === 'function') oldInitHome(r || root()); }catch(e){}
+    document.body.classList.add('gees-home-page');
+    try{ window.GEESHomeV125 && typeof window.GEESHomeV125.init === 'function' && window.GEESHomeV125.init(); }catch(e){}
+    try{ window.dispatchEvent(new Event('gees:pjax-navigated')); }catch(e){}
+  };
+  document.addEventListener('gees:page:before-leave', function(){
+    document.body.classList.remove('gees-home-page');
+  });
 })();
