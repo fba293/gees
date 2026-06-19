@@ -8,36 +8,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="/portal/shared/css/portal.css?v=11.0.0">
-<link rel="stylesheet" href="/portal/shared/css/portal-live-data.css?v=11.0.0">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=14.0.0">
+<link rel="stylesheet" href="/portal/shared/css/portal-live-data.css?v=14.0.0">
 </head>
 <body class="gees-portal-page gees-live-dashboard-page" data-live-dashboard="true">
 <script>window.GEES_PORTAL_PAGE={"title":"Admin Dashboard","requiredRoles":["admin","super_admin"],"requiredPermission":"admin.dashboard"};</script>
-<div class="gees-portal-shell">
-  <aside class="gees-portal-sidebar" data-portal-sidebar></aside>
-  <div class="gees-portal-main">
-    <header class="gees-portal-topbar" data-portal-topbar></header>
-    <main class="gees-portal-content">
-      <section class="gees-page-hero">
-        <div><span class="gees-kicker">Operations</span><h1>Admin Dashboard</h1><p>Manage applications, users, approvals, audit logs, reports, and CRM workflow from live Supabase data.</p></div>
-        <div class="gees-hero-tools"><button class="gees-btn gees-btn-outline" data-gees-live-refresh><i class="fa-solid fa-rotate"></i> Refresh Live Data</button></div>
-      </section>
-      <section class="gees-stats-grid"><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-file-signature"></i></div><div><strong>Live</strong><span>Applications</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-users-gear"></i></div><div><strong>Live</strong><span>Portal Users</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-user-clock"></i></div><div><strong>Live</strong><span>Pending Approvals</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-clipboard-list"></i></div><div><strong>Live</strong><span>Audit Logs</span></div></article></section>
-      <section class="gees-action-grid"><a class="gees-action-card" href="/portal/admin/approvals.html"><i class="fa-solid fa-user-clock"></i><strong>Approvals</strong><span>Approve pending agent and staff users.</span></a><a class="gees-action-card" href="/portal/admin/reports.html"><i class="fa-solid fa-file-lines"></i><strong>Reports</strong><span>Open analytics reports.</span></a><a class="gees-action-card" href="/portal/admin/crm-dashboard.html"><i class="fa-solid fa-diagram-project"></i><strong>CRM</strong><span>Manage student pipeline.</span></a></section>
-      <section class="gees-panel"><div class="gees-panel-head"><h2>Live Supabase records</h2><span class="gees-badge">Live-ready</span></div><div class="gees-table-wrap"><table class="gees-table"><thead><tr><th>Name</th><th>Status</th><th>Note</th></tr></thead><tbody><tr><td>Waiting for live data</td><td><span class="gees-badge">Connecting</span></td><td>The Phase 11 live adapter will replace this table after Supabase session validation.</td></tr></tbody></table></div></section>
-      <section class="gees-panel gees-demo-panel"><div class="gees-panel-head"><h2>Phase 11 connection</h2><span class="gees-badge">Supabase</span></div><p>This dashboard now loads live Supabase counts and recent records when a real GEES user is logged in. Demo accounts continue to use demo/static mode.</p></section>
-    </main>
-  </div>
-</div>
-<div class="gees-portal-overlay" data-portal-overlay></div>
-<div class="gees-toast-root" id="gees-toast-root"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/portal/shared/js/supabase-client.js?v=11.0.0"></script>
-<script src="/portal/shared/js/demo-backend.js?v=11.0.0"></script>
-<script src="/portal/shared/js/auth-service.js?v=11.0.0"></script>
-<script src="/portal/shared/js/role-guard.js?v=11.0.0"></script>
-<script src="/portal/shared/js/portal-shell.js?v=11.0.0"></script>
-<script src="/portal/shared/js/portal-ui.js?v=11.0.0"></script>
-<script src="/portal/shared/js/portal-live-data.js?v=11.0.0"></script>
+<div class="gees-portal-shell"><aside class="gees-portal-sidebar" data-portal-sidebar></aside><div class="gees-portal-main"><header class="gees-portal-topbar" data-portal-topbar></header><main class="gees-portal-content">
+<section class="gees-page-hero"><div><span class="gees-kicker">Operations</span><h1>Admin Dashboard</h1><p>Manage live GEES records from Supabase.</p></div><div class="gees-hero-tools"><button class="gees-btn gees-btn-outline" data-gees-live-refresh><i class="fa-solid fa-rotate"></i> Refresh Live Data</button></div></section>
+<section class="gees-stats-grid"><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-file-signature"></i></div><div><strong data-real-count="application-count">0</strong><span>Applications</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-users-gear"></i></div><div><strong data-real-count="admin-students">0</strong><span>Students</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-user-clock"></i></div><div><strong>0</strong><span>Pending Approvals</span></div></article><article class="gees-stat-card"><div class="gees-stat-icon"><i class="fa-solid fa-clipboard-list"></i></div><div><strong>0</strong><span>Audit Logs</span></div></article></section>
+<section class="gees-action-grid"><a class="gees-action-card" href="/portal/admin/approvals.html"><i class="fa-solid fa-user-clock"></i><strong>Approvals</strong><span>Review pending profiles.</span></a><a class="gees-action-card" href="/portal/admin/reports.html"><i class="fa-solid fa-file-lines"></i><strong>Reports</strong><span>Open analytics reports.</span></a><a class="gees-action-card" href="/portal/admin/crm-dashboard.html"><i class="fa-solid fa-diagram-project"></i><strong>CRM</strong><span>Manage pipeline.</span></a></section>
+<section class="gees-panel"><div class="gees-panel-head"><h2>Recent live records</h2><span class="gees-badge">Supabase</span></div><div class="gees-table-wrap"><div class="gees-empty-state gees-live-empty" data-empty-state><i class="fa-solid fa-database"></i><strong>No recent records yet</strong><span>Live records will appear here.</span></div></div></section>
+<section class="gees-panel"><div class="gees-panel-head"><h2>Real Data Mode</h2><span class="gees-badge">Live</span></div><p>This dashboard reads Supabase records only. Empty sections show 0 until records are created.</p></section>
+</main></div></div><div class="gees-portal-overlay" data-portal-overlay></div><div class="gees-toast-root" id="gees-toast-root"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/portal/shared/js/supabase-client.js?v=14.0.0"></script><script src="/portal/shared/js/auth-service.js?v=14.0.0"></script><script src="/portal/shared/js/role-guard.js?v=14.0.0"></script><script src="/portal/shared/js/portal-shell.js?v=14.0.0"></script><script src="/portal/shared/js/portal-ui.js?v=14.0.0"></script><script src="/portal/shared/js/portal-live-data.js?v=14.0.0"></script>
 </body>
 </html>
