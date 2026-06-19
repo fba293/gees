@@ -1,67 +1,31 @@
-/* GEES Service Worker — Phase 8 Live Upload Ready */
-const GEES_CACHE_VERSION = 'gees-phase8-8.0.0';
-const GEES_STATIC_CACHE = GEES_CACHE_VERSION + '-static';
-const GEES_CORE_ASSETS = [
-  '/',
-  '/index.html',
-  '/global.css',
-  '/header.js',
-  '/footer.js',
-  '/offline.html',
-  '/portal/shared/css/portal.css?v=8.0.0',
-  '/portal/shared/js/demo-backend.js?v=8.0.0',
-  '/portal/shared/js/role-guard.js?v=8.0.0',
-  '/portal/shared/js/portal-shell.js?v=8.0.0',
-  '/portal/shared/js/portal-ui.js?v=8.0.0'
+/* GEES Service Worker — static cache + stale-while-revalidate */
+const GEES_SW_VERSION = 'gees-sw-v12.8-true-pjax-cleanup';
+const STATIC_CACHE = `${GEES_SW_VERSION}-static`;
+const RUNTIME_CACHE = `${GEES_SW_VERSION}-runtime`;
+const STATIC_ASSETS = [
+  '/', '/index.html', '/global.css', '/index.css', '/header.js', '/footer.js', '/global.js', '/gees-router.js', '/index.js', '/index-search.js'
 ];
-
 self.addEventListener('install', event => {
+  event.waitUntil(caches.open(STATIC_CACHE).then(cache => cache.addAll(STATIC_ASSETS.filter(Boolean))).catch(()=>{}));
   self.skipWaiting();
-  event.waitUntil(caches.open(GEES_STATIC_CACHE).then(cache => cache.addAll(GEES_CORE_ASSETS.map(url => new Request(url, { cache: 'reload' }))).catch(() => undefined)));
 });
-
 self.addEventListener('activate', event => {
-  event.waitUntil((async () => {
-    const keys = await caches.keys();
-    await Promise.all(keys.filter(key => key.indexOf('gees-') === 0 && key !== GEES_STATIC_CACHE).map(key => caches.delete(key)));
-    await self.clients.claim();
-  })());
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => !k.startsWith(GEES_SW_VERSION)).map(k => caches.delete(k)))));
+  self.clients.claim();
 });
-
-function isPortalHtml(url, request) {
-  return url.origin === location.origin && url.pathname.startsWith('/portal/') && (request.mode === 'navigate' || request.destination === 'document' || url.pathname.endsWith('.html'));
+function shouldCache(req) {
+  const url = new URL(req.url);
+  if (url.origin !== location.origin) return false;
+  return ['document','style','script','image','font'].includes(req.destination) || /\.(html|css|js|webp|avif|png|jpg|jpeg|svg|woff2?)$/i.test(url.pathname);
 }
-
 self.addEventListener('fetch', event => {
-  const request = event.request;
-  if (request.method !== 'GET') return;
-  const url = new URL(request.url);
-  if (url.origin !== location.origin) return;
-
-  // Portal/auth documents must be fresh so role guards and redirects do not get stuck in old cache.
-  if (isPortalHtml(url, request)) {
-    event.respondWith(fetch(request).catch(() => caches.match('/offline.html').then(r => r || new Response('GEES portal is offline. Please reconnect and refresh.', { status: 503, headers: { 'Content-Type': 'text/plain' } }))));
-    return;
-  }
-
-  // Public documents: network first, offline fallback.
-  if (request.mode === 'navigate' || request.destination === 'document') {
-    event.respondWith(fetch(request).then(response => {
-      const copy = response.clone();
-      caches.open(GEES_STATIC_CACHE).then(cache => cache.put(request, copy));
-      return response;
-    }).catch(() => caches.match(request).then(r => r || caches.match('/offline.html'))));
-    return;
-  }
-
-  // Static same-origin assets: stale-while-revalidate.
-  if (/\.(css|js|png|jpg|jpeg|webp|svg|ico|json|woff2?)$/i.test(url.pathname)) {
-    event.respondWith(caches.match(request).then(cached => {
-      const fresh = fetch(request).then(response => {
-        if (response && response.ok) caches.open(GEES_STATIC_CACHE).then(cache => cache.put(request, response.clone()));
-        return response;
-      }).catch(() => cached);
-      return cached || fresh;
-    }));
-  }
+  const req = event.request;
+  if (req.method !== 'GET' || !shouldCache(req)) return;
+  event.respondWith((async () => {
+    const cache = await caches.open(req.destination === 'document' ? RUNTIME_CACHE : STATIC_CACHE);
+    const cached = await cache.match(req);
+    const network = fetch(req).then(res => { if (res && res.ok) cache.put(req, res.clone()); return res; }).catch(() => cached);
+    if (req.destination === 'document') return network || cached;
+    return cached || network;
+  })());
 });
