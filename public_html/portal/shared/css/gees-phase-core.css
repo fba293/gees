@@ -1,0 +1,17 @@
+.gees-phase-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.gees-phase-card{padding:20px;border:1px solid rgba(20,25,39,.10);border-radius:22px;background:rgba(255,255,255,.78);box-shadow:0 18px 50px rgba(20,25,39,.06)}
+.gees-phase-card h3{margin:0 0 8px;font-size:1.05rem}
+.gees-phase-card p{margin:0;color:#657085}
+.gees-mini-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.gees-mini-toolbar input,.gees-mini-toolbar select{border:1px solid rgba(20,25,39,.12);border-radius:14px;padding:11px 12px}
+.gees-row-actions{display:flex;gap:8px;flex-wrap:wrap}
+.gees-note-box{padding:16px 18px;border-radius:18px;background:rgba(255,204,105,.16);border:1px solid rgba(255,204,105,.32);font-weight:700}
+.gees-upload-box{border:2px dashed rgba(20,25,39,.18);border-radius:22px;padding:24px;text-align:center;background:rgba(255,255,255,.72)}
+.gees-timeline{display:grid;gap:12px}
+.gees-timeline-item{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
+.gees-timeline-dot{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#ffcc69;color:#141927}
+html[data-theme="dark"] .gees-phase-card{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.10)}
+html[data-theme="dark"] .gees-phase-card p{color:#b8c0d3}
+html[data-theme="dark"] .gees-note-box{background:rgba(255,204,105,.12);color:#ffe19b}
+html[data-theme="dark"] .gees-upload-box{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.14)}
+@media(max-width:760px){.gees-phase-grid{grid-template-columns:1fr}.gees-mini-toolbar{flex-direction:column;align-items:stretch}}
