@@ -1,10 +1,7 @@
 (function(){
   'use strict';
-
-  var DEMO_PERMISSION_ALIAS = {
-    admin: ['manage_approvals','view_reports','view_audit_logs','manage_users','admin.dashboard','admin.reports','admin.help','admin.wiki','admin.analytics','admin.crm','admin.agreements','admin.students'],
-    super_admin: ['*']
-  };
+  if(window.GEES_ROLE_GUARD_REAL_READY) return;
+  window.GEES_ROLE_GUARD_REAL_READY = true;
 
   function loginFor(cfg){
     var roles = (cfg.requiredRoles || []).join(',');
@@ -16,7 +13,6 @@
 
   function normaliseRole(role){
     if(window.GEESAuthService && window.GEESAuthService.normaliseRole) return window.GEESAuthService.normaliseRole(role);
-    if(window.GEESDemoBackend && window.GEESDemoBackend.normaliseRole) return window.GEESDemoBackend.normaliseRole(role);
     return String(role || '').toLowerCase().replace(/-/g, '_').replace(/\s+/g, '_');
   }
 
@@ -25,12 +21,7 @@
     var role = normaliseRole(session.role);
     if(role === 'super_admin') return true;
     var permissions = session.permissions || [];
-    if(permissions.indexOf('*') !== -1 || permissions.indexOf(permission) !== -1) return true;
-    if(session.source === 'demo'){
-      var aliases = DEMO_PERMISSION_ALIAS[role] || [];
-      if(aliases.indexOf('*') !== -1 || aliases.indexOf(permission) !== -1) return true;
-    }
-    return false;
+    return permissions.indexOf('*') !== -1 || permissions.indexOf(permission) !== -1;
   }
 
   function canAccess(cfg, session){
@@ -42,7 +33,7 @@
     if(roles.length && roles.indexOf(role) === -1) return false;
     if(cfg.requiredTeam && role === 'staff' && session.teamId !== cfg.requiredTeam) return false;
     if(cfg.requiredPermission && !hasPermission(session, cfg.requiredPermission)) return false;
-    if(session.source === 'supabase' && session.status && session.status !== 'active') return false;
+    if(session.status && session.status !== 'active') return false;
     return true;
   }
 
@@ -52,12 +43,7 @@
   }
 
   async function getSession(){
-    if(window.GEESAuthService && typeof window.GEESAuthService.getPortalSession === 'function'){
-      return await window.GEESAuthService.getPortalSession();
-    }
-    if(window.GEESDemoBackend && typeof window.GEESDemoBackend.session === 'function'){
-      return window.GEESDemoBackend.session();
-    }
+    if(window.GEESAuthService && typeof window.GEESAuthService.getPortalSession === 'function') return await window.GEESAuthService.getPortalSession();
     return null;
   }
 
@@ -66,10 +52,7 @@
     try{
       var session = await getSession();
       window.GEESCurrentPortalSession = session || null;
-      if(!cfg.allowGuest && !session){
-        redirectToLogin(cfg);
-        return;
-      }
+      if(!cfg.allowGuest && !session){ redirectToLogin(cfg); return; }
       if(!canAccess(cfg, session)){
         location.replace('/portal/forbidden.html?from=' + encodeURIComponent(location.pathname) + '&role=' + encodeURIComponent(session ? session.role : 'guest'));
         return;
@@ -87,6 +70,6 @@
     }
   }
 
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once:true });
   else run();
 })();
