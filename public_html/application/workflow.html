@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Application Workflow | GEES Portal</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=13.0.0">
+<link rel="stylesheet" href="/portal/shared/css/portal-crud.css?v=13.0.0">
+<link rel="stylesheet" href="/portal/shared/css/gees-phase-core.css?v=13.0.0">
+</head>
+<body class="gees-portal-page">
+<script>window.GEES_PORTAL_PAGE={"title":"Application Workflow","requiredRoles":["staff","admin","super_admin"],"requiredPermission":"staff.dashboard"};</script>
+<div class="gees-portal-shell">
+  <aside class="gees-portal-sidebar" data-portal-sidebar></aside>
+  <div class="gees-portal-main">
+    <header class="gees-portal-topbar" data-portal-topbar></header>
+    <main class="gees-portal-content">
+
+<section class="gees-page-hero"><div><span class="gees-kicker">Phase 14</span><h1 data-app-title>Application Workflow</h1><p>Status: <strong data-app-status>Loading...</strong></p></div></section>
+<div data-phase-page="application-workflow">
+<section class="gees-panel gees-crud-panel"><div class="gees-panel-head"><h2>Update status</h2></div>
+<form class="gees-crud-form" data-form="workflow-status"><div class="gees-crud-form-grid"><label>Status<select name="status"><option value="under_review">Under Review</option><option value="documents_required">Documents Required</option><option value="offer_received">Offer Received</option><option value="visa_processing">Visa Processing</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select></label><label>Note<input name="note" placeholder="Reason or next step"></label></div><div class="gees-crud-actions"><button class="gees-btn gees-btn-primary" type="submit">Update Workflow</button><span class="gees-crud-status" data-status="workflow"></span></div></form></section>
+<section class="gees-panel"><div class="gees-panel-head"><h2>Timeline</h2></div><div class="gees-timeline" data-workflow-history>Loading...</div></section>
+</div>
+
+    </main>
+  </div>
+</div>
+<div class="gees-portal-overlay" data-portal-overlay></div>
+<div class="gees-toast-root" id="gees-toast-root"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2';"></script>
+<script src="/portal/shared/js/supabase-client.js?v=13.0.0"></script>
+<script src="/portal/shared/js/demo-backend.js?v=13.0.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=13.0.0"></script>
+<script src="/portal/shared/js/supabase-ready-bridge.js?v=13.0.0"></script>
+<script src="/portal/shared/js/role-guard.js?v=13.0.0"></script>
+<script src="/portal/shared/js/portal-shell.js?v=13.0.0"></script>
+<script src="/portal/shared/js/portal-ui.js?v=13.0.0"></script>
+<script src="/portal/shared/js/gees-phase-core.js?v=13.0.0"></script>
+<script src="/portal/shared/js/phase14-application-workflow.js?v=13.0.0"></script>
+</body>
+</html>
