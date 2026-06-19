@@ -284,3 +284,25 @@
   const mo = new MutationObserver(function(){ removeSkipLinks(); ensurePjaxRoot(); });
   mo.observe(document.documentElement,{childList:true,subtree:true});
 })();
+
+/* GEES PHASE 18 PUBLIC LEADS AUTO-LOADER */
+(function(){
+  'use strict';
+  if(window.GEES_PUBLIC_LEADS_AUTO_LOADER) return;
+  window.GEES_PUBLIC_LEADS_AUTO_LOADER = true;
+  function hasLeadForm(){
+    return !!document.querySelector('form[data-gees-lead-form], form[data-lead-source], form input[name="studentPhone"], form input[name="studentEmail"], form textarea[name="studentMessage"], form input[name="phone"], form input[name="email"], form textarea[name="message"]');
+  }
+  function loadLeads(){
+    if(window.GEES_LEADS_V14 || document.querySelector('script[src*="gees-leads.js"]')) return;
+    if(!hasLeadForm()) return;
+    const s = document.createElement('script');
+    s.src = '/gees-leads.js?v=14.5.0';
+    s.defer = true;
+    s.dataset.geesLeadsAuto = 'true';
+    document.body.appendChild(s);
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadLeads, {once:true});
+  else loadLeads();
+  document.addEventListener('gees:page:ready', loadLeads);
+})();
