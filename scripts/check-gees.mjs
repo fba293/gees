@@ -90,7 +90,8 @@ const activePortalPages = walk('public_html/portal').filter(file => file.endsWit
 for (const file of [...activePublicPages, ...activePortalPages]) {
   const source = read(file);
   if (/skip to main content/i.test(source)) errors.push(`Forbidden skip-link text in active page: ${file}`);
-  if (/data-demo-action|gees_demo_|demo\/static mode|Student@123|Demo@/i.test(source)) errors.push(`Legacy demo marker in active page: ${file}`);
+  if (/data-demo-action|gees_demo_|demo\/static mode|Student@123|Agent@123|Staff@123|Demo@/i.test(source)) errors.push(`Legacy demo marker in active page: ${file}`);
+  if (file.includes('/portal/auth/') && /demo-backend\.js/i.test(source)) errors.push(`Legacy auth backend loaded by active page: ${file}`);
 }
 
 if (errors.length) {
