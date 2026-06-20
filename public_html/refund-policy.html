@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Refund Policy | GEES</title>
+  <meta name="description" content="GEES refund policy information and support contact details.">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="/global.css">
+  <style>
+    :root { --rp-bg:#f7f9fc; --rp-card:#fff; --rp-text:#141927; --rp-muted:#556070; --rp-line:rgba(20,25,39,.15); --rp-accent:#ffcc69; }
+    [data-theme="dark"] { --rp-bg:#07111f; --rp-card:#101a2c; --rp-text:#f8fafc; --rp-muted:#b8c2d1; --rp-line:rgba(255,255,255,.14); }
+    body { margin:0; background:var(--rp-bg); color:var(--rp-text); font-family:Inter,system-ui,sans-serif; }
+    .refund-page { width:min(900px, calc(100vw - 32px)); margin:0 auto; padding:calc(var(--gees-header-safe, 104px) + 42px) 0 72px; }
+    .refund-card { border:1px solid var(--rp-line); border-radius:28px; background:var(--rp-card); padding:clamp(24px,5vw,52px); box-shadow:0 20px 56px rgba(15,23,42,.10); }
+    .refund-card h1 { margin:0 0 14px; font-size:clamp(2rem,5vw,3.6rem); letter-spacing:-.06em; }
+    .refund-card h2 { margin:30px 0 10px; font-size:1.15rem; }
+    .refund-card p, .refund-card li { color:var(--rp-muted); line-height:1.72; }
+    .refund-card ul { padding-left:20px; }
+    .refund-kicker { display:inline-flex; margin-bottom:14px; padding:7px 11px; border-radius:999px; background:var(--rp-accent); color:#141927; font-size:12px; font-weight:900; letter-spacing:.05em; text-transform:uppercase; }
+    .refund-contact { display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+    .refund-contact a { display:inline-flex; align-items:center; min-height:46px; padding:0 16px; border:1px solid var(--rp-line); border-radius:999px; color:var(--rp-text); background:transparent; text-decoration:none; font-weight:850; }
+    .refund-contact a:first-child { background:var(--rp-accent); border-color:var(--rp-accent); color:#141927; }
+  </style>
+</head>
+<body data-page="refund-policy">
+  <div id="gees-header-placeholder"></div>
+  <main id="gees-pjax-root" data-page="refund-policy">
+    <section class="refund-page">
+      <article class="refund-card">
+        <span class="refund-kicker">GEES Policy Information</span>
+        <h1>Refund Policy</h1>
+        <p>GEES provides education counselling, admissions guidance, visa support, and related student services. Refund eligibility depends on the service, payment method, work already completed, and the terms agreed for the individual case.</p>
+        <h2>Before requesting a refund</h2>
+        <ul>
+          <li>Keep your payment receipt, application reference, and any relevant agreement available.</li>
+          <li>Contact GEES with a clear description of the payment and the reason for the request.</li>
+          <li>Third-party charges, including university, visa, courier, insurance, or government fees, may be subject to the third party's own terms.</li>
+        </ul>
+        <h2>How GEES reviews requests</h2>
+        <p>GEES reviews refund requests against the applicable agreement, payment record, and completed service work. A written response is provided after the relevant information has been reviewed.</p>
+        <div class="refund-contact">
+          <a href="/contact-us.html">Contact GEES Support</a>
+          <a href="mailto:info@globaleducationexpert.com">info@globaleducationexpert.com</a>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div id="gees-footer-placeholder"></div>
+  <script src="/header.js" defer></script>
+  <script src="/footer.js" defer></script>
+  <script src="/global.js" defer></script>
+  <script src="/gees-router.js" defer></script>
+</body>
+</html>
