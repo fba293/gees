@@ -1,10 +1,18 @@
 /* GEES Service Worker — static cache + stale-while-revalidate */
-const GEES_SW_VERSION = 'gees-sw-v12.8-true-pjax-cleanup';
+const GEES_SW_VERSION = 'gees-sw-v15.0-portal-responsive';
 const STATIC_CACHE = `${GEES_SW_VERSION}-static`;
 const RUNTIME_CACHE = `${GEES_SW_VERSION}-runtime`;
 const STATIC_ASSETS = [
-  '/', '/index.html', '/global.css', '/index.css', '/header.js', '/footer.js', '/global.js', '/gees-router.js', '/index.js', '/index-search.js'
+  '/', '/index.html', '/global.css', '/index.css', '/header.js', '/footer.js', '/global.js', '/gees-router.js', '/index.js', '/index-search.js',
+  '/portal/shared/css/portal.css', '/portal/shared/css/portal-mobile.css', '/portal/shared/js/portal-shell.js'
 ];
+const NETWORK_FIRST_PORTAL_ASSETS = new Set([
+  '/portal/shared/css/portal.css',
+  '/portal/shared/css/portal-mobile.css',
+  '/portal/shared/js/portal-shell.js',
+  '/portal/shared/js/portal-ui.js',
+  '/portal/shared/js/portal-live-data.js'
+]);
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(STATIC_CACHE).then(cache => cache.addAll(STATIC_ASSETS.filter(Boolean))).catch(()=>{}));
   self.skipWaiting();
@@ -18,6 +26,10 @@ function shouldCache(req) {
   if (url.origin !== location.origin) return false;
   return ['document','style','script','image','font'].includes(req.destination) || /\.(html|css|js|webp|avif|png|jpg|jpeg|svg|woff2?)$/i.test(url.pathname);
 }
+function isNetworkFirst(req) {
+  const url = new URL(req.url);
+  return req.destination === 'document' || NETWORK_FIRST_PORTAL_ASSETS.has(url.pathname);
+}
 self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET' || !shouldCache(req)) return;
@@ -25,7 +37,7 @@ self.addEventListener('fetch', event => {
     const cache = await caches.open(req.destination === 'document' ? RUNTIME_CACHE : STATIC_CACHE);
     const cached = await cache.match(req);
     const network = fetch(req).then(res => { if (res && res.ok) cache.put(req, res.clone()); return res; }).catch(() => cached);
-    if (req.destination === 'document') return network || cached;
+    if (isNetworkFirst(req)) return network || cached;
     return cached || network;
   })());
 });
