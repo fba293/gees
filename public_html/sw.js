@@ -1,9 +1,9 @@
 /* GEES Service Worker — static cache + stale-while-revalidate */
-const GEES_SW_VERSION = 'gees-sw-v15.1-portal-runtime';
+const GEES_SW_VERSION = 'gees-sw-v15.2-home-counter-repair';
 const STATIC_CACHE = `${GEES_SW_VERSION}-static`;
 const RUNTIME_CACHE = `${GEES_SW_VERSION}-runtime`;
 const STATIC_ASSETS = [
-  '/', '/index.html', '/global.css', '/index.css', '/header.js', '/footer.js', '/global.js', '/gees-router.js', '/index.js', '/index-search.js',
+  '/', '/index.html', '/global.css', '/index.css', '/header.js', '/footer.js', '/global.js', '/gees-router.js', '/index.js', '/index-search.js', '/homepage-counter-fallback.js',
   '/portal/shared/css/portal.css', '/portal/shared/css/portal-mobile.css',
   '/portal/shared/js/supabase-client.js', '/portal/shared/js/auth-service.js', '/portal/shared/js/role-guard.js',
   '/portal/shared/js/portal-shell.js', '/portal/shared/js/portal-ui.js', '/portal/shared/js/portal-live-data.js'
@@ -26,7 +26,7 @@ const NETWORK_FIRST_PORTAL_ASSETS = new Set([
   '/portal/shared/js/portal-reports.js'
 ]);
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(STATIC_CACHE).then(cache => cache.addAll(STATIC_ASSETS.filter(Boolean))).catch(()=>{}));
+  event.waitUntil(caches.open(STATIC_CACHE).then(cache => cache.addAll(STATIC_ASSETS.filter(Boolean))).catch(() => {}));
   self.skipWaiting();
 });
 self.addEventListener('activate', event => {
@@ -42,14 +42,33 @@ function isNetworkFirst(req) {
   const url = new URL(req.url);
   return req.destination === 'document' || NETWORK_FIRST_PORTAL_ASSETS.has(url.pathname);
 }
+function isHomepage(req) {
+  const pathname = new URL(req.url).pathname;
+  return pathname === '/' || pathname === '/index.html';
+}
+async function injectHomepageCounterFallback(response) {
+  if (!response || !response.ok) return response;
+  const type = response.headers.get('content-type') || '';
+  if (!type.includes('text/html')) return response;
+  const html = await response.text();
+  if (html.includes('homepage-counter-fallback.js')) {
+    return new Response(html, { status: response.status, statusText: response.statusText, headers: response.headers });
+  }
+  const script = '<script defer src="/homepage-counter-fallback.js?v=15.2.0"></script>';
+  const patched = html.includes('</head>') ? html.replace('</head>', `${script}</head>`) : `${html}${script}`;
+  return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
+}
 self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET' || !shouldCache(req)) return;
   event.respondWith((async () => {
     const cache = await caches.open(req.destination === 'document' ? RUNTIME_CACHE : STATIC_CACHE);
     const cached = await cache.match(req);
-    const network = fetch(req).then(res => { if (res && res.ok) cache.put(req, res.clone()); return res; }).catch(() => cached);
-    if (isNetworkFirst(req)) return network || cached;
-    return cached || network;
+    const network = fetch(req).then(async res => {
+      if (res && res.ok) await cache.put(req, res.clone());
+      return res;
+    }).catch(() => cached);
+    const response = isNetworkFirst(req) ? await (network || cached) : await (cached || network);
+    return isHomepage(req) ? injectHomepageCounterFallback(response) : response;
   })());
 });
