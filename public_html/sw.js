@@ -1,5 +1,5 @@
 /* GEES Service Worker — static cache + stale-while-revalidate */
-const GEES_SW_VERSION = 'gees-sw-v15.2-home-counter-repair';
+const GEES_SW_VERSION = 'gees-sw-v15.3-home-runtime-repair';
 const STATIC_CACHE = `${GEES_SW_VERSION}-static`;
 const RUNTIME_CACHE = `${GEES_SW_VERSION}-runtime`;
 const STATIC_ASSETS = [
@@ -46,17 +46,26 @@ function isHomepage(req) {
   const pathname = new URL(req.url).pathname;
   return pathname === '/' || pathname === '/index.html';
 }
+function repairedHeaders(sourceHeaders) {
+  const headers = new Headers(sourceHeaders);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.delete('etag');
+  headers.set('content-type', 'text/html; charset=utf-8');
+  return headers;
+}
 async function injectHomepageCounterFallback(response) {
   if (!response || !response.ok) return response;
   const type = response.headers.get('content-type') || '';
   if (!type.includes('text/html')) return response;
   const html = await response.text();
+  const headers = repairedHeaders(response.headers);
   if (html.includes('homepage-counter-fallback.js')) {
-    return new Response(html, { status: response.status, statusText: response.statusText, headers: response.headers });
+    return new Response(html, { status: response.status, statusText: response.statusText, headers });
   }
-  const script = '<script defer src="/homepage-counter-fallback.js?v=15.2.0"></script>';
+  const script = '<script defer src="/homepage-counter-fallback.js?v=15.3.0"></script>';
   const patched = html.includes('</head>') ? html.replace('</head>', `${script}</head>`) : `${html}${script}`;
-  return new Response(patched, { status: response.status, statusText: response.statusText, headers: response.headers });
+  return new Response(patched, { status: response.status, statusText: response.statusText, headers });
 }
 self.addEventListener('fetch', event => {
   const req = event.request;
