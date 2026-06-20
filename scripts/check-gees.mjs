@@ -25,7 +25,8 @@ const required = [
   'public_html/portal/staff/dashboard.html',
   'public_html/portal/staff/work-items.html',
   'supabase/sql/20260620_add_fk_lookup_indexes.sql',
-  'supabase/sql/20260620_harden_public_lead_insert_policy.sql'
+  'supabase/sql/20260620_harden_public_lead_insert_policy.sql',
+  'supabase/sql/20260620_optimize_core_rls_auth_uid.sql'
 ];
 
 const errors = [];
@@ -51,6 +52,13 @@ if (fs.existsSync(shellFile)) {
   if (!source.includes('viewport-fit=cover')) errors.push('Portal shell does not ensure a safe mobile viewport.');
   if (!source.includes('gees-portal-menu-open')) errors.push('Portal shell does not lock the background while the mobile drawer is open.');
   if (!source.includes("event.key==='Escape'")) errors.push('Portal shell does not close the mobile drawer with Escape.');
+}
+
+const liveDataFile = 'public_html/portal/shared/js/portal-live-data.js';
+if (fs.existsSync(liveDataFile)) {
+  const source = read(liveDataFile);
+  if (!source.includes("['admin','super_admin'].includes(role(s))")) errors.push('Live dashboard aggregate counts are not limited to admin roles.');
+  if (!source.includes("await c.from(table).select('id',{count:'exact',head:true})")) errors.push('Live dashboard does not use RLS-scoped counts for non-admin roles.');
 }
 
 const uploadFile = 'public_html/portal/shared/js/portal-document-upload.js';
