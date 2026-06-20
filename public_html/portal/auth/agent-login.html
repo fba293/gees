@@ -5,28 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Agent Login | GEES</title>
 <meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="/portal/shared/css/portal.css?v=10.3.0">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=15.0.0">
+<link rel="stylesheet" href="/portal/shared/css/portal-mobile.css?v=15.0.0">
 </head>
 <body class="gees-auth-page">
 <main class="gees-auth-card">
-  <span class="gees-kicker">GEES Supabase Portal</span>
-  <h1>Agent Login</h1>
-  <p>Sign in with a real Supabase account. Demo credentials still work as a safe fallback during launch testing.</p>
-  <form class="gees-auth-form" data-login-role="agent">
-    <label>Email<input type="email" name="email" value="agent@gees.demo" autocomplete="username" required></label>
-    <label>Password<input type="password" name="password" value="Agent@123" autocomplete="current-password" required></label>
-    <button class="gees-btn gees-btn-primary" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
-    <div class="gees-auth-error" data-auth-error role="alert"></div>
+  <span class="gees-kicker">GEES Agent Portal</span>
+  <h1>Agent sign in</h1>
+  <p>Access your real student referrals, application progress, and commission records.</p>
+  <form class="gees-auth-form" data-login-role="agent" novalidate>
+    <label>Email<input type="email" name="email" autocomplete="username" inputmode="email" required></label>
+    <label>Password<input type="password" name="password" autocomplete="current-password" required></label>
+    <button class="gees-btn gees-btn-primary" type="submit"><i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Sign In</button>
+    <div class="gees-auth-error" data-auth-status role="status" aria-live="polite"></div>
   </form>
-  <div class="gees-demo-credentials"><strong>Demo fallback</strong><br>Email: agent@gees.demo<br>Password: Agent@123</div>
-  <p class="gees-auth-mini"><a href="/portal/auth/agent-signup.html">Create agent account</a></p>
+  <p class="gees-auth-mini">Need an agent account? <a href="/portal/auth/agent-signup.html">Apply to join GEES</a></p>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/portal/shared/js/supabase-client.js?v=10.3.0"></script>
-<script src="/portal/shared/js/demo-backend.js?v=10.3.0"></script>
-<script src="/portal/shared/js/auth-service.js?v=10.3.0"></script>
-<script src="/portal/shared/js/auth-page.js?v=10.3.0"></script>
+<script src="/portal/shared/js/supabase-client.js?v=15.0.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=15.0.0"></script>
+<script src="/portal/shared/js/auth-page.js?v=15.0.0"></script>
 </body>
 </html>
