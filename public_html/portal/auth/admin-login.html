@@ -5,29 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Admin Login | GEES</title>
 <meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="/portal/shared/css/portal.css?v=11.2.0">
+<link rel="stylesheet" href="/portal/shared/css/portal.css?v=15.0.0">
+<link rel="stylesheet" href="/portal/shared/css/portal-mobile.css?v=15.0.0">
 </head>
 <body class="gees-auth-page">
 <main class="gees-auth-card">
-  <span class="gees-kicker">GEES Supabase Portal</span>
-  <h1>Admin Login</h1>
-  <p>Sign in with a real Supabase account. Demo credentials also work as a safe fallback during launch testing, including browsers with blocked storage.</p>
-  <form class="gees-auth-form" data-login-role="admin">
-    <label>Email<input type="email" name="email" autocomplete="username" required></label>
+  <span class="gees-kicker">GEES Administration</span>
+  <h1>Secure admin sign in</h1>
+  <p>Only approved GEES administrators can access operational data and management tools.</p>
+  <form class="gees-auth-form" data-login-role="admin" novalidate>
+    <label>Email<input type="email" name="email" autocomplete="username" inputmode="email" required></label>
     <label>Password<input type="password" name="password" autocomplete="current-password" required></label>
-    <button class="gees-btn gees-btn-primary" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
-    <div class="gees-auth-error" data-auth-error role="alert"></div>
+    <button class="gees-btn gees-btn-primary" type="submit"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Sign In Securely</button>
+    <div class="gees-auth-error" data-auth-status role="status" aria-live="polite"></div>
   </form>
-  <div class="gees-demo-credentials"><strong>Demo fallback</strong><br>Use your saved GEES admin or super-admin demo credentials during launch testing.</div>
-  <p class="gees-auth-mini"><span>Admin users are created manually by GEES.</span></p>
+  <p class="gees-auth-mini"><a href="/contact-us.html">Need access? Contact GEES support.</a></p>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/portal/shared/js/supabase-client.js?v=11.2.0"></script>
-<script src="/portal/shared/js/demo-backend.js?v=11.2.0"></script>
-<script src="/portal/shared/js/demo-storage-bridge.js?v=11.2.0"></script>
-<script src="/portal/shared/js/auth-service.js?v=11.2.0"></script>
-<script src="/portal/shared/js/auth-page.js?v=11.2.0"></script>
+<script src="/portal/shared/js/supabase-client.js?v=15.0.0"></script>
+<script src="/portal/shared/js/auth-service.js?v=15.0.0"></script>
+<script src="/portal/shared/js/auth-page.js?v=15.0.0"></script>
 </body>
 </html>
