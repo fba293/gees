@@ -20,119 +20,16 @@
   function initials(name){return String(name||'GE').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase();}
   function menuFor(s){if(!s)return MENUS.student;if(s.role==='super_admin')return MENUS.super_admin;if(s.role==='admin')return MENUS.admin;if(s.role==='agent')return MENUS.agent;if(s.role==='student')return MENUS.student;if(s.role==='staff')return MENUS[s.teamId]||MENUS.staff_generic;return MENUS.student;}
   function esc(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
-
-  function ensureScript(src,id){
-    if(document.getElementById(id)||document.querySelector('script[src*="'+src.split('?')[0]+'"]')) return;
-    const s=document.createElement('script');
-    s.src=src;s.defer=true;if(id)s.id=id;document.body.appendChild(s);
-  }
-
-  function ensureStyle(href,id){
-    if(document.getElementById(id)||document.querySelector('link[href*="'+href.split('?')[0]+'"]')) return;
-    const link=document.createElement('link');
-    link.rel='stylesheet';link.href=href;link.id=id;document.head.appendChild(link);
-  }
-
-  function ensureViewport(){
-    let meta=document.querySelector('meta[name="viewport"]');
-    if(!meta){
-      meta=document.createElement('meta');
-      meta.name='viewport';
-      document.head.appendChild(meta);
-    }
-    const value=meta.getAttribute('content')||'';
-    if(!value){meta.setAttribute('content','width=device-width, initial-scale=1, viewport-fit=cover');return;}
-    if(!/viewport-fit\s*=\s*cover/i.test(value)) meta.setAttribute('content',value.replace(/\s*,?\s*$/,'')+', viewport-fit=cover');
-  }
-
+  function ensureScript(src,id){if(document.getElementById(id)||document.querySelector('script[src*="'+src.split('?')[0]+'"]'))return;const s=document.createElement('script');s.src=src;s.defer=true;if(id)s.id=id;document.body.appendChild(s);}
+  function ensureStyle(href,id){if(document.getElementById(id)||document.querySelector('link[href*="'+href.split('?')[0]+'"]'))return;const link=document.createElement('link');link.rel='stylesheet';link.href=href;link.id=id;document.head.appendChild(link);}
+  function ensureViewport(){let meta=document.querySelector('meta[name="viewport"]');if(!meta){meta=document.createElement('meta');meta.name='viewport';document.head.appendChild(meta);}const value=meta.getAttribute('content')||'';if(!value){meta.setAttribute('content','width=device-width, initial-scale=1, viewport-fit=cover');return;}if(!/viewport-fit\s*=\s*cover/i.test(value))meta.setAttribute('content',value.replace(/\s*,?\s*$/,'')+', viewport-fit=cover');}
   function isCompact(){return window.matchMedia&&window.matchMedia('(max-width:1100px)').matches;}
-
-  function setMenu(open){
-    const sidebar=document.querySelector('[data-portal-sidebar]');
-    const overlay=document.querySelector('[data-portal-overlay]');
-    const toggle=document.querySelector('[data-open-sidebar]');
-    const shouldOpen=Boolean(open)&&isCompact();
-    if(sidebar) sidebar.classList.toggle('open',shouldOpen);
-    if(overlay) overlay.classList.toggle('open',shouldOpen);
-    document.body.classList.toggle('gees-portal-menu-open',shouldOpen);
-    if(toggle){
-      toggle.setAttribute('aria-expanded',String(shouldOpen));
-      toggle.setAttribute('aria-label',shouldOpen?'Close navigation':'Open navigation');
-    }
-    if(shouldOpen&&sidebar){
-      requestAnimationFrame(function(){try{sidebar.focus({preventScroll:true});}catch(e){sidebar.focus();}});
-    }
-  }
-
-  function renderSidebar(s){
-    const sidebar=document.querySelector('[data-portal-sidebar]');
-    if(!sidebar)return;
-    const menu=menuFor(s);
-    const path=location.pathname.replace(/\/index\.html$/,'/');
-    const role=((s&&s.role)||'guest').replace('_',' ');
-    const team=(s&&s.teamId)?(' · '+esc(s.teamId)):'';
-    sidebar.id='gees-portal-navigation';
-    sidebar.setAttribute('aria-label','Portal navigation');
-    sidebar.setAttribute('tabindex','-1');
-    sidebar.innerHTML='<div class="gees-brand"><strong>GEES</strong><span>'+esc(role)+'</span></div><div class="gees-user-card"><div class="gees-avatar">'+esc(initials(s&&s.name))+'</div><div><strong>'+esc(s?s.name:'Guest')+'</strong><span>'+esc(role)+team+'</span></div></div><div class="gees-nav-label">Navigation</div><nav class="gees-nav">'+menu.map(m=>'<a href="'+m[1]+'" class="'+(normPath(path)===normPath(m[1])?'active':'')+'"><i class="fa-solid '+m[2]+'" aria-hidden="true"></i><span>'+m[0]+'</span></a>').join('')+'</nav><div class="gees-sidebar-foot"><button class="gees-logout" type="button" data-portal-logout><i class="fa-solid fa-power-off" aria-hidden="true"></i> Logout</button></div>';
-  }
-
-  function renderTopbar(s){
-    const topbar=document.querySelector('[data-portal-topbar]');
-    if(!topbar)return;
-    const cfg=window.GEES_PORTAL_PAGE||{};
-    topbar.innerHTML='<div class="gees-topbar-left"><button class="gees-mobile-menu" type="button" data-open-sidebar aria-label="Open navigation" aria-controls="gees-portal-navigation" aria-expanded="false"><i class="fa-solid fa-bars" aria-hidden="true"></i></button><div class="gees-page-title">'+esc(cfg.title||document.title.replace('| GEES Portal',''))+'</div></div><div class="gees-topbar-right"><label class="gees-search"><input data-portal-search placeholder="Search current page..." aria-label="Search current page"><i class="fa-solid fa-search" aria-hidden="true"></i></label><button class="gees-theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode"><i class="fa-solid fa-moon" aria-hidden="true"></i></button><span class="gees-user-chip"><i class="fa-solid fa-user-shield" aria-hidden="true"></i><span>'+esc(s?s.name:'Guest')+'</span></span></div>';
-  }
-
+  function setMenu(open){const sidebar=document.querySelector('[data-portal-sidebar]'),overlay=document.querySelector('[data-portal-overlay]'),toggle=document.querySelector('[data-open-sidebar]'),shouldOpen=Boolean(open)&&isCompact();if(sidebar)sidebar.classList.toggle('open',shouldOpen);if(overlay)overlay.classList.toggle('open',shouldOpen);document.body.classList.toggle('gees-portal-menu-open',shouldOpen);if(toggle){toggle.setAttribute('aria-expanded',String(shouldOpen));toggle.setAttribute('aria-label',shouldOpen?'Close navigation':'Open navigation');}if(shouldOpen&&sidebar)requestAnimationFrame(function(){try{sidebar.focus({preventScroll:true});}catch(e){sidebar.focus();}});}
+  function renderSidebar(s){const sidebar=document.querySelector('[data-portal-sidebar]');if(!sidebar)return;const menu=menuFor(s),path=location.pathname.replace(/\/index\.html$/,'/'),role=((s&&s.role)||'guest').replace('_',' '),team=(s&&s.teamId)?(' · '+esc(s.teamId)):'';sidebar.id='gees-portal-navigation';sidebar.setAttribute('aria-label','Portal navigation');sidebar.setAttribute('tabindex','-1');sidebar.innerHTML='<div class="gees-brand"><strong>GEES</strong><span>'+esc(role)+'</span></div><div class="gees-user-card"><div class="gees-avatar">'+esc(initials(s&&s.name))+'</div><div><strong>'+esc(s?s.name:'Guest')+'</strong><span>'+esc(role)+team+'</span></div></div><div class="gees-nav-label">Navigation</div><nav class="gees-nav">'+menu.map(m=>'<a href="'+m[1]+'" class="'+(normPath(path)===normPath(m[1])?'active':'')+'"><i class="fa-solid '+m[2]+'" aria-hidden="true"></i><span>'+m[0]+'</span></a>').join('')+'</nav><div class="gees-sidebar-foot"><button class="gees-logout" type="button" data-portal-logout><i class="fa-solid fa-power-off" aria-hidden="true"></i> Logout</button></div>';}
+  function renderTopbar(s){const topbar=document.querySelector('[data-portal-topbar]');if(!topbar)return;const cfg=window.GEES_PORTAL_PAGE||{};topbar.innerHTML='<div class="gees-topbar-left"><button class="gees-mobile-menu" type="button" data-open-sidebar aria-label="Open navigation" aria-controls="gees-portal-navigation" aria-expanded="false"><i class="fa-solid fa-bars" aria-hidden="true"></i></button><div class="gees-page-title">'+esc(cfg.title||document.title.replace('| GEES Portal',''))+'</div></div><div class="gees-topbar-right"><label class="gees-search"><input data-portal-search placeholder="Search current page..." aria-label="Search current page"><i class="fa-solid fa-search" aria-hidden="true"></i></label><button class="gees-theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode"><i class="fa-solid fa-moon" aria-hidden="true"></i></button><span class="gees-user-chip"><i class="fa-solid fa-user-shield" aria-hidden="true"></i><span>'+esc(s?s.name:'Guest')+'</span></span></div>';}
   function loginTarget(role){return role==='agent'?'/portal/auth/agent-login.html':role==='staff'?'/portal/auth/staff-login.html':(role==='admin'||role==='super_admin')?'/portal/auth/admin-login.html':'/portal/auth/student-login.html';}
-
-  function bind(s){
-    const sidebar=document.querySelector('[data-portal-sidebar]');
-    const overlay=document.querySelector('[data-portal-overlay]');
-    document.querySelectorAll('[data-open-sidebar]').forEach(function(button){button.onclick=function(){setMenu(!(sidebar&&sidebar.classList.contains('open')));};});
-    if(overlay) overlay.onclick=function(){setMenu(false);};
-    if(sidebar) sidebar.querySelectorAll('.gees-nav a').forEach(function(link){link.onclick=function(){if(isCompact())setMenu(false);};});
-    document.querySelectorAll('[data-portal-logout]').forEach(function(button){button.onclick=function(){
-      const role=(s&&s.role)||'student';
-      const target=loginTarget(role);
-      if(window.GEESAuthService&&window.GEESAuthService.logout){window.GEESAuthService.logout().finally(function(){location.href=target;});}
-      else location.href=target;
-    };});
-    document.querySelectorAll('[data-theme-toggle]').forEach(function(button){button.onclick=function(){
-      const root=document.documentElement;
-      const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
-      root.setAttribute('data-theme',next);
-      localStorage.setItem('gees_portal_theme',next);
-      button.setAttribute('aria-label',next==='dark'?'Use light mode':'Use dark mode');
-    };});
-    const saved=localStorage.getItem('gees_portal_theme');
-    if(saved) document.documentElement.setAttribute('data-theme',saved);
-    const search=document.querySelector('[data-portal-search]');
-    if(search) search.oninput=function(){
-      const q=search.value.toLowerCase();
-      document.querySelectorAll('.gees-panel,.gees-action-card,.gees-stat-card').forEach(function(el){el.style.display=el.textContent.toLowerCase().includes(q)||!q?'':'none';});
-    };
-    if(!window.GEES_PORTAL_SHELL_KEYBOARD_BOUND){
-      window.GEES_PORTAL_SHELL_KEYBOARD_BOUND=true;
-      document.addEventListener('keydown',function(event){if(event.key==='Escape')setMenu(false);});
-      window.addEventListener('resize',function(){if(!isCompact())setMenu(false);},{passive:true});
-    }
-  }
-
-  function boot(session){
-    ensureViewport();
-    ensureStyle('/portal/shared/css/portal-mobile.css?v=15.0.0','gees-portal-mobile-style');
-    const s=session||window.GEESCurrentPortalSession||null;
-    renderSidebar(s);renderTopbar(s);bind(s);
-    ensureScript('/portal/shared/js/portal-workflow.js?v=15.0.0','gees-portal-workflow-loader');
-  }
-
+  function bind(s){const sidebar=document.querySelector('[data-portal-sidebar]'),overlay=document.querySelector('[data-portal-overlay]');document.querySelectorAll('[data-open-sidebar]').forEach(function(button){button.onclick=function(){setMenu(!(sidebar&&sidebar.classList.contains('open')));};});if(overlay)overlay.onclick=function(){setMenu(false);};if(sidebar)sidebar.querySelectorAll('.gees-nav a').forEach(function(link){link.onclick=function(){if(isCompact())setMenu(false);};});document.querySelectorAll('[data-portal-logout]').forEach(function(button){button.onclick=function(){const role=(s&&s.role)||'student',target=loginTarget(role);if(window.GEESAuthService&&window.GEESAuthService.logout)window.GEESAuthService.logout().finally(function(){location.href=target;});else location.href=target;};});document.querySelectorAll('[data-theme-toggle]').forEach(function(button){button.onclick=function(){const root=document.documentElement,next=root.getAttribute('data-theme')==='dark'?'light':'dark';root.setAttribute('data-theme',next);try{localStorage.setItem('gees_portal_theme',next);}catch(e){}button.setAttribute('aria-label',next==='dark'?'Use light mode':'Use dark mode');};});try{const saved=localStorage.getItem('gees_portal_theme');if(saved)document.documentElement.setAttribute('data-theme',saved);}catch(e){}if(!window.GEES_PORTAL_SHELL_KEYBOARD_BOUND){window.GEES_PORTAL_SHELL_KEYBOARD_BOUND=true;document.addEventListener('keydown',function(event){if(event.key==='Escape')setMenu(false);});window.addEventListener('resize',function(){if(!isCompact())setMenu(false);},{passive:true});}}
+  function boot(session){ensureViewport();ensureStyle('/portal/shared/css/portal-mobile.css?v=15.0.0','gees-portal-mobile-style');const s=session||window.GEESCurrentPortalSession||null;renderSidebar(s);renderTopbar(s);bind(s);ensureScript('/portal/shared/js/portal-workflow.js?v=15.0.0','gees-portal-workflow-loader');}
   window.GEESPortalSetMenu=setMenu;
-  ready(function(){
-    if(window.GEESCurrentPortalSession){boot(window.GEESCurrentPortalSession);}
-    else{
-      document.addEventListener('gees:portal-session-ready',function(e){boot(e.detail&&e.detail.session);},{once:true});
-      setTimeout(function(){if(!document.querySelector('[data-portal-sidebar] .gees-brand'))boot(null);},1200);
-    }
-  });
+  ready(function(){if(window.GEESCurrentPortalSession)boot(window.GEESCurrentPortalSession);else{document.addEventListener('gees:portal-session-ready',function(e){boot(e.detail&&e.detail.session);},{once:true});setTimeout(function(){if(!document.querySelector('[data-portal-sidebar] .gees-brand'))boot(null);},1200);}});
 })();
