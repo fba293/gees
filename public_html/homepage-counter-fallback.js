@@ -1,10 +1,10 @@
 (function () {
   'use strict';
 
-  if (window.GEES_HOMEPAGE_COUNTER_FALLBACK_V1) return;
-  window.GEES_HOMEPAGE_COUNTER_FALLBACK_V1 = true;
+  if (window.GEES_HOMEPAGE_RUNTIME_REPAIR_V2) return;
+  window.GEES_HOMEPAGE_RUNTIME_REPAIR_V2 = true;
 
-  const selector = '.count-up[data-count]';
+  const counterSelector = '.count-up[data-count]';
 
   function animateCounter(element) {
     if (!element || element.dataset.geesCounterFallbackDone === '1') return;
@@ -35,8 +35,8 @@
     requestAnimationFrame(tick);
   }
 
-  function init() {
-    const counters = Array.from(document.querySelectorAll(selector));
+  function initCounters() {
+    const counters = Array.from(document.querySelectorAll(counterSelector));
     if (!counters.length) return;
 
     const run = () => counters.forEach(animateCounter);
@@ -55,6 +55,25 @@
     } else {
       run();
     }
+  }
+
+  function installLogoFallback() {
+    document.addEventListener('error', (event) => {
+      const image = event.target;
+      if (!image || image.tagName !== 'IMG' || !image.classList.contains('lazy-logo')) return;
+      if (image.dataset.geesPngFallbackDone === '1') return;
+
+      const current = image.currentSrc || image.src || '';
+      if (!/\.webp(?:$|[?#])/i.test(current)) return;
+
+      image.dataset.geesPngFallbackDone = '1';
+      image.src = current.replace(/\.webp(?=($|[?#]))/i, '.png');
+    }, true);
+  }
+
+  function init() {
+    initCounters();
+    installLogoFallback();
   }
 
   if (document.readyState === 'loading') {
