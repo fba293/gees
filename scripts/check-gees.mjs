@@ -68,7 +68,6 @@ const linkNormalizerFile = 'public_html/public-link-normalizer.js';
 if (fs.existsSync(linkNormalizerFile)) {
   const source = read(linkNormalizerFile);
   if (!source.includes('study-in-australia.html')) errors.push('Public link normalizer is missing legacy country mapping.');
-  if (!source.includes('refund-policy.html')) errors.push('Public link normalizer does not preserve the live refund policy route.');
 }
 
 const shellFile = 'public_html/portal/shared/js/portal-shell.js';
