@@ -6,6 +6,8 @@ const required = [
   'public_html/gees-leads.js',
   'public_html/sw.js',
   'public_html/homepage-counter-fallback.js',
+  'public_html/public-link-normalizer.js',
+  'public_html/refund-policy.html',
   'public_html/portal/shared/css/portal.css',
   'public_html/portal/shared/css/portal-mobile.css',
   'public_html/portal/shared/js/auth-service.js',
@@ -50,7 +52,8 @@ const serviceWorkerFile = 'public_html/sw.js';
 if (fs.existsSync(serviceWorkerFile)) {
   const source = read(serviceWorkerFile);
   if (!source.includes('homepage-counter-fallback.js')) errors.push('Service worker does not deliver the homepage counter repair.');
-  if (!source.includes('injectHomepageCounterFallback')) errors.push('Service worker is missing the homepage counter fallback injection.');
+  if (!source.includes('public-link-normalizer.js')) errors.push('Service worker does not deliver public link normalization.');
+  if (!source.includes('injectPublicRuntimeRepairs')) errors.push('Service worker is missing the shared public runtime repair injection.');
 }
 
 const counterFile = 'public_html/homepage-counter-fallback.js';
@@ -58,6 +61,14 @@ if (fs.existsSync(counterFile)) {
   const source = read(counterFile);
   if (!source.includes("'.count-up[data-count]'")) errors.push('Homepage counter fallback does not target live trust counters.');
   if (!source.includes('prefers-reduced-motion')) errors.push('Homepage counter fallback is missing reduced-motion support.');
+  if (!source.includes('lazy-logo')) errors.push('Homepage counter fallback is missing partner logo fallback support.');
+}
+
+const linkNormalizerFile = 'public_html/public-link-normalizer.js';
+if (fs.existsSync(linkNormalizerFile)) {
+  const source = read(linkNormalizerFile);
+  if (!source.includes('study-in-australia.html')) errors.push('Public link normalizer is missing legacy country mapping.');
+  if (!source.includes('refund-policy.html')) errors.push('Public link normalizer does not preserve the live refund policy route.');
 }
 
 const shellFile = 'public_html/portal/shared/js/portal-shell.js';
@@ -98,7 +109,8 @@ const activePublicPages = [
   'public_html/courses.html',
   'public_html/destinations.html',
   'public_html/blog.html',
-  'public_html/universities.html'
+  'public_html/universities.html',
+  'public_html/refund-policy.html'
 ].filter(fs.existsSync);
 
 function walk(directory) {
