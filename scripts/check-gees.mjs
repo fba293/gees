@@ -5,6 +5,7 @@ const required = [
   'public_html/global.js',
   'public_html/gees-leads.js',
   'public_html/sw.js',
+  'public_html/homepage-counter-fallback.js',
   'public_html/portal/shared/css/portal.css',
   'public_html/portal/shared/css/portal-mobile.css',
   'public_html/portal/shared/js/auth-service.js',
@@ -43,6 +44,20 @@ if (fs.existsSync(globalFile)) {
   const source = read(globalFile);
   if (!source.includes('GEES PHASE 18 PUBLIC LEADS AUTO-LOADER')) errors.push('Missing public lead auto-loader.');
   if (!source.includes('/gees-leads.js')) errors.push('Public lead script is not loaded by global.js.');
+}
+
+const serviceWorkerFile = 'public_html/sw.js';
+if (fs.existsSync(serviceWorkerFile)) {
+  const source = read(serviceWorkerFile);
+  if (!source.includes('homepage-counter-fallback.js')) errors.push('Service worker does not deliver the homepage counter repair.');
+  if (!source.includes('injectHomepageCounterFallback')) errors.push('Service worker is missing the homepage counter fallback injection.');
+}
+
+const counterFile = 'public_html/homepage-counter-fallback.js';
+if (fs.existsSync(counterFile)) {
+  const source = read(counterFile);
+  if (!source.includes("'.count-up[data-count]'")) errors.push('Homepage counter fallback does not target live trust counters.');
+  if (!source.includes('prefers-reduced-motion')) errors.push('Homepage counter fallback is missing reduced-motion support.');
 }
 
 const shellFile = 'public_html/portal/shared/js/portal-shell.js';
