@@ -1,17 +1,29 @@
 /* GEES Service Worker — static cache + stale-while-revalidate */
-const GEES_SW_VERSION = 'gees-sw-v15.0-portal-responsive';
+const GEES_SW_VERSION = 'gees-sw-v15.1-portal-runtime';
 const STATIC_CACHE = `${GEES_SW_VERSION}-static`;
 const RUNTIME_CACHE = `${GEES_SW_VERSION}-runtime`;
 const STATIC_ASSETS = [
   '/', '/index.html', '/global.css', '/index.css', '/header.js', '/footer.js', '/global.js', '/gees-router.js', '/index.js', '/index-search.js',
-  '/portal/shared/css/portal.css', '/portal/shared/css/portal-mobile.css', '/portal/shared/js/portal-shell.js'
+  '/portal/shared/css/portal.css', '/portal/shared/css/portal-mobile.css',
+  '/portal/shared/js/supabase-client.js', '/portal/shared/js/auth-service.js', '/portal/shared/js/role-guard.js',
+  '/portal/shared/js/portal-shell.js', '/portal/shared/js/portal-ui.js', '/portal/shared/js/portal-live-data.js'
 ];
 const NETWORK_FIRST_PORTAL_ASSETS = new Set([
   '/portal/shared/css/portal.css',
   '/portal/shared/css/portal-mobile.css',
+  '/portal/shared/js/supabase-client.js',
+  '/portal/shared/js/auth-service.js',
+  '/portal/shared/js/auth-page.js',
+  '/portal/shared/js/role-guard.js',
   '/portal/shared/js/portal-shell.js',
   '/portal/shared/js/portal-ui.js',
-  '/portal/shared/js/portal-live-data.js'
+  '/portal/shared/js/portal-live-data.js',
+  '/portal/shared/js/portal-crud.js',
+  '/portal/shared/js/portal-document-upload.js',
+  '/portal/shared/js/portal-workflow.js',
+  '/portal/shared/js/portal-commissions.js',
+  '/portal/shared/js/portal-work-items.js',
+  '/portal/shared/js/portal-reports.js'
 ]);
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(STATIC_CACHE).then(cache => cache.addAll(STATIC_ASSETS.filter(Boolean))).catch(()=>{}));
