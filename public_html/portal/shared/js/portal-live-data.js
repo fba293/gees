@@ -1,117 +1,24 @@
 (function(){
-  'use strict';
-  if(window.GEES_PORTAL_LIVE_DATA_V14) return;
-  window.GEES_PORTAL_LIVE_DATA_V14 = true;
-
-  function ready(fn){ document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn, { once:true }) : fn(); }
-  function esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];}); }
-  function sb(){ return window.GEESSupabase || window.GEES_REAL_SUPABASE || null; }
-  function role(s){ return String((s && s.role) || '').toLowerCase().replace(/-/g,'_'); }
-  function n(v){ return Number(v || 0).toLocaleString(); }
-  var latestCounts = null;
-
-  async function current(){
-    if(window.GEESAuthService && window.GEESAuthService.getPortalSession){
-      try{ return await window.GEESAuthService.getPortalSession(); }catch(e){ return null; }
-    }
-    return null;
-  }
-
-  async function dashboardCounts(){
-    var c = sb();
-    if(!c) return {};
-    try{
-      var r = await c.rpc('get_gees_dashboard_counts');
-      if(r && !r.error && r.data){ latestCounts = r.data; return r.data; }
-    }catch(e){}
-    return latestCounts || {};
-  }
-
-  async function count(table){
-    var map = {profiles:'profiles',students:'students',agents:'agents',applications:'applications',documents:'documents',leads:'leads',gees_tasks:'tasks',tasks:'tasks'};
-    var counts = latestCounts || await dashboardCounts();
-    var key = map[table] || table;
-    if(Object.prototype.hasOwnProperty.call(counts,key)) return counts[key] || 0;
-    var c = sb();
-    if(!c) return 0;
-    try{ var r = await c.from(table).select('id',{count:'exact',head:true}); return r && !r.error ? (r.count || 0) : 0; }catch(e){ return 0; }
-  }
-
-  async function list(table, cols){
-    var c = sb();
-    if(!c) return [];
-    try{ var r = await c.from(table).select(cols || '*').limit(6); return r && !r.error ? (r.data || []) : []; }catch(e){ return []; }
-  }
-
-  function card(icon, value, label){ return '<article class="gees-stat-card gees-live-card"><div class="gees-stat-icon"><i class="fa-solid '+esc(icon)+'"></i></div><div><strong>'+esc(value)+'</strong><span>'+esc(label)+'</span></div></article>'; }
-  function setStats(items){ var grid = document.querySelector('.gees-stats-grid'); if(grid) grid.innerHTML = items.join(''); }
-
-  function statusBox(){
-    var box = document.querySelector('[data-gees-live-panel]');
-    if(box) return box;
-    var hero = document.querySelector('.gees-page-hero');
-    box = document.createElement('section');
-    box.className = 'gees-panel gees-live-panel';
-    box.setAttribute('data-gees-live-panel','true');
-    box.innerHTML = '<div class="gees-panel-head"><div><h2><span class="gees-live-dot"></span> Live Supabase dashboard</h2><p data-gees-live-status>Preparing live data...</p></div><button class="gees-btn gees-btn-outline" data-gees-live-refresh><i class="fa-solid fa-rotate"></i> Refresh live data</button></div><div class="gees-live-meta" data-gees-live-meta></div>';
-    if(hero && hero.parentNode) hero.parentNode.insertBefore(box, hero.nextSibling);
-    return box;
-  }
-
-  function setStatus(msg,state,meta){
-    var box = statusBox();
-    box.dataset.liveState = state || 'info';
-    var p = box.querySelector('[data-gees-live-status]');
-    var m = box.querySelector('[data-gees-live-meta]');
-    if(p) p.textContent = msg || '';
-    if(m) m.innerHTML = (meta || []).map(function(x){ return '<span>'+esc(x)+'</span>'; }).join('');
-  }
-
-  function setRecords(title, rows){
-    var panel = Array.prototype.slice.call(document.querySelectorAll('.gees-panel')).find(function(p){ return /Recent|records|applications/i.test(p.textContent || ''); });
-    if(!panel) return;
-    var h = panel.querySelector('h2');
-    if(h) h.textContent = title || 'Recent live records';
-    var wrap = panel.querySelector('.gees-table-wrap') || panel;
-    if(!rows || !rows.length){ wrap.innerHTML = '<div class="gees-empty-state gees-live-empty" data-empty-state><i class="fa-solid fa-database"></i><strong>No real records yet</strong><span>Live Supabase records will appear here when available.</span></div>'; return; }
-    wrap.innerHTML = '<table class="gees-table"><thead><tr><th>Name</th><th>Status</th><th>Note</th></tr></thead><tbody>'+rows.map(function(r){return '<tr><td><strong>'+esc(r.name)+'</strong><span class="gees-table-subtext">'+esc(r.sub||'')+'</span></td><td><span class="gees-badge">'+esc(r.status||'Live')+'</span></td><td>'+esc(r.note||'')+'</td></tr>';}).join('')+'</tbody></table>';
-  }
-
-  function rowsFrom(items,type){
-    return (items || []).map(function(r){
-      if(type === 'profile') return {name:r.full_name || r.email || 'GEES user', sub:r.email || '', status:(r.role || 'user') + ' · ' + (r.status || 'pending'), note:r.team_id || 'Profile'};
-      return {name:'Application ' + String(r.id || '').slice(0,8).toUpperCase(), sub:r.created_at || '', status:r.status || 'draft', note:r.application_no || r.intake || 'Application'};
-    });
-  }
-
-  async function refresh(){
-    setStatus('Refreshing live Supabase data...','loading');
-    var c = sb();
-    var s = await current();
-    if(!c){ setStatus('Supabase client is not loaded yet. Refresh again after the page loads.','warning',['No client']); return; }
-    if(!s){ setStatus('No real GEES login found. Please sign in first.','warning',['Waiting for login']); return; }
-    latestCounts = await dashboardCounts();
-    var r = role(s);
-    if(r === 'student'){
-      setStats([card('fa-file-signature',n(await count('applications')),'My Applications'),card('fa-folder-open',n(await count('documents')),'My Documents'),card('fa-bell','0','Unread Notifications'),card('fa-user-check',s.status || 'active','Account Status')]);
-      setRecords('Recent live applications', rowsFrom(await list('applications','id,status,created_at,intake,application_no'),'application'));
-    } else if(r === 'agent'){
-      setStats([card('fa-users',n(await count('students')),'My Students'),card('fa-file-circle-check',n(await count('applications')),'Applications'),card('fa-wallet',n(await count('commissions')),'Commissions'),card('fa-headset',n(await count('support_tickets')),'Support Tickets')]);
-      setRecords('Recent referred applications', rowsFrom(await list('applications','id,status,created_at,intake,application_no'),'application'));
-    } else if(r === 'staff'){
-      setStats([card('fa-list-check',n(await count('applications')),'Assigned Applications'),card('fa-folder-open',n(await count('documents')),'Documents'),card('fa-headset',n(await count('support_tickets')),'Support Tickets'),card('fa-pen-to-square','Live','Status Update')]);
-      setRecords('Recent assigned work', rowsFrom(await list('applications','id,status,created_at,intake,application_no'),'application'));
-    } else {
-      setStats([card('fa-file-signature',n(await count('applications')),'Applications'),card('fa-users-gear',n(await count('profiles')),'Portal Users'),card('fa-user-clock','0','Pending Approvals'),card('fa-clipboard-list',n(await count('audit_logs')),'Audit Logs')]);
-      setRecords('Recent portal users', rowsFrom(await list('profiles','id,email,full_name,role,status,team_id'),'profile'));
-    }
-    setStatus('Connected to live Supabase data.','success',['Role: '+r,'Source: Supabase','Profiles: '+n(latestCounts.profiles),'Students: '+n(latestCounts.students),'Agents: '+n(latestCounts.agents)]);
-  }
-
-  ready(function(){
-    statusBox();
-    document.addEventListener('click',function(e){ var b=e.target.closest('[data-gees-live-refresh]'); if(b){ e.preventDefault(); refresh(); } });
-    document.addEventListener('gees:portal-session-ready',refresh);
-    setTimeout(refresh,500);
-  });
+'use strict';
+if(window.GEES_PORTAL_LIVE_DATA_V15)return;window.GEES_PORTAL_LIVE_DATA_V15=true;
+var adminCounts=null,busy=false;
+function ready(f){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',f,{once:true}):f();}
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];});}
+function db(){return window.GEESSupabase||window.GEES_REAL_SUPABASE||null;}
+function role(s){return String((s&&s.role)||'').toLowerCase().replace(/-/g,'_');}
+function n(v){return Number(v||0).toLocaleString();}
+function current(){return window.GEESAuthService&&window.GEESAuthService.getPortalSession?window.GEESAuthService.getPortalSession():Promise.resolve(window.GEESCurrentPortalSession||null);}
+async function aggregate(s){if(!['admin','super_admin'].includes(role(s)))return null;var c=db();if(!c)return null;try{var r=await c.rpc('get_gees_dashboard_counts');if(r&&!r.error&&r.data){adminCounts=r.data;return r.data;}}catch(e){}return adminCounts;}
+async function count(table,summary){if(summary&&Object.prototype.hasOwnProperty.call(summary,table))return summary[table]||0;var c=db();if(!c)return 0;try{var r=await c.from(table).select('id',{count:'exact',head:true});return r&&!r.error?(r.count||0):0;}catch(e){return 0;}}
+async function list(table,cols){var c=db();if(!c)return [];try{var r=await c.from(table).select(cols).order('created_at',{ascending:false}).limit(6);return r&&!r.error?(r.data||[]):[];}catch(e){return [];}}
+function stat(icon,value,label){return '<article class="gees-stat-card gees-live-card"><div class="gees-stat-icon"><i class="fa-solid '+esc(icon)+'" aria-hidden="true"></i></div><div><strong>'+esc(value)+'</strong><span>'+esc(label)+'</span></div></article>';}
+function setStats(items){var grid=document.querySelector('.gees-stats-grid');if(grid)grid.innerHTML=items.join('');}
+function box(){var x=document.querySelector('[data-gees-live-panel]');if(x)return x;var hero=document.querySelector('.gees-page-hero');if(!hero)return null;x=document.createElement('section');x.className='gees-panel gees-live-panel';x.setAttribute('data-gees-live-panel','true');x.innerHTML='<div class="gees-panel-head"><div><h2><span class="gees-live-dot" aria-hidden="true"></span> Live dashboard</h2><p data-gees-live-status>Preparing live data…</p></div><button class="gees-btn gees-btn-outline" type="button" data-gees-live-refresh><i class="fa-solid fa-rotate" aria-hidden="true"></i> Refresh</button></div><div class="gees-live-meta" data-gees-live-meta></div>';hero.parentNode.insertBefore(x,hero.nextSibling);return x;}
+function message(text,state,meta){var x=box();if(!x)return;x.dataset.liveState=state||'info';var p=x.querySelector('[data-gees-live-status]'),m=x.querySelector('[data-gees-live-meta]'),b=x.querySelector('[data-gees-live-refresh]');if(p)p.textContent=text||'';if(m)m.innerHTML=(meta||[]).map(function(v){return '<span>'+esc(v)+'</span>';}).join('');if(b){b.disabled=busy;b.setAttribute('aria-busy',String(busy));}}
+function records(title,rows){var panel=Array.prototype.slice.call(document.querySelectorAll('.gees-panel')).find(function(x){return /recent|records|applications|work/i.test(x.textContent||'');});if(!panel)return;var h=panel.querySelector('h2');if(h)h.textContent=title;var wrap=panel.querySelector('.gees-table-wrap')||panel;if(!rows.length){wrap.innerHTML='<div class="gees-empty-state gees-live-empty"><i class="fa-solid fa-database" aria-hidden="true"></i><strong>No real records yet</strong><span>Records will appear here when available.</span></div>';return;}wrap.innerHTML='<table class="gees-table"><thead><tr><th>Name</th><th>Status</th><th>Note</th></tr></thead><tbody>'+rows.map(function(r){return '<tr><td><strong>'+esc(r.name)+'</strong><span class="gees-table-subtext">'+esc(r.sub||'')+'</span></td><td><span class="gees-badge">'+esc(r.status||'Live')+'</span></td><td>'+esc(r.note||'')+'</td></tr>';}).join('')+'</tbody></table>';}
+function appRows(rows){return rows.map(function(r){return {name:'Application '+String(r.id||'').slice(0,8).toUpperCase(),sub:r.created_at||'',status:r.status||'draft',note:r.application_no||r.intake||'Application'};});}
+function taskRows(rows){return rows.map(function(r){return {name:r.title||'GEES work item',sub:r.due_date||'',status:r.status||'open',note:r.priority||'normal'};});}
+function profileRows(rows){return rows.map(function(r){return {name:r.full_name||r.email||'GEES user',sub:r.email||'',status:(r.role||'user')+' · '+(r.status||'pending'),note:r.team_id||'Profile'};});}
+async function refresh(){if(busy)return;busy=true;message('Refreshing live GEES data…','loading');try{var s=await current(),c=db();if(!c)throw new Error('No client');if(!s)throw new Error('No session');var r=role(s),summary=await aggregate(s),meta=['Role: '+r,'Source: Supabase'];if(r==='student'){var a=await count('applications'),d=await count('documents');setStats([stat('fa-file-signature',n(a),'My Applications'),stat('fa-folder-open',n(d),'My Documents'),stat('fa-bell','0','Unread Notifications'),stat('fa-user-check',s.status||'active','Account Status')]);records('Recent applications',appRows(await list('applications','id,status,created_at,intake,application_no')));meta.push('Applications: '+n(a),'Documents: '+n(d));}else if(r==='agent'){var st=await count('students'),ap=await count('applications'),co=await count('commissions'),su=await count('support_tickets');setStats([stat('fa-users',n(st),'My Students'),stat('fa-file-circle-check',n(ap),'Applications'),stat('fa-wallet',n(co),'Commissions'),stat('fa-headset',n(su),'Support Tickets')]);records('Recent referred applications',appRows(await list('applications','id,status,created_at,intake,application_no')));meta.push('Students: '+n(st),'Applications: '+n(ap));}else if(r==='staff'){var t=await count('gees_tasks'),sa=await count('applications'),sd=await count('documents'),ss=await count('support_tickets');setStats([stat('fa-list-check',n(t),'Assigned Work'),stat('fa-file-signature',n(sa),'Applications'),stat('fa-folder-open',n(sd),'My Uploads'),stat('fa-headset',n(ss),'Support Tickets')]);records('Recent assigned work',taskRows(await list('gees_tasks','id,title,status,priority,due_date,created_at')));meta.push('Work items: '+n(t),'Applications: '+n(sa));}else{var x=summary||{},users=await count('profiles',x),apps=await count('applications',x),docs=await count('documents',x),leads=await count('leads',x);setStats([stat('fa-file-signature',n(apps),'Applications'),stat('fa-users-gear',n(users),'Portal Users'),stat('fa-folder-open',n(docs),'Documents'),stat('fa-bullhorn',n(leads),'Leads')]);records('Recent portal users',profileRows(await list('profiles','id,email,full_name,role,status,team_id,created_at')));meta.push('Profiles: '+n(users),'Students: '+n(x.students),'Agents: '+n(x.agents));}message('Live data is up to date.','success',meta);}catch(e){message('We could not refresh live data. Check your connection and try again.','error',['No static data is shown.']);}finally{busy=false;var x=box();if(x){var p=x.querySelector('[data-gees-live-status]'),m=x.querySelector('[data-gees-live-meta]');message(p?p.textContent:'',x.dataset.liveState,Array.from(m?m.querySelectorAll('span'):[]).map(function(v){return v.textContent;}));}}}
+ready(function(){box();document.addEventListener('click',function(e){var b=e.target.closest('[data-gees-live-refresh]');if(b){e.preventDefault();refresh();}});document.addEventListener('gees:portal-session-ready',refresh);document.addEventListener('gees:crud-complete',refresh);document.addEventListener('gees:document-uploaded',refresh);setTimeout(refresh,350);});
 })();
