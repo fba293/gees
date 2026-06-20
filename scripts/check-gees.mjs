@@ -4,8 +4,10 @@ import path from 'node:path';
 const required = [
   'public_html/global.js',
   'public_html/gees-leads.js',
+  'public_html/portal/shared/css/portal-mobile.css',
   'public_html/portal/shared/js/auth-service.js',
   'public_html/portal/shared/js/role-guard.js',
+  'public_html/portal/shared/js/portal-shell.js',
   'public_html/portal/shared/js/portal-document-upload.js',
   'public_html/portal/shared/js/portal-live-data.js',
   'public_html/portal/shared/js/portal-workflow.js',
@@ -29,6 +31,14 @@ if (fs.existsSync(globalFile)) {
   const source = fs.readFileSync(globalFile, 'utf8');
   if (!source.includes('GEES PHASE 18 PUBLIC LEADS AUTO-LOADER')) errors.push('Missing public lead auto-loader.');
   if (!source.includes('/gees-leads.js')) errors.push('Public lead script is not loaded by global.js.');
+}
+
+const shellFile = 'public_html/portal/shared/js/portal-shell.js';
+if (fs.existsSync(shellFile)) {
+  const source = fs.readFileSync(shellFile, 'utf8');
+  if (!source.includes('/portal/shared/css/portal-mobile.css')) errors.push('Portal shell does not load the shared responsive stylesheet.');
+  if (!source.includes('viewport-fit=cover')) errors.push('Portal shell does not ensure a safe mobile viewport.');
+  if (!source.includes('gees-portal-menu-open')) errors.push('Portal shell does not lock background scroll when the mobile drawer is open.');
 }
 
 const uploadFile = 'public_html/portal/shared/js/portal-document-upload.js';
