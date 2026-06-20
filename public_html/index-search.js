@@ -41,7 +41,7 @@
 
   function $ (selector, root) { return (root || document).querySelector(selector); }
   function $$ (selector, root) { return Array.from((root || document).querySelectorAll(selector)); }
-  function escapeHTML(value) { return String(value || '').replace(/[&<>"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[char])); }
+  function escapeHTML(value) { return String(value || '').replace(/[&<>\"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[char])); }
   function normalize(value) { return String(value || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim(); }
   function canonical(value) { return normalize(value).split(/\s+/).map(word => typoMap[word] || word).join(' ').trim(); }
   function icon(type) { return type === 'university' ? 'fa-building-columns' : type === 'destination' ? 'fa-earth-asia' : type === 'service' ? 'fa-headset' : 'fa-graduation-cap'; }
@@ -52,6 +52,11 @@
     script.src = src;
     script.defer = true;
     document.head.appendChild(script);
+  }
+
+  function registerServiceWorker() {
+    if (!('serviceWorker' in navigator) || location.protocol !== 'https:') return;
+    navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => {});
   }
 
   function getCached() {
@@ -144,6 +149,7 @@
   }
 
   function init() {
+    registerServiceWorker();
     loadScript('/homepage-counter-fallback.js?v=15.4.0', 'GEES_HOMEPAGE_RUNTIME_REPAIR_V2');
     loadScript('/public-link-normalizer.js?v=15.4.0', 'GEES_PUBLIC_LINK_NORMALIZER_V1');
 
