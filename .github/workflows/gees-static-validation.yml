@@ -23,8 +23,27 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node --check scripts/check-gees.mjs
-          for file in public_html/global.js public_html/gees-leads.js public_html/gees-router.js public_html/sw.js; do
-            test -f "$file" && node --check "$file"
+          active_scripts=(
+            scripts/check-gees.mjs
+            public_html/global.js
+            public_html/gees-leads.js
+            public_html/gees-router.js
+            public_html/sw.js
+            public_html/portal/shared/js/supabase-client.js
+            public_html/portal/shared/js/auth-service.js
+            public_html/portal/shared/js/auth-page.js
+            public_html/portal/shared/js/role-guard.js
+            public_html/portal/shared/js/portal-shell.js
+            public_html/portal/shared/js/portal-ui.js
+            public_html/portal/shared/js/portal-live-data.js
+            public_html/portal/shared/js/portal-crud.js
+            public_html/portal/shared/js/portal-document-upload.js
+            public_html/portal/shared/js/portal-workflow.js
+            public_html/portal/shared/js/portal-commissions.js
+            public_html/portal/shared/js/portal-work-items.js
+            public_html/portal/shared/js/portal-reports.js
+          )
+          for file in "${active_scripts[@]}"; do
+            test -f "$file"
+            node --check "$file"
           done
-          find public_html/portal/shared/js -type f -name '*.js' -print0 | xargs -0 -r -n 1 node --check
