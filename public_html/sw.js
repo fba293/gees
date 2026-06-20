@@ -1,9 +1,9 @@
 /* GEES Service Worker — static cache + stale-while-revalidate */
-const GEES_SW_VERSION = 'gees-sw-v15.3-home-runtime-repair';
+const GEES_SW_VERSION = 'gees-sw-v15.4-public-runtime-repair';
 const STATIC_CACHE = `${GEES_SW_VERSION}-static`;
 const RUNTIME_CACHE = `${GEES_SW_VERSION}-runtime`;
 const STATIC_ASSETS = [
-  '/', '/index.html', '/global.css', '/index.css', '/header.js', '/footer.js', '/global.js', '/gees-router.js', '/index.js', '/index-search.js', '/homepage-counter-fallback.js',
+  '/', '/index.html', '/global.css', '/index.css', '/header.js', '/footer.js', '/global.js', '/gees-router.js', '/index.js', '/index-search.js', '/homepage-counter-fallback.js', '/public-link-normalizer.js',
   '/portal/shared/css/portal.css', '/portal/shared/css/portal-mobile.css',
   '/portal/shared/js/supabase-client.js', '/portal/shared/js/auth-service.js', '/portal/shared/js/role-guard.js',
   '/portal/shared/js/portal-shell.js', '/portal/shared/js/portal-ui.js', '/portal/shared/js/portal-live-data.js'
@@ -46,6 +46,10 @@ function isHomepage(req) {
   const pathname = new URL(req.url).pathname;
   return pathname === '/' || pathname === '/index.html';
 }
+function isPublicDocument(req) {
+  const pathname = new URL(req.url).pathname;
+  return req.destination === 'document' && !pathname.startsWith('/portal/');
+}
 function repairedHeaders(sourceHeaders) {
   const headers = new Headers(sourceHeaders);
   headers.delete('content-length');
@@ -54,17 +58,26 @@ function repairedHeaders(sourceHeaders) {
   headers.set('content-type', 'text/html; charset=utf-8');
   return headers;
 }
-async function injectHomepageCounterFallback(response) {
+async function injectPublicRuntimeRepairs(response, homepage) {
   if (!response || !response.ok) return response;
   const type = response.headers.get('content-type') || '';
   if (!type.includes('text/html')) return response;
   const html = await response.text();
   const headers = repairedHeaders(response.headers);
-  if (html.includes('homepage-counter-fallback.js')) {
+  const scripts = [
+    '<script defer src="/public-link-normalizer.js?v=15.4.0"></script>',
+    homepage ? '<script defer src="/homepage-counter-fallback.js?v=15.4.0"></script>' : ''
+  ].filter(Boolean).join('');
+  const hasLinkRepair = html.includes('public-link-normalizer.js');
+  const hasCounterRepair = !homepage || html.includes('homepage-counter-fallback.js');
+  if (hasLinkRepair && hasCounterRepair) {
     return new Response(html, { status: response.status, statusText: response.statusText, headers });
   }
-  const script = '<script defer src="/homepage-counter-fallback.js?v=15.3.0"></script>';
-  const patched = html.includes('</head>') ? html.replace('</head>', `${script}</head>`) : `${html}${script}`;
+  const missingScripts = [
+    hasLinkRepair ? '' : '<script defer src="/public-link-normalizer.js?v=15.4.0"></script>',
+    hasCounterRepair ? '' : (homepage ? '<script defer src="/homepage-counter-fallback.js?v=15.4.0"></script>' : '')
+  ].join('');
+  const patched = html.includes('</head>') ? html.replace('</head>', `${missingScripts}</head>`) : `${html}${missingScripts || scripts}`;
   return new Response(patched, { status: response.status, statusText: response.statusText, headers });
 }
 self.addEventListener('fetch', event => {
@@ -78,6 +91,6 @@ self.addEventListener('fetch', event => {
       return res;
     }).catch(() => cached);
     const response = isNetworkFirst(req) ? await (network || cached) : await (cached || network);
-    return isHomepage(req) ? injectHomepageCounterFallback(response) : response;
+    return isPublicDocument(req) ? injectPublicRuntimeRepairs(response, isHomepage(req)) : response;
   })());
 });
