@@ -29,6 +29,10 @@ jobs:
             public_html/gees-leads.js
             public_html/gees-router.js
             public_html/sw.js
+            public_html/index.js
+            public_html/index-search.js
+            public_html/homepage-counter-fallback.js
+            public_html/public-link-normalizer.js
             public_html/portal/shared/js/supabase-client.js
             public_html/portal/shared/js/auth-service.js
             public_html/portal/shared/js/auth-page.js
