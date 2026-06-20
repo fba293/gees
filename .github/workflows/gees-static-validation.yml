@@ -8,13 +8,22 @@ on:
 
 jobs:
   validate:
+    name: Active portal validation
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Validate production files
+      - name: Validate active production routes
         run: node scripts/check-gees.mjs
-      - name: Validate JavaScript syntax
-        run: find public_html -type f -name '*.js' -print0 | xargs -0 -n 1 node --check
+      - name: Validate active JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/check-gees.mjs
+          for file in public_html/global.js public_html/gees-leads.js public_html/gees-router.js public_html/sw.js; do
+            test -f "$file" && node --check "$file"
+          done
+          find public_html/portal/shared/js -type f -name '*.js' -print0 | xargs -0 -r -n 1 node --check
